@@ -1,9 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
-// abstracts
+// 1. Base styles
+@use './assets/styles/base/base' as *;
+@use './assets/styles/base/reset' as *;
+@use './assets/styles/base/typography' as *;
+
+// 2. Abstracts
 @use './assets/styles/abstracts/variables' as *;
 @use './assets/styles/abstracts/mixins' as *;
 @use './assets/styles/abstracts/functions' as *;
 
-// themes
-@use './assets/styles/themes/light';
-@use './assets/styles/themes/dark';
+// 3. Themes
+@use './assets/styles/themes/light' as *;
+@use './assets/styles/themes/dark' as *;
+
+
+
