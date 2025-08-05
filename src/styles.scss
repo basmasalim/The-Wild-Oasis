@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+// abstracts
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+@use 'abstracts/functions';
+
+// themes
+@use 'themes/light';
+@use 'themes/dark';
