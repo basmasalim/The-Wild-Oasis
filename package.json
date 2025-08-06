@@ -21,6 +21,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.1.4",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
     "@angular/core": "^20.1.0",
@@ -29,7 +30,11 @@
     "@angular/platform-server": "^20.1.0",
     "@angular/router": "^20.1.0",
     "@angular/ssr": "^20.1.4",
+    "@primeuix/themes": "^1.2.3",
     "express": "^5.1.0",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^20.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

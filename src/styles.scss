@@ -1,16 +1,16 @@
-// 1. Base styles
-@use './styles/base/base' as *;
-@use './styles/base/reset' as *;
-@use './styles/base/typography' as *;
+// 1. Abstracts
+@use "./styles/abstracts/functions" as *;
+@use "./styles/abstracts/variables" as *;
+@use "./styles/abstracts/mixins" as *;
 
-// 2. Abstracts
-@use './styles/abstracts/variables' as *;
-@use './styles/abstracts/mixins' as *;
-@use './styles/abstracts/functions' as *;
+// 2. Base
+@use "./styles/base/reset" as *;
+@use "./styles/base/base" as *;
+@use "./styles/base/typography" as *;
 
-// 3. Themes
-@use './styles/themes/light' as *;
-@use './styles/themes/dark' as *;
+// 3. Layout/Partials
+@use "./styles/partials/layout" as *;
 
-
-
+// 4. Themes
+@use "./styles/themes/light" as *;
+@use "./styles/themes/dark" as *;
