@@ -1,13 +1,17 @@
 import { Component, signal } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [CardModule, ButtonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('The-Wild-Oasis');
+
+  toggleDarkMode() {
+    const el = document.querySelector('html');
+    el?.classList.toggle('app-dark');
+  }
 }
