@@ -27,6 +27,12 @@ export class Auth {
     return !!this.getToken();
   }
 
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /**
+   * Sets the token in local storage.
+   * @param token The token to be set.
+   */
+  /*******  47d42d77-8230-447a-8ce6-5bc7f8b81ae1  *******/
   private setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
   }
