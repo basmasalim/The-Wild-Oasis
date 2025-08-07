@@ -1,11 +1,10 @@
+import { CardModule } from 'primeng/card';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [CardModule],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
 })
-export class Login {
-
-}
+export class Login {}
