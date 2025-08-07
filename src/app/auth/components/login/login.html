@@ -1,11 +1,21 @@
 <section class="flex justify-content-center align-items-center">
   <div class="container">
     <div class="logo text-center mb-6">
-      <img src="images/logo-light.png" width="120" alt="logo" />
+      <img
+        src="images/logo-light.png"
+        class="logo light"
+        width="120"
+        alt="Logo Light"
+      />
+      <img
+        src="images/logo-dark.png"
+        class="logo dark"
+        width="120"
+        alt="Logo Dark"
+      />
       <h4 class="text-6xl">Login to your account</h4>
     </div>
-
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <!-- Email Field -->
       <div class="field mb-4">
         <label for="email" class="block mb-2 font-medium">Email address</label>
@@ -16,7 +26,7 @@
           formControlName="email"
           class="w-full form__field"
           aria-describedby="email-help"
-          value="admin@example.com"
+          formControlName="email"
         />
       </div>
       <!-- Password Field -->
@@ -29,7 +39,7 @@
           formControlName="password"
           class="w-full form__field"
           aria-describedby="password-help"
-          value="123456789"
+          formControlName="password"
         />
       </div>
 

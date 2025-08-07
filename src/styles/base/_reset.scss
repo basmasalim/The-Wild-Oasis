@@ -46,3 +46,23 @@ form {
     cursor: not-allowed;
   }
 }
+
+// Logo
+.logo {
+  margin-inline: auto;
+  margin-block: 0.8rem;
+}
+
+.logo.dark {
+  display: none;
+}
+.logo.light {
+  display: block;
+}
+
+.app-dark .logo.light {
+  display: none;
+}
+.app-dark .logo.dark {
+  display: block;
+}
