@@ -1,0 +1,68 @@
+@use "../abstracts/variables" as *;
+
+// Form
+
+form {
+  padding: 2.4rem 4rem;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+  font-size: 1.4rem;
+  width: 47rem;
+
+  @media (max-width: 446px) {
+    width: 32rem;
+  }
+
+  .field {
+    padding: 1.2rem 0px;
+    .form__field {
+      border: 1px solid var(--color-grey-300);
+      background-color: var(--color-grey-0);
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 0.8rem 1.2rem;
+    }
+  }
+}
+
+// Primary button
+.p-button {
+  border: none;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.6rem;
+  padding: 1.2rem 2.4rem;
+  font-weight: 500;
+  color: var(--color-brand-50);
+  background-color: var(--color-brand-600);
+
+  &:hover {
+    background-color: var(--color-brand-700);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Logo
+.logo {
+  margin-inline: auto;
+  margin-block: 0.8rem;
+}
+
+.logo.dark {
+  display: none;
+}
+.logo.light {
+  display: block;
+}
+
+.app-dark .logo.light {
+  display: none;
+}
+.app-dark .logo.dark {
+  display: block;
+}
