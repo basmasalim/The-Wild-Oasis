@@ -54,7 +54,7 @@ export class Login implements OnInit, OnDestroy {
       // this.router.navigate(['/dashboard']);
       console.log('login success');
     } else {
-      // console.log('login failed');
+      console.log('login failed');
       this.notifications.showError('Login Failed', 'Invalid email or password');
     }
   }
