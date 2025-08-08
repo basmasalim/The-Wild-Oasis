@@ -9,9 +9,9 @@ import {
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { Subject } from 'rxjs';
-import { Auth } from '../../services/auth/auth';
 import { Notifications } from '../../services/notifications/notifications';
 import { ToastModule } from 'primeng/toast';
+import { Authintication } from '../../services/auth/authintication';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +21,13 @@ import { ToastModule } from 'primeng/toast';
 })
 export class Login implements OnInit, OnDestroy {
   loginForm!: FormGroup;
-  error = '';
+  loading = false;
+  errorMessage = '';
 
   private readonly fb = inject(FormBuilder);
-  private readonly auth = inject(Auth);
+  private readonly auth = inject(Authintication);
   private readonly router = inject(Router);
   private readonly notifications = inject(Notifications);
-
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -36,28 +36,36 @@ export class Login implements OnInit, OnDestroy {
 
   initForm(): void {
     this.loginForm = this.fb.group({
-      email: ['admin@example.com', [Validators.required, Validators.email]],
-      password: ['123456789', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
-    const user: User = this.loginForm.value;
-    const success = this.auth.login(user);
+    this.loading = true;
+    this.errorMessage = '';
 
-    if (success) {
-      // this.router.navigate(['/dashboard']);
-      console.log('login success');
-    } else {
-      // console.log('login failed');
-      this.notifications.showError('Login Failed', 'Invalid email or password');
-    }
+    const { email, password } = this.loginForm.value;
+
+    this.auth.login(email, password).subscribe({
+      next: () => {
+        console.log('Login successful');
+
+        this.router.navigate(['/']); // بعد تسجيل الدخول روح للهوم
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Login failed';
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
+
+
 
   ngOnDestroy(): void {
     this.destroy$.next();
