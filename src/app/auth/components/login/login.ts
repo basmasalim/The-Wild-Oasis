@@ -6,14 +6,16 @@ import {
   FormBuilder,
   FormGroup,
 } from '@angular/forms';
-import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { Subject } from 'rxjs';
+import { Auth } from '../../services/auth/auth';
+import { Notifications } from '../../services/notifications/notifications';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
-  imports: [CardModule, ReactiveFormsModule],
+  imports: [CardModule, ReactiveFormsModule, ToastModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -24,6 +26,7 @@ export class Login implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(Auth);
   private readonly router = inject(Router);
+  private readonly notifications = inject(Notifications);
 
   private readonly destroy$ = new Subject<void>();
 
@@ -51,7 +54,8 @@ export class Login implements OnInit, OnDestroy {
       // this.router.navigate(['/dashboard']);
       console.log('login success');
     } else {
-      console.log('login failed');
+      // console.log('login failed');
+      this.notifications.showError('Login Failed', 'Invalid email or password');
     }
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { User } from '../interfaces/user';
-import { FAKE_USER } from '../constants/fake-user';
+import { FAKE_USER } from '../../constants/fake-user';
+import { User } from '../../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
