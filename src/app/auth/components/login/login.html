@@ -1,44 +1,27 @@
+@if (isLoggedIn()) {
+<div class="card flex justify-center ">
+  <p-button label="Log Out" (onClick)="logout()" />
+</div>
+}
 <section class="flex justify-content-center align-items-center">
   <div class="container">
     <div class="logo text-center mb-6">
-      <img
-        src="images/logo-light.png"
-        class="logo light"
-        width="120"
-        alt="Logo Light"
-      />
-      <img
-        src="images/logo-dark.png"
-        class="logo dark"
-        width="120"
-        alt="Logo Dark"
-      />
+      <img src="images/logo-light.png" class="logo light" width="120" alt="Logo Light" />
+      <img src="images/logo-dark.png" class="logo dark" width="120" alt="Logo Dark" />
       <h4 class="text-6xl">Login to your account</h4>
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <!-- Email Field -->
       <div class="field mb-4">
         <label for="email" class="block mb-2 font-medium">Email address</label>
-        <input
-          id="email"
-          type="email"
-          pInputText
-          formControlName="email"
-          class="w-full form__field"
-          aria-describedby="email-help"
-        />
+        <input id="email" type="email" pInputText formControlName="email" class="w-full form__field"
+          aria-describedby="email-help" />
       </div>
       <!-- Password Field -->
       <div class="field mb-4">
         <label for="password" class="block mb-2 font-medium">Password</label>
-        <input
-          id="password"
-          type="password"
-          pInputText
-          formControlName="password"
-          class="w-full form__field"
-          aria-describedby="password-help"
-        />
+        <input id="password" type="password" pInputText formControlName="password" class="w-full form__field"
+          aria-describedby="password-help" />
       </div>
 
       <!-- Submit Button -->
