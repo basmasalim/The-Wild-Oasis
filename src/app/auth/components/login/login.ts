@@ -48,10 +48,10 @@ export class Login implements OnInit, OnDestroy {
     }
 
     const user: User = this.loginForm.value;
-    const success = this.auth.login(user);
+    const success = this.auth.signInUser(user);
 
     if (success) {
-      // this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']);
       console.log('login success');
     } else {
       console.log('login failed');
