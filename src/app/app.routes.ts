@@ -1,13 +1,11 @@
 import { Routes } from '@angular/router';
+import { AuthLayout } from './core/layouts/dashboard/auth-layout/auth-layout';
 
 export const routes: Routes = [
   // ?====================> Auth Layout<=================
   {
     path: '',
-    loadComponent: () =>
-      import('./core/layouts/dashboard/auth-layout/auth-layout').then(
-        (c) => c.AuthLayout
-      ),
+    component: AuthLayout,
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
