@@ -1,6 +1,7 @@
 <div class="card">
   <p-table
-    [value]="cabins"
+    class="custom-table m-auto"
+    [value]="filteredCapinData"
     [paginator]="true"
     [rows]="10"
     [tableStyle]="{ 'min-width': '60rem' }"
@@ -9,16 +10,27 @@
       <ul class="flex justify-content-between w-9">
         <li>
           <div class="flex items-center justify-between">
-            <span class="text-6xl font-bold">All Booking</span>
+            <span class="text-6xl font-bold">Capins</span>
             <p-button icon="pi pi-refresh" rounded raised />
           </div>
         </li>
         <li>
           <div class="button-group">
             <button label="All" class="btn-g">All</button>
-            <button pButton label="Unconfirmed" class="btn-g"></button>
-            <button pButton label="Checked In" class="btn-g"></button>
-            <button pButton label="Checked Out" class="btn-g"></button>
+            <button
+              (click)="applyFilter('indiscount')"
+              label="InDiscount"
+              class="btn-g"
+            >
+              InDiscount
+            </button>
+            <button
+              (click)="applyFilter('nodiscount')"
+              label="NoDiscount"
+              class="btn-g"
+            >
+              NoDiscount
+            </button>
           </div>
         </li>
       </ul>

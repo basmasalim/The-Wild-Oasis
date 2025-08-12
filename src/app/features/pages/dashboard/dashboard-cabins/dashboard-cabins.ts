@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Iuser } from '../dashboard-bookings/iuser';
 import { Scabins } from './scabins';
+import { Icabins } from './icabins';
 
 @Component({
   selector: 'app-dashboard-cabins',
@@ -17,25 +18,34 @@ import { Scabins } from './scabins';
   styleUrl: './dashboard-cabins.scss',
 })
 export class DashboardCabins implements OnInit {
-  cabins!: Scabins[];
+  cabins!: Icabins[];
 
-  constructor(private ScabinsServ: Scabins) {}
+  constructor(private cabinServ: Scabins) {}
   ngOnInit() {
-    this.ScabinsServ.getCapinDataMini().subscribe({
+    this.cabinServ.getCapinDataMini().subscribe({
       next: (res: any) => {
         this.cabins = res;
       },
     });
   }
 
+  filteredStatus: string = '';
+
+  get filteredCapinData(): Icabins[] {
+    if (!this.filteredStatus) return this.cabins;
+    return this.cabins.filter((p) => p.inventoryStatus === this.filteredStatus);
+  }
+
+  applyFilter(status: string) {
+    this.filteredStatus = status;
+  }
   getSeverity(status: string) {
     switch (status) {
-      case 'INSTOCK':
+      case 'indiscount':
         return 'success';
-      case 'LOWSTOCK':
+      case 'nodiscount':
         return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
+
       default:
         return '';
     }

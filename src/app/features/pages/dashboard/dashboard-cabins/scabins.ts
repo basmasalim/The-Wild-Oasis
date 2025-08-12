@@ -14,7 +14,7 @@ export class Scabins {
       Price: 1,
       Discount: 42.4,
       price: 55,
-      inventoryStatus: 'INSTOCK',
+      inventoryStatus: 'nodiscount',
     },
   ];
 
