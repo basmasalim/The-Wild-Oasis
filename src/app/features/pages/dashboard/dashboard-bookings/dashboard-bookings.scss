@@ -73,3 +73,7 @@ tr td {
   border: 1px solid rgba($color: #fff, $alpha: 0.2);
   border-radius: 10px;
 }
+:host :ng-deep .p-button:not(:disabled):hover {
+  background-color: var(--color-indigo-100);
+  color: var(--color-grey-900);
+}
