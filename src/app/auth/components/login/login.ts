@@ -1,4 +1,3 @@
-import { DashboardHome } from './../../../features/pages/dashboard/dashboard-home/dashboard-home';
 import { CardModule } from 'primeng/card';
 import {
   Component,
