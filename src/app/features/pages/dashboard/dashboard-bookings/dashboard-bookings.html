@@ -1,1 +1,117 @@
-<p>dashboard-bookings works!</p>
+<div class="card">
+  <p-table
+    class="custom-table m-auto"
+    [value]="filtereduserData"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="totalRecords"
+    [(first)]="first"
+    (onPageChange)="onClick($event)"
+    [rowsPerPageOptions]="[5, 10]"
+  >
+    <ng-template #caption>
+      <ul class="flex justify-content-between w-9">
+        <li>
+          <div class="flex items-center justify-between">
+            <span class="text-6xl font-bold">All Booking</span>
+            <p-button icon="pi pi-refresh" rounded raised />
+          </div>
+        </li>
+        <li>
+          <div class="button-group">
+            <button label="All" (click)="applyFilter('')" class="btn-g">
+              All
+            </button>
+            <button
+              pButton
+              label="Unconfirmed"
+              (click)="applyFilter('unconfirmed')"
+              class="btn-g"
+            ></button>
+            <button
+              pButton
+              label="Checked In"
+              (click)="applyFilter('checkedin')"
+              class="btn-g"
+            ></button>
+            <button
+              pButton
+              label="Checked Out"
+              (click)="applyFilter('checkedout')"
+              class="btn-g"
+            ></button>
+          </div>
+        </li>
+      </ul>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>Cabin</th>
+        <th>Guest</th>
+        <th>Dates</th>
+        <!-- <th>Status</th> -->
+        <th>Status</th>
+        <th>Amount</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-user>
+      <tr>
+        <td>{{ user.category }}</td>
+        <td>
+          {{ user.name }}
+          <p>{{ user.userEmail }}</p>
+        </td>
+        <!-- <td>
+          <img
+            [src]="'' + user.image"
+            [alt]="user.name"
+            class="w-24 rounded"
+          />
+        </td> -->
+
+        <td>
+          <p>{{ user.userRegTime }}</p>
+          <p>{{ user.date }}</p>
+        </td>
+        <td>
+          <p-tag
+            [value]="user.inventoryStatus"
+            [severity]="getSeverity(user.inventoryStatus)"
+          />
+        </td>
+
+        <td>
+          <span class="amount"> {{ user.price | currency : "USD" }}</span>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #footer>
+      <tr class="footer">
+        <td colspan="6">
+          In total there are {{ userData ? userData.length : 0 }} userData.
+
+          <ul class="btn-p">
+            <li>
+              <button
+                class="tabel-btn"
+                (click)="goToPrev()"
+                [disabled]="isFirstPage()"
+              >
+                < Previous
+              </button>
+            </li>
+            <li>
+              <button
+                class="tabel-btn"
+                (click)="goToNext()"
+                [disabled]="isLastPage()"
+              >
+                Next >
+              </button>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
