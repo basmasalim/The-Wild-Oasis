@@ -66,7 +66,6 @@ export class Login implements OnInit, OnDestroy {
         error: (err) => {
           this.errorMessage = err.message || 'Login failed';
           this.auth.isLogged.set(false);
-          localStorage.setItem('loggedIn', this.loggedIn() ? 'true' : 'false');
 
           this.loading = false;
           this.notifications.showError('Login Failed', 'Invalid email or password');
