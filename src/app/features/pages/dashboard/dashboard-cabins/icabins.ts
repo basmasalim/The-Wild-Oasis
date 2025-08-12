@@ -4,5 +4,5 @@ export interface Icabins {
   Price: number;
   Discount: number;
   price: number;
-  inventoryStatus: 'Nodiscount' | 'indiscount';
+  inventoryStatus: 'nodiscount' | 'indiscount';
 }
