@@ -1,1 +1,64 @@
-<p>dashboard-home works!</p>
+<section class="container">
+  <!-- header -->
+  <div id="FristSec" class="flex my-5">
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+    <div>
+     <div class="flex btns">
+      <button >Last 7 days</button>
+      <button >Last 30 days</button>
+      <button >Last 90 days</button>
+     </div>
+    </div>
+  </div>
+  <!-- sec section -->
+  <div class="boxehold flex my-5">
+    <div class="box border flex">
+      <div></div>
+      <i class= "pi pi-briefcase" style="background-color: var(--color-blue-100); color: var(--color-blue-700)">
+     
+    </i> <div class="text flex">
+      <p>Bookings</p>
+      <p>19</p>
+    </div></div>
+    <div class="box border flex"><i class=" pi pi-money-bill"  style="background-color: var(--color-green-100);color: var(--color-green-700)"></i>
+    <div class="text flex">
+      <p>Sales</p>
+      <p>63,335.00</p>
+    </div>
+    </div>
+    <div class="box border flex"><i class="pi pi-calendar" style="background-color: var(--color-indigo-100);"></i><div class="text flex">
+      <p>Check ins</p>
+      <p>10</p>
+    </div> </div>
+    <div class="box border flex"><i class="pi  pi-chart-line"  style="background-color: var(--color-yellow-100);color: var(--color-yellow-700)"></i>  <div class="text flex">
+      <p>Occupancy rate</p>
+      <p>22%</p>
+    </div> </div>
+  </div>
+  <!-- third sec -->
+  <div id="sec-section" class="flex">
+    <div class="activity-data border">
+      <h2>Today</h2>
+      <div>
+        <p>No activity today ...</p>
+        <div>
+          <!-- put data here -->
+        </div>
+      </div>
+    </div>
+    <!-- char cricle -->
+     <div class="border" id="data-today">
+      <p>stay duration summary</p>
+       <p-chart type="pie" [data]="data" [options]="options" class=" md:w-[30rem] " />
+     </div>
+    </div>
+    <!-- last sec -->
+    <div class="border">
+     <p> sales from <span>08 07 2025</span> - <span>aug 13 2025</span></p>
+     <p-chart type="line" [data]="data" [options]="options" class="h-[30rem]" />
+    </div>
+
+</section>
+<!-- pi-calendarpi-calendar   background-color: var(--color-indigo-100)  -->
