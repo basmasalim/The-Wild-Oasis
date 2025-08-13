@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CabinsFilters } from './cabins-filters';
+import { AdminAccount } from './admin-account';
 
-describe('CabinsFilters', () => {
-  let component: CabinsFilters;
-  let fixture: ComponentFixture<CabinsFilters>;
+describe('AdminAccount', () => {
+  let component: AdminAccount;
+  let fixture: ComponentFixture<AdminAccount>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CabinsFilters]
+      imports: [AdminAccount]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CabinsFilters);
+    fixture = TestBed.createComponent(AdminAccount);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
