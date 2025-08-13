@@ -42,8 +42,13 @@
               "budgets": [
                 {
                   "type": "initial",
+<<<<<<< HEAD
                   "maximumWarning": "2MB",
                   "maximumError": "4MB"
+=======
+                  "maximumWarning": "4MB",
+                  "maximumError": "2MB"
+>>>>>>> tabel-b
                 },
                 {
                   "type": "anyComponentStyle",
