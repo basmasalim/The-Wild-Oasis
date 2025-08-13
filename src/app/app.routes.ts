@@ -48,6 +48,13 @@ export const routes: Routes = [
           ).then((c) => c.DashboardCabins),
       },
       {
+        path: 'details',
+        loadComponent: () =>
+          import(
+            './features/pages/dashboard/booking-details/booking-details'
+          ).then((c) => c.BookingDetails),
+      },
+      {
         path: 'settings',
         loadComponent: () =>
           import(
