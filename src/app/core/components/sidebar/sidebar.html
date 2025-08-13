@@ -1,1 +1,69 @@
-<p>sidebar works!</p>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo text-center mb-6">
+      <img
+        src="images/logo-light.png"
+        class="logo light"
+        width="120"
+        alt="Logo Light"
+      />
+      <img
+        src="images/logo-dark.png"
+        class="logo dark"
+        width="120"
+        alt="Logo Dark"
+      />
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          <i class="pi pi-home"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/bookings" routerLinkActive="active">
+          <i class="pi pi-calendar"></i>
+          <span>Bookings</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/cabins" routerLinkActive="active">
+          <i class="pi pi-home"></i>
+          <span>Cabins</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/users" routerLinkActive="active">
+          <i class="pi pi-users"></i>
+          <span>Users</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/settings" routerLinkActive="active">
+          <i class="pi pi-cog"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="data-actions">
+      <button type="button" class="p-button">SAMPLE DATA</button>
+      <button type="button" class="p-button">Upload ALL</button>
+      <button type="button" class="p-button">Upload bookings ONLY</button>
+    </div>
+    <div class="social-links">
+      <a href="https://github.com" target="_blank" class="social-link">
+        <i class="pi pi-github"></i>
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="social-link">
+        <i class="pi pi-linkedin"></i>
+      </a>
+    </div>
+  </div>
+</div>

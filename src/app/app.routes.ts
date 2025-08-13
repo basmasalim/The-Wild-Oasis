@@ -55,7 +55,7 @@ export const routes: Routes = [
           ).then((c) => c.DashboardSettings),
       },
       {
-        path: '',
+        path: 'users',
         loadComponent: () =>
           import(
             './features/pages/dashboard/dashboard-users/dashboard-users'

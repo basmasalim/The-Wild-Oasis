@@ -1,6 +1,13 @@
 import { DashboardHome } from './../../../features/pages/dashboard/dashboard-home/dashboard-home';
 import { CardModule } from 'primeng/card';
-import { Component, computed, inject, OnDestroy, OnInit, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  Signal,
+} from '@angular/core';
 import {
   ReactiveFormsModule,
   Validators,
@@ -39,16 +46,19 @@ export class Login implements OnInit, OnDestroy {
 
   initForm(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['admin@example.com', [Validators.required, Validators.email]],
+      password: ['123456789', Validators.required],
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
-      this.notifications.showError('Invalid Form', 'Please fill in all required fields correctly.');
+      this.notifications.showError(
+        'Invalid Form',
+        'Please fill in all required fields correctly.'
+      );
       return;
-    };
+    }
 
     if (this.loginForm.valid) {
       this.loading = true;
@@ -68,15 +78,17 @@ export class Login implements OnInit, OnDestroy {
           this.auth.isLogged.set(false);
 
           this.loading = false;
-          this.notifications.showError('Login Failed', 'Invalid email or password');
+          this.notifications.showError(
+            'Login Failed',
+            'Invalid email or password'
+          );
         },
         complete: () => {
           this.loading = false;
-        }
+        },
       });
     }
   }
-
 
   ngOnDestroy(): void {
     this.destroy$.next();
