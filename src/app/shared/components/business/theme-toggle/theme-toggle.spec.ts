@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CabinsTable } from './cabins-table';
+import { ThemeToggle } from './theme-toggle';
 
-describe('CabinsTable', () => {
-  let component: CabinsTable;
-  let fixture: ComponentFixture<CabinsTable>;
+describe('ThemeToggle', () => {
+  let component: ThemeToggle;
+  let fixture: ComponentFixture<ThemeToggle>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CabinsTable]
+      imports: [ThemeToggle]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CabinsTable);
+    fixture = TestBed.createComponent(ThemeToggle);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

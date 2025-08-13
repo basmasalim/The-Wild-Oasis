@@ -1,11 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { BadgeModule } from 'primeng/badge';
+import { AvatarModule } from 'primeng/avatar';
+import { CommonModule } from '@angular/common';
+import { Menubar } from 'primeng/menubar';
+import { ThemeToggle } from '../../../shared/components/business/theme-toggle/theme-toggle';
+import { Authintication } from '../../../auth/services/authintication/authintication';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
-  imports: [],
+  imports: [
+    Menubar,
+    BadgeModule,
+    AvatarModule,
+    CommonModule,
+    ThemeToggle,
+    RouterLink,
+  ],
   templateUrl: './topbar.html',
-  styleUrl: './topbar.scss'
+  styleUrl: './topbar.scss',
 })
 export class Topbar {
+  private readonly auth = inject(Authintication);
 
+  toggleDarkMode() {
+    const el = document.querySelector('html');
+    el?.classList.toggle('app-dark');
+  }
+
+  signOut() {
+    this.auth.logout();
+  }
 }

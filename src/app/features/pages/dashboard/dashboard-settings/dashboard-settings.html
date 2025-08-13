@@ -1,1 +1,56 @@
-<p>dashboard-settings works!</p>
+<div class="container flex justify-content-center m-auto flex-column">
+  <h2>Update hotel settings</h2>
+
+  <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+    <!-- minNights Field -->
+    <div class="field mb-4">
+      <label for="minNights" class="mb-2 font-medium"
+        >Minimum nights/booking</label
+      >
+      <input
+        id="minNights"
+        type="number"
+        formControlName="minNights"
+        class="w-full form__field"
+        aria-describedby="minNights-help"
+      />
+    </div>
+    <!-- maxNights Field -->
+    <div class="field mb-4">
+      <label for="maxNights" class="mb-2 font-medium"
+        >Maximum nights/booking
+      </label>
+      <input
+        id="maxNights"
+        type="number"
+        formControlName="maxNights"
+        class="w-full form__field"
+        aria-describedby="maxNights-help"
+      />
+    </div>
+    <!-- maxGuests Field -->
+    <div class="field mb-4">
+      <label for="maxGuests" class="mb-2 font-medium">Repeat maxGuests </label>
+      <input
+        id="maxGuests"
+        type="number"
+        formControlName="maxGuests"
+        class="w-full form__field"
+        aria-describedby="maxGuests-help"
+      />
+    </div>
+    <!-- breakfastPrice Field -->
+    <div class="field mb-4">
+      <label for="breakfastPrice" class="mb-2 font-medium"
+        >breakfastPrice</label
+      >
+      <input
+        id="breakfastPrice"
+        type="number"
+        formControlName="breakfastPrice"
+        class="w-full form__field"
+        aria-describedby="breakfastPrice-help"
+      />
+    </div>
+  </form>
+</div>
