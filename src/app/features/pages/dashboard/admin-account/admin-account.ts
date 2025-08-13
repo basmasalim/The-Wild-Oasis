@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUploadModule } from 'primeng/fileupload';
-import { CardModule } from 'primeng/card';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
