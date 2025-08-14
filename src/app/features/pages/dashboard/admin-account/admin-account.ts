@@ -12,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class AdminAccount implements OnInit {
   private readonly fb = inject(FormBuilder);
   accountForm!: FormGroup;
-  selectedFile: File | null = null;
 
   ngOnInit(): void {
     this.accountinit();
@@ -39,26 +38,17 @@ export class AdminAccount implements OnInit {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
-  onFileSelect(event: any) {
-    this.selectedFile = event.files[0];
-  }
-
   onSubmit() {
     if (this.accountForm.valid) {
-      const formData = {
-        ...this.accountForm.value,
-        avatar: this.selectedFile,
-      };
-      console.log('Form submitted:', formData);
+      console.log('Form submitted:');
       // Add your form submission logic here
     }
   }
 
   onCancel() {
     this.accountForm.reset({
-      email: 'alamin@example.com',
-      fullName: 'Alamin',
+      email: 'admin@gmail.com',
+      fullName: 'Admin',
     });
-    this.selectedFile = null;
   }
 }
