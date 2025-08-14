@@ -48,7 +48,7 @@ export const routes: Routes = [
           ).then((c) => c.DashboardCabins),
       },
       {
-        path: 'details',
+        path: 'details/:id',
         loadComponent: () =>
           import(
             './features/pages/dashboard/booking-details/booking-details'
