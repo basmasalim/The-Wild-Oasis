@@ -8,8 +8,9 @@ import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Iuser } from '../dashboard-bookings/iuser';
-import { Scabins } from './scabins';
-import { Icabins } from './icabins';
+
+import { Icabins } from '../../../../core/interface/icabins';
+import { Cabins } from '../../../../core/services/cabins/cabins';
 
 @Component({
   selector: 'app-dashboard-cabins',
@@ -20,9 +21,9 @@ import { Icabins } from './icabins';
 export class DashboardCabins implements OnInit {
   cabins!: Icabins[];
 
-  constructor(private cabinServ: Scabins) {}
-  ngOnInit() {
-    this.cabinServ.getCapinDataMini().subscribe({
+  constructor(private cabinServ: Cabins) {}
+  ngOnInit(): void {
+    this.cabinServ.getCabinsData().subscribe({
       next: (res: any) => {
         this.cabins = res;
       },
