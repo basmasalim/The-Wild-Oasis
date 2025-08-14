@@ -1,1 +1,63 @@
-<p>dashboard-users works!</p>
+<div class="container flex justify-content-center m-auto flex-column">
+  <h2>Create a new user</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <!-- fullName Field -->
+    <div class="field mb-4">
+      <label for="fullName" class="mb-2 font-medium">Full name</label>
+      <input
+        id="fullName"
+        type="fullName"
+        formControlName="fullName"
+        class="w-full form__field"
+        aria-describedby="fullName-help"
+      />
+    </div>
+    <!-- email Field -->
+    <div class="field mb-4">
+      <label for="email" class="mb-2 font-medium"
+        >Password (min 8 characters)
+      </label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        class="w-full form__field"
+        aria-describedby="email-help"
+      />
+    </div>
+    <!-- Password Field -->
+    <div class="field mb-4">
+      <label for="password" class="mb-2 font-medium">Repeat password </label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="w-full form__field"
+        aria-describedby="password-help"
+      />
+    </div>
+    <!-- repeatPassword Field -->
+    <div class="field mb-4">
+      <label for="repeatPassword" class="mb-2 font-medium"
+        >repeatPassword</label
+      >
+      <input
+        id="repeatPassword"
+        type="password"
+        formControlName="repeatPassword"
+        class="w-full form__field"
+        aria-describedby="repeatPassword-help"
+      />
+    </div>
+
+    <div class="flex justify-content-end gap-3">
+      <button type="button" class="p-button-cancel" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="submit" class="p-button" [disabled]="userForm.invalid">
+        Create new user
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,113 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 210px;
+  background: var(--color-grey-0);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  z-index: 9999;
+  border-right: 1px solid var(--color-grey-100);
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 1rem 0.5rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+
+  ul {
+    list-style: none;
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      margin-block: 0.5rem;
+      display: inline-block;
+      width: 100%;
+
+      a {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        color: var(--color-grey-600);
+        text-decoration: none;
+        transition: all 0.2s;
+        font-weight: 500;
+
+        &:hover {
+          color: var(--color-grey-800);
+          background-color: var(--color-grey-50);
+          border-radius: var(--border-radius-sm);
+          i {
+            color: var(--color-brand-600);
+          }
+        }
+
+        &.active {
+          color: var(--color-grey-800);
+          background-color: var(--color-grey-50);
+          border-radius: var(--border-radius-sm);
+          i {
+            color: var(--color-brand-600);
+          }
+        }
+
+        i {
+          margin-right: 1rem;
+          font-size: 2.2rem;
+          color: var(--color-grey-400);
+        }
+      }
+    }
+  }
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+
+  .data-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    button {
+      text-align: center;
+    }
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 5rem;
+
+    .social-link {
+      color: var(--color-grey-600);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--primary-color);
+      }
+
+      i {
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}

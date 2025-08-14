@@ -50,8 +50,13 @@ input:focus, button:focus, textarea:focus, select:focus ,button:hover{
   border-radius: 50%;
 }
 #sec-section{
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
+.activity-data {
+     flex-grow: 2;
+    margin: 0px 3rem;
+}
+
 .flex{
    display: flex;
 }

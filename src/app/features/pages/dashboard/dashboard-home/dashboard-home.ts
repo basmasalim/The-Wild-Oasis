@@ -23,6 +23,7 @@ export class DashboardHome implements OnInit {
     // end
     // start night and sales data 
     //  لما الداتا تيجي مكانها تحت
+    // لما تيجي تدخل داتا اعمل نسخه كمان من الvar  علشان الي تحت شفالين علي اتنين graph
     data: any;
     options: any;
  platformId = inject(PLATFORM_ID);
@@ -32,9 +33,10 @@ export class DashboardHome implements OnInit {
     }  initChart() {
         if (isPlatformBrowser(this.platformId)) {
             const documentStyle = getComputedStyle(document.documentElement);
-            const textColor = documentStyle.getPropertyValue('--text-color');
+            // color for text 
+            const textColor = documentStyle.getPropertyValue('--color-grey-100');
             this.data = {
-                labels: ['2 nights', '3 nights', '4-5  nights','8-14 nights'],
+                labels: ['3 nights', '3 nights', '4-5  nights','8-14 nights'],
                 datasets: [
                     {
                         data: [540, 325, 702,502],
@@ -48,6 +50,7 @@ export class DashboardHome implements OnInit {
                     legend: {
                         labels: {
                             usePointStyle: true,
+                            // colors for text 
                             color: textColor
                         }
                     }
