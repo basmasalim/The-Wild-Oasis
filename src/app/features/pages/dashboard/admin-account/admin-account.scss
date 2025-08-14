@@ -1,24 +1,48 @@
 @use "../../../../../styles/base/forms" as *;
 
-/* Component SCSS */
-.field.avatar {
+.field {
   label {
     display: block;
-    color: var(--text-color);
     margin-bottom: 0.5rem;
+    font-weight: 500;
   }
 
-  .custom-file-upload {
-    .p-button {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: 6px;
-      transition: all 0.3s;
+  .custom-file-input {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+
+    .hidden-input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--color-brand-600);
+      color: var(--color-brand-50);
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      transition: all 0.3s ease;
 
       &:hover {
-        background-color: var(--primary-600);
+        background-color: var(--color-brand-500);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      .pi {
+        font-size: 1.2rem;
       }
     }
   }
