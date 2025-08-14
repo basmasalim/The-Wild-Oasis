@@ -1,0 +1,22 @@
+.p-togglebutton {
+  color: var(--p-togglebutton-color);
+  background: none;
+  border: none;
+  padding: 0;
+}
+.p-togglebutton:not(:disabled):not(.p-togglebutton-checked):hover,
+.p-togglebutton.p-togglebutton-checked,
+:host ::ng-deep .p-togglebutton-checked .p-togglebutton-content {
+  background: transparent;
+  border: transparent;
+}
+
+:host ::ng-deep .pi:before,
+:host ::ng-deep .pi-sun,
+:host ::ng-deep .pi-moon,
+:host ::ng-deep .pi {
+  font-size: 2rem;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--color-brand-600) !important;
+}

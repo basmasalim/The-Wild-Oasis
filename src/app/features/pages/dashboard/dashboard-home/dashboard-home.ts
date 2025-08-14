@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class DashboardHome {}
 ////
+<<<<<<< HEAD
 //
+=======
+>>>>>>> b97be950081edcff010088cd7b85feb3a4164e70

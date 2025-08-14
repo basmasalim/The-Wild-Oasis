@@ -1,0 +1,38 @@
+.card {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 6rem;
+}
+
+.p-menubar {
+  background: var(--color-grey-0);
+  border: none;
+  border-radius: none;
+  border-bottom: 1px solid var(--color-grey-100);
+
+  .img {
+    display: block;
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 2px solid var(--color-grey-100);
+    border-radius: 50%;
+    display: grid;
+    place-items: center center;
+  }
+
+  span {
+    color: var(--color-grey-600);
+  }
+
+  i {
+    font-size: 1.8rem;
+    display: inline-block;
+    margin-top: 10px;
+    margin-inline: 5px;
+    cursor: pointer;
+    color: var(--color-brand-600);
+  }
+}
