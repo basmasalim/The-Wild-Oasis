@@ -18,40 +18,15 @@
 
         <ul class="button-group ml-auto lg:ml-0">
           <li>
+            @for (status of statusOptions; track $index) {
             <button
-              (click)="applyFilter('')"
+              (click)="applyFilter(status.value)"
               class="btn-g"
-              [class.active]="!filteredStatus"
+              [class.active]="filteredStatus === status.value"
             >
-              All
+              {{ status.label }}
             </button>
-          </li>
-          <li>
-            <button
-              (click)="applyFilter('checkedout')"
-              class="btn-g"
-              [class.active]="filteredStatus === 'checkedout'"
-            >
-              Checked Out
-            </button>
-          </li>
-          <li>
-            <button
-              (click)="applyFilter('checkedin')"
-              class="btn-g"
-              [class.active]="filteredStatus === 'checkedin'"
-            >
-              Checked In
-            </button>
-          </li>
-          <li>
-            <button
-              (click)="applyFilter('unconfirmed')"
-              class="btn-g"
-              [class.active]="filteredStatus === 'unconfirmed'"
-            >
-              Unconfirmed
-            </button>
+            }
           </li>
         </ul>
       </div>

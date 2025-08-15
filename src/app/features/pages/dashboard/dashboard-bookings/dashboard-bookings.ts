@@ -10,6 +10,8 @@ import { GuestUserData } from '../../../../core/services/guest-data/guest-data';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
+import { BookingStatus } from '../../../../core/enum/booking-status.enum';
+import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
 
 @Component({
   selector: 'app-dashboard-bookings',
@@ -30,27 +32,24 @@ export class DashboardBookings implements OnInit {
   userData: Iguest[] = [];
   first = 0;
   rows = 5;
-  filteredStatus = '';
   totalRecords = 0;
+  filteredStatus: BookingStatus | '' = '';
 
+  statusOptions = BOOKING_STATUS_OPTIONS;
   private readonly guestUserData = inject(GuestUserData);
 
-  ngOnInit() {
-    this.guestDataInit();
+  ngOnInit(): void {
+    this.loadGuestData();
   }
 
-  guestDataInit(): void {
+  private loadGuestData(): void {
     this.guestUserData.getGuestDataMini().subscribe({
       next: (res: Iguest[]) => {
         this.userData = res;
         this.totalRecords = res.length;
       },
+      error: (err) => console.error('Failed to load guest data', err),
     });
-  }
-
-  applyFilter(status: string) {
-    this.filteredStatus = status;
-    this.first = 0;
   }
 
   getSeverity(status: Iguest['inventoryStatus']): string {
@@ -64,6 +63,11 @@ export class DashboardBookings implements OnInit {
       default:
         return '';
     }
+  }
+
+  applyFilter(status: string): void {
+    this.filteredStatus = status as BookingStatus | '';
+    this.first = 0;
   }
 
   // ? =============================> Context Menu

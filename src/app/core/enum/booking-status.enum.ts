@@ -1,4 +1,4 @@
-enum ItemStatus {
+export enum BookingStatus {
   All = '',
   CheckedOut = 'checkedout',
   CheckedIn = 'checkedin',
