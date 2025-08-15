@@ -12,7 +12,12 @@ import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { BookingStatus } from '../../../../core/enum/booking-status.enum';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
+import { SortingOptions } from '../../../../core/enum/sorting.enum';
 
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'app-dashboard-bookings',
   imports: [
@@ -36,6 +41,9 @@ export class DashboardBookings implements OnInit {
   filteredStatus: BookingStatus | '' = '';
 
   statusOptions = BOOKING_STATUS_OPTIONS;
+  // sortOptions = SORTING_OPTIONS;
+  selectedSort: SortingOptions = SortingOptions.DateRecentFirst;
+
   private readonly guestUserData = inject(GuestUserData);
 
   ngOnInit(): void {
@@ -63,6 +71,11 @@ export class DashboardBookings implements OnInit {
       default:
         return '';
     }
+  }
+
+  onSortChange() {
+    // Implement your sorting logic here
+    console.log('Sorting by:', this.selectedSort);
   }
 
   applyFilter(status: string): void {
