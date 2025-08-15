@@ -89,6 +89,28 @@
             {{ user.price | currency : "USD" }}
           </span>
         </td>
+        <td>
+          <div class="card flex justify-center">
+            <p-menu
+              #menu
+              [model]="getMenuItems(user)"
+              [popup]="true"
+              [style]="{
+                'min-width': '150px',
+                'font-size': '12px',
+                'text-align': 'center',
+              }"
+              [appendTo]="'body'"
+            ></p-menu>
+            <button
+              pButton
+              icon="pi pi-ellipsis-v"
+              class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)"
+              aria-label="Actions"
+            ></button>
+          </div>
+        </td>
       </tr>
     </ng-template>
 
