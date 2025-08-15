@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Iuser } from './iuser';
 import { Paginator } from 'primeng/paginator';
 
+
 @Component({
   selector: 'app-dashboard-bookings',
   imports: [
@@ -90,3 +91,4 @@ export class DashboardBookings implements OnInit {
     return this.first + this.rows >= this.totalRecords;
   }
 }
+
