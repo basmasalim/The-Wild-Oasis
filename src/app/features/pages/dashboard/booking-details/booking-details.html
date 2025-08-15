@@ -1,63 +1,93 @@
 <section class="container">
-    <div class="flex justify-content-between align-items-center">
+  <div class="flex justify-content-between align-items-center">
+    <div class="flex align-items-center gap-5">
+      <h1>Booking #47176</h1>
+      <span class="status">UnConfiremed</span>
+    </div>
+    <div class="back-btn">
+      <a routerLink="/bookings" class=""
+        ><i class="pi pi-arrow-left mr-2"></i>Back</a
+      >
+    </div>
+  </div>
+
+  <div class="my-8 details">
+    <div class="head md:flex md:justify-content-between p-5">
+      <div class="flex align-items-center gap-3">
+        <svg
+          stroke="currentColor"
+          fill="none"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          height="1.5em"
+          width="1.5em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"
+          ></path>
+        </svg>
+        <p>10 nights in Cabin 007</p>
+      </div>
+      <div>
+        <p>Sun, Sep 21 2025 (In 1 month) — Wed, Oct 01 2025</p>
+      </div>
+    </div>
+    <div class="body pl-8">
+      <div class="guest-info md:flex align-items-center gap-5 py-5">
+        <span class="icn"
+          ><i class="pi pi-user" style="font-size: 1rem"></i
+        ></span>
+        <h3>Nina Williams + 6 guests</h3>
+        <span>.</span>
+        <p>nina@hotmail.com</p>
+        <span>.</span>
+        <p>National ID 2345678901</p>
+      </div>
+      <div class="breakfast-info flex align-items-center gap-5 py-5">
+        <span class="icn"
+          ><i class="pi pi-check" style="font-size: 1rem"></i
+        ></span>
+        <h3>Breakfast included?</h3>
+        <p class="answer">Yes</p>
+      </div>
+      <div
+        class="money md:flex align-items-center justify-content-between gap-5 p-6 mr-8"
+      >
         <div class="flex align-items-center gap-5">
-            <h1>Booking #47176</h1>
-            <span class="status">UnConfiremed</span>
+          <h4 class="flex align-items-center gap-2">
+            <span class="dollar"
+              ><i class="pi pi-dollar" style="font-size: 1rem"></i
+            ></span>
+            Total price
+          </h4>
+          <span>
+            {{ 6050.0 | currency }}( {{ 5000.0 | currency }} cabin +
+            {{ 1050.0 | currency }} breakfast)</span
+          >
         </div>
-        <div class="back-btn">
-            <a routerLink="/bookings" class=""><i class="pi pi-arrow-left mr-2"></i>Back</a>
-        </div>
-
+        <h4 class="uppercase">paid</h4>
+      </div>
+      <div class="date py-6">
+        <p class="flex justify-content-end pr-8">
+          Booked Tue, Aug 05 2025, 9:50 PM
+        </p>
+      </div>
     </div>
-
-    <div class="my-8 details">
-        <div class="head md:flex md:justify-content-between p-5 ">
-            <div class="flex align-items-center gap-3">
-                <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"
-                    height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819">
-                    </path>
-                </svg>
-                <p>10 nights in Cabin 007</p>
-            </div>
-            <div>
-                <p>Sun, Sep 21 2025 (In 1 month) — Wed, Oct 01 2025</p>
-            </div>
-        </div>
-        <div class="body pl-8">
-            <div class="guest-info md:flex align-items-center gap-5 py-5">
-                <span class="icn"><i class="pi pi-user" style="font-size: 1rem"></i></span>
-                <h3>Nina Williams + 6 guests</h3>
-                <span>.</span>
-                <p>nina@hotmail.com</p>
-                <span>.</span>
-                <p>National ID 2345678901</p>
-            </div>
-            <div class="breakfast-info flex align-items-center gap-5 py-5 ">
-                <span class="icn"><i class="pi pi-check" style="font-size: 1rem"></i></span>
-                <h3>Breakfast included?</h3>
-                <p class="answer">Yes</p>
-            </div>
-            <div class="money md:flex align-items-center justify-content-between gap-5 p-6 mr-8 ">
-                <div class="flex align-items-center gap-5">
-                    <h4 class="flex align-items-center gap-2"><span class="dollar"><i class="pi pi-dollar"
-                                style="font-size: 1rem"></i></span> Total
-                        price</h4>
-                    <span>
-                        {{ 6050.00 | currency }}( {{ 5000.00 | currency }} cabin + {{ 1050.00| currency }}
-                        breakfast)</span>
-                </div>
-                <h4 class="uppercase">paid</h4>
-            </div>
-            <div class="date py-6">
-                <p class="flex justify-content-end pr-8">Booked Tue, Aug 05 2025, 9:50 PM</p>
-            </div>
-        </div>
-    </div>
-    <div class="btns flex justify-content-end gap-3">
-        <button class="p-button">Check in</button>
-        <button class="p-button bg-red-600 hover:bg-red-700 del-btn">Delete booking</button>
-        <button routerLink="/bookings" class="p-button bg-white text-gray-500 back-btn ">Back</button>
-    </div>
+  </div>
+  <div class="btns flex justify-content-end gap-3">
+    <button class="p-button">Check in</button>
+    <button class="p-button bg-red-600 hover:bg-red-700 del-btn">
+      Delete booking
+    </button>
+    <button
+      routerLink="/bookings"
+      class="p-button bg-white text-gray-500 back-btn"
+    >
+      Back
+    </button>
+  </div>
 </section>

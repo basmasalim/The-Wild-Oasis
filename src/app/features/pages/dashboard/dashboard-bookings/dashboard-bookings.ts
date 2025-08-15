@@ -1,4 +1,3 @@
-import { UserData } from './user-data';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -7,8 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
-import { Iuser } from './iuser';
-import { Paginator } from 'primeng/paginator';
+import { Iuser } from '../../../../core/interface/iuser';
+import { UserData } from '../../../../core/services/user-data/user-data';
 
 @Component({
   selector: 'app-dashboard-bookings',
