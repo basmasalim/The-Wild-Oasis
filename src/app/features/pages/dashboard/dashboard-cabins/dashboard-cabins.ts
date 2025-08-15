@@ -1,5 +1,3 @@
-import { UserData } from './../dashboard-bookings/user-data';
-import { User } from './../../../../auth/interfaces/user';
 import { Component, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
