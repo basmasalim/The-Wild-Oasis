@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { CABINS_MOCK } from '../../mock/cabins.mock';
-import { Icabins } from '../../interface/icabins';
+import { Icabins } from '../../interfaces/icabins';
 
 @Injectable({
   providedIn: 'root',

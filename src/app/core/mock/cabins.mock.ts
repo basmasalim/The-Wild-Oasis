@@ -1,4 +1,4 @@
-import { Icabins } from '../interface/icabins';
+import { Icabins } from '../interfaces/icabins';
 
 export const CABINS_MOCK: Icabins[] = [
   {

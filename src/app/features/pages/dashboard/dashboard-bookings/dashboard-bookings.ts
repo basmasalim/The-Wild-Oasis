@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule } from '@angular/forms';
-import { Iuser } from '../../../../core/interface/iuser';
-import { UserData } from '../../../../core/services/user-data/user-data';
+import { Iguest } from '../../../../core/interfaces/iguest';
+import { FilterStatusPipe } from '../../../../core/pipe/filter-status-pipe';
+import { GuestUserData } from '../../../../core/services/guest-data/guest-data';
 
 @Component({
   selector: 'app-dashboard-bookings',
@@ -18,40 +18,39 @@ import { UserData } from '../../../../core/services/user-data/user-data';
     RatingModule,
     ButtonModule,
     CommonModule,
+    FilterStatusPipe,
   ],
   templateUrl: './dashboard-bookings.html',
-  styleUrl: './dashboard-bookings.scss',
+  styleUrls: ['./dashboard-bookings.scss'],
 })
 export class DashboardBookings implements OnInit {
-  userData!: Iuser[];
+  userData: Iguest[] = [];
+  first = 0;
+  rows = 5;
+  filteredStatus = '';
+  totalRecords = 0;
 
-  constructor(private userDataServ: UserData) {}
-
-  totalRecords: number = 0;
+  private readonly guestUserData = inject(GuestUserData);
 
   ngOnInit() {
-    this.userDataServ.getuserDataMini().subscribe({
-      next: (res: any) => {
+    this.guestDataInit();
+  }
+
+  guestDataInit(): void {
+    this.guestUserData.getGuestDataMini().subscribe({
+      next: (res: Iguest[]) => {
         this.userData = res;
-        this.totalRecords = this.userData.length;
+        this.totalRecords = res.length;
       },
     });
   }
 
-  filteredStatus: string = '';
-
-  get filtereduserData(): Iuser[] {
-    if (!this.filteredStatus) return this.userData;
-    return this.userData.filter(
-      (p) => p.inventoryStatus === this.filteredStatus
-    );
-  }
-
   applyFilter(status: string) {
     this.filteredStatus = status;
+    this.first = 0;
   }
 
-  getSeverity(status: string) {
+  getSeverity(status: Iguest['inventoryStatus']): string {
     switch (status) {
       case 'checkedin':
         return 'success';
@@ -64,8 +63,6 @@ export class DashboardBookings implements OnInit {
     }
   }
 
-  first: number = 0;
-  rows: number = 5;
   onClick(event: any) {
     this.first = event.first;
   }
@@ -81,9 +78,11 @@ export class DashboardBookings implements OnInit {
       this.first -= this.rows;
     }
   }
+
   isFirstPage(): boolean {
     return this.first === 0;
   }
+
   isLastPage(): boolean {
     return this.first + this.rows >= this.totalRecords;
   }

@@ -1,4 +1,4 @@
-export interface Iuser {
+export interface Iguest {
   name: string;
   image: string;
   price: number;

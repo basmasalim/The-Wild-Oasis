@@ -1,16 +1,16 @@
-<div class="card">
+<div class="card mt-3">
   <p-table
     class="custom-table m-auto"
-    [value]="filtereduserData"
     [paginator]="true"
-    [rows]="10"
     [totalRecords]="totalRecords"
-    [(first)]="first"
     (onPageChange)="onClick($event)"
     [rowsPerPageOptions]="[5, 10]"
+    [value]="userData | filterStatus : filteredStatus"
+    [rows]="10"
+    [first]="first"
+    (onPage)="onClick($event)"
   >
     <ng-template #caption>
-      <!-- todo   test2 -->
       <div
         class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
       >
@@ -21,7 +21,7 @@
             <button
               (click)="applyFilter('')"
               class="btn-g"
-              [class.active]="filteredStatus === ''"
+              [class.active]="!filteredStatus"
             >
               All
             </button>
@@ -66,7 +66,8 @@
         <th>Amount</th>
       </tr>
     </ng-template>
-    <ng-template #body let-user>
+
+    <ng-template pTemplate="body" let-user>
       <tr>
         <td>{{ user.category }}</td>
         <td>
@@ -81,14 +82,16 @@
           <p-tag
             [value]="user.inventoryStatus"
             [severity]="getSeverity(user.inventoryStatus)"
-          />
+          ></p-tag>
         </td>
-
         <td>
-          <span class="amount"> {{ user.price | currency : "USD" }}</span>
+          <span class="amount">
+            {{ user.price | currency : "USD" }}
+          </span>
         </td>
       </tr>
     </ng-template>
+
     <ng-template #footer>
       <tr class="footer">
         <td colspan="6">
@@ -101,7 +104,7 @@
                 (click)="goToPrev()"
                 [disabled]="isFirstPage()"
               >
-                < Previous
+                <i class="pi pi-chevron-left"></i> Previous
               </button>
             </li>
             <li>
@@ -110,7 +113,7 @@
                 (click)="goToNext()"
                 [disabled]="isLastPage()"
               >
-                Next >
+                Next <i class="pi pi-chevron-right"></i>
               </button>
             </li>
           </ul>

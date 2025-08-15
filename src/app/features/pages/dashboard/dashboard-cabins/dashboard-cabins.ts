@@ -5,8 +5,8 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { Icabins } from '../../../../core/interface/icabins';
 import { Cabins } from '../../../../core/services/cabins/cabins';
+import { Icabins } from '../../../../core/interfaces/icabins';
 
 @Component({
   selector: 'app-dashboard-cabins',

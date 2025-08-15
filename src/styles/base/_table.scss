@@ -40,9 +40,8 @@ tr td {
 
 .btn-p {
   display: flex;
-  justify-content: space-between;
-  max-width: 20%;
-  margin-left: auto;
+  justify-content: end;
+
   background-color: var(--main-color);
   color: var(--color-tabelc);
 }
@@ -54,6 +53,8 @@ tr td {
   border-radius: 10px;
   transition: all 0.5s ease-in-out;
   outline: none;
+  margin-inline: 5px;
+  font-size: 1.4rem;
   &:hover {
     background-color: var(--color-brand-600);
     color: var(--color-grey-0);
