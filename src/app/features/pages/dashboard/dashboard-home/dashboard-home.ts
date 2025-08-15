@@ -9,7 +9,6 @@ import { isPlatformBrowser } from '@angular/common';
   imports: [FormsModule ,SelectButtonModule,ChartModule],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
-  
 })
 export class DashboardHome implements OnInit {
       // frist data 
@@ -60,6 +59,3 @@ export class DashboardHome implements OnInit {
         }
     }
 }    
-
-
-

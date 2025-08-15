@@ -1,61 +1,94 @@
-import { Notifications } from './../../../../auth/services/notifications/notifications';
+import { User } from './../../../../auth/interfaces/user';
+import { UserData } from './user-data';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { RatingModule } from 'primeng/rating';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
 
-import { MessageService } from 'primeng/api';
-import { IBookings } from '../../../../core/interfaces/ibookings';
-import { Bookings } from './../../../../auth/services/bookings/bookings';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Iuser } from './iuser';
+import { Paginator } from 'primeng/paginator';
+
 
 @Component({
   selector: 'app-dashboard-bookings',
-  imports: [],
+  imports: [
+    FormsModule,
+    TableModule,
+    TagModule,
+    RatingModule,
+    ButtonModule,
+    CommonModule,
+  ],
   templateUrl: './dashboard-bookings.html',
   styleUrl: './dashboard-bookings.scss',
 })
 export class DashboardBookings implements OnInit {
-  // private readonly bookings = inject(Bookings);
-  // private readonly notifications = inject(Notifications);
-  // bookingsList = signal<IBookings[]>([]);
+  userData!: Iuser[];
+
+  constructor(private userDataServ: UserData) {}
+
+  totalRecords: number = 0;
 
   ngOnInit() {
-    // this.getAllBookings();
-    // this.getSpecificBooking('28mtaFgKTJUseRqAoQOb');
+    this.userDataServ.getuserDataMini().subscribe({
+      next: (res: any) => {
+        this.userData = res;
+        this.totalRecords = this.userData.length;
+      },
+    });
   }
 
-  // getAllBookings() {
-  //   this.bookings.getBookings().subscribe({
-  //     next: (res) => {
-  //       this.bookingsList.set(res);
-  //       console.log('All Bookings:', this.bookingsList);
-  //     },
-  //     error: (error) => {
-  //       this.notifications.showError('Error fetching bookings', 'Please try again later.');
-  //       console.error('Error fetching bookings:', error);
-  //     }
-  //   })
-  // }
+  filteredStatus: string = '';
 
-  // getSpecificBooking(id: string) {
-  //   this.bookings.getBookingById(id).subscribe({
-  //     next: (res) => {
-  //       console.log('Booking Details:', res);
-  //     },
-  //     error: (error) => {
-  //       this.notifications.showError('Error fetching booking details', 'Please try again later.');
-  //       console.error('Error fetching booking details:', error);
-  //     }
-  //   });
-  // }
+  get filtereduserData(): Iuser[] {
+    if (!this.filteredStatus) return this.userData;
+    return this.userData.filter(
+      (p) => p.inventoryStatus === this.filteredStatus
+    );
+  }
 
-  // deleteBooking(bookingId: string) {
-  //   this.bookings.deleteBooking(bookingId).subscribe({
-  //     next: () => {
-  //       // this.notifications.showSuccess('Booking deleted successfully', 'The booking has been removed.');
-  //       this.getAllBookings();
-  //     },
-  //     error: (error) => {
-  //       this.notifications.showError('Error deleting booking', 'Please try again later.');
-  //       console.error('Error deleting booking:', error);
-  //     }
-  //   });
-  // }
+  applyFilter(status: string) {
+    this.filteredStatus = status;
+  }
+
+  getSeverity(status: string) {
+    switch (status) {
+      case 'checkedin':
+        return 'success';
+      case 'unconfirmed':
+        return 'warn';
+      case 'checkedout':
+        return 'danger';
+      default:
+        return '';
+    }
+  }
+
+  first: number = 0;
+  rows: number = 5;
+  onClick(event: any) {
+    this.first = event.first;
+  }
+
+  goToNext() {
+    if (!this.isLastPage()) {
+      this.first += this.rows;
+    }
+  }
+
+  goToPrev() {
+    if (!this.isFirstPage()) {
+      this.first -= this.rows;
+    }
+  }
+  isFirstPage(): boolean {
+    return this.first === 0;
+  }
+  isLastPage(): boolean {
+    return this.first + this.rows >= this.totalRecords;
+  }
 }
+
