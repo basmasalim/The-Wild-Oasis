@@ -13,11 +13,8 @@ import { ButtonModule } from 'primeng/button';
 import { BookingStatus } from '../../../../core/enum/booking-status.enum';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
 import { SortingOptions } from '../../../../core/enum/sorting.enum';
+import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
 
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
-}
 @Component({
   selector: 'app-dashboard-bookings',
   imports: [
@@ -41,7 +38,7 @@ export class DashboardBookings implements OnInit {
   filteredStatus: BookingStatus | '' = '';
 
   statusOptions = BOOKING_STATUS_OPTIONS;
-  // sortOptions = SORTING_OPTIONS;
+  sortOptions = SORTING_OPTIONS;
   selectedSort: SortingOptions = SortingOptions.DateRecentFirst;
 
   private readonly guestUserData = inject(GuestUserData);
