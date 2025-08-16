@@ -34,6 +34,7 @@ export class DashboardBookings implements OnInit {
   first = 0;
   rows = 5;
   totalRecords = 0;
+  backgroundColor = 'var(--color-grey-50)';
   filteredStatus: BookingStatus | '' = '';
 
   statusOptions = BOOKING_STATUS_OPTIONS;

@@ -12,6 +12,7 @@ import { DISCOUNT_CONSTANTS } from '../../../../core/constants/discount.constant
 import { Discount } from '../../../../core/enum/discount.emum';
 import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
 import { Menu } from 'primeng/menu';
+import { Dialog } from '../../../../shared/components/business/dialog/dialog';
 
 @Component({
   selector: 'app-dashboard-cabins',
@@ -24,15 +25,20 @@ import { Menu } from 'primeng/menu';
     ButtonModule,
     FilterDiscountPipe,
     Menu,
+    Dialog,
   ],
   templateUrl: './dashboard-cabins.html',
   styleUrl: './dashboard-cabins.scss',
 })
 export class DashboardCabins implements OnInit {
   cabins!: Icabins[];
+
   first = 0;
   rows = 5;
   totalRecords = 0;
+  visible: boolean = false;
+  backgroundColor = 'var(--color-grey-50)';
+
   filteredStatus: Discount | 'all' = 'all';
 
   discountOptions = DISCOUNT_CONSTANTS;
@@ -98,5 +104,15 @@ export class DashboardCabins implements OnInit {
 
   isLastPage(): boolean {
     return this.first + this.rows >= this.totalRecords;
+  }
+
+  // ?===================> DialogModule
+  showDialog() {
+    this.visible = true;
+  }
+
+  handleSave() {
+    console.log('Profile saved!');
+    // Add your save logic here
   }
 }

@@ -73,6 +73,8 @@
                 'min-width': '150px',
                 'font-size': '12px',
                 'text-align': 'center',
+                'border': 'none',
+                backgroundColor: backgroundColor,
               }"
               [appendTo]="'body'"
             ></p-menu>
@@ -90,7 +92,7 @@
 
     <ng-template #footer>
       <tr>
-        <td colspan="5">
+        <td colspan="10">
           Showing {{ (cabins | filterDiscount : filteredStatus).length }} of
           {{ totalRecords }} cabins
         </td>
@@ -100,6 +102,9 @@
 
   <!--  Add new cabin Button -->
   <div class="flex justify-content-st mt-5">
-    <button type="submit" label="Login" class="p-btn">Add new cabin</button>
+    <button type="submit" label="Show" (click)="showDialog()" class="p-btn">
+      Add new cabin
+    </button>
+    <app-dialog [(visible)]="visible" (onSave)="handleSave()"> </app-dialog>
   </div>
 </div>
