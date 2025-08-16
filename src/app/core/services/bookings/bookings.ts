@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { FirebaseApp } from '@angular/fire/app';
 import { collection, collectionData, deleteDoc, doc, docData, Firestore } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 
