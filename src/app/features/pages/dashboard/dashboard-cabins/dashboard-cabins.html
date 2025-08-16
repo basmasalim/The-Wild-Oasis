@@ -1,6 +1,7 @@
 <div class="card">
   <p-table
     class="custom-table m-auto"
+
     [value]="filteredCapinData"
     [paginator]="true"
     [rows]="10"
@@ -88,6 +89,100 @@
       <tr>
         <td colspan="6">
           In total there are {{ cabins ? cabins.length : 0 }} products.
+=======
+    [paginator]="true"
+    [totalRecords]="totalRecords"
+    (onPageChange)="onClick($event)"
+    [rowsPerPageOptions]="[5, 10]"
+    [value]="cabins | filterDiscount : filteredStatus"
+    [rows]="rows"
+    [first]="first"
+  >
+    <ng-template #caption>
+      <div
+        class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
+      >
+        <h2>All cabins</h2>
+        <ul class="button-group ml-auto lg:ml-0">
+          <li>
+            @for (option of discountOptions; track $index) {
+            <button
+              (click)="applyFilter(option.value)"
+              class="btn-g"
+              [class.active]="filteredStatus === option.value"
+            >
+              {{ option.label }}
+            </button>
+            }
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Cabin</th>
+        <th>Capacity</th>
+        <th>Price</th>
+        <th>Discount</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-cabin>
+      <tr>
+        <td style="width: 70px; height: 70px">
+          <img src="images/logo-dark.png" class="w-full mb-1" alt="" />
+        </td>
+        <td>
+          <p class="font-semibold text-2xl">{{ cabin.cabinNumber }}</p>
+        </td>
+        <td>
+          <p>{{ cabin.capacity }}</p>
+        </td>
+        <td>
+          <p class="font-semibold amount">
+            {{ cabin.price | currency : "USD" : "symbol" : "1.2-2" }}
+          </p>
+        </td>
+        <td>
+          @if (cabin.discount) {
+          <span class="dicount">
+            {{ cabin.discount | currency : "USD" : "symbol" : "1.2-2" }}
+          </span>
+          } @else { - }
+        </td>
+        <td>
+          <div class="card flex justify-content-end">
+            <p-menu
+              #menu
+              [model]="getMenuItems(cabin)"
+              [popup]="true"
+              [style]="{
+                'min-width': '150px',
+                'font-size': '12px',
+                'text-align': 'center',
+              }"
+              [appendTo]="'body'"
+            ></p-menu>
+            <button
+              pButton
+              icon="pi pi-ellipsis-v text-2xl"
+              class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)"
+              aria-label="Actions"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #footer>
+      <tr>
+        <td colspan="5">
+          Showing {{ (cabins | filterDiscount : filteredStatus).length }} of
+          {{ totalRecords }} cabins
+
         </td>
       </tr>
     </ng-template>

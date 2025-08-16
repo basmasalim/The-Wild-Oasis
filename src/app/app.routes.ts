@@ -20,6 +20,8 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
+
+
       import('./core/layouts/dashboard/dashboard-layout/dashboard-layout').then(
         (c) => c.DashboardLayout
       ),
@@ -76,5 +78,6 @@ export const routes: Routes = [
           ),
       },
     ],
+
   },
 ];

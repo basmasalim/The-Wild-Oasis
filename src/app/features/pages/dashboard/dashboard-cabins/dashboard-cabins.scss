@@ -1,3 +1,4 @@
+
 :root {
   --main-color: #212121;
 }
@@ -79,4 +80,18 @@ tr td {
   background-color: var(--color-grey-0);
   border-radius: 5px;
   padding: 5px;
+=======
+@use "../../../../../styles/base/table" as *;
+@use "../../../../../styles/base/btn-filter" as *;
+
+.card {
+  max-width: 120rem;
+  margin: 0px auto;
+
+  h2 {
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
 }

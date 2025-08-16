@@ -25,6 +25,7 @@ form {
   font-weight: 500;
   color: var(--color-brand-50);
   background-color: var(--color-brand-600);
+  transition: background-color 0.2s, color 0.2s;
 
   &:hover {
     background-color: var(--color-brand-700);

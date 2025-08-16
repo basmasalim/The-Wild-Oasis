@@ -16,8 +16,13 @@
   background-color: var(--color-grey-50);
   color: var(--color-grey-600);
   font-weight: 600;
+
   font-size: 1.4rem;
   padding: 10px 15px;
+=======
+  font-size: 1.5rem;
+  padding: 12px 15px;
+
   text-transform: uppercase;
 }
 
@@ -71,6 +76,13 @@ tr td {
   color: var(--color-grey-700) !important;
   font-weight: 500;
 }
+
+=======
+.dicount {
+  color: var(--color-green-700);
+  font-size: 1.3rem;
+}
+
 
 // ? =======================================> Tags
 .p-tag-danger,
