@@ -1,0 +1,94 @@
+<div class="container flex justify-content-center m-auto flex-column gap-4">
+  <h1>Update your account</h1>
+  <div class="UpdateUser mt-3">
+    <h2 class="font-medium text-4xl mb-4">Update user data</h2>
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+      <!-- email Field -->
+      <div class="field mb-4">
+        <label for="email" class="mb-2 font-medium">Email address </label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="w-full form__field"
+          aria-describedby="email-help"
+        />
+      </div>
+      <!-- fullName Field -->
+      <div class="field mb-4">
+        <label for="fullName" class="mb-2 font-medium">Full name </label>
+        <input
+          id="fullName"
+          type="fullName"
+          formControlName="fullName"
+          class="w-full form__field"
+          aria-describedby="fullName-help"
+        />
+      </div>
+
+      <!-- Avatar Field -->
+      <div class="field mb-4">
+        <label for="avatar" class="mb-2 font-medium">Avatar image</label>
+        <div class="custom-file-input">
+          <input
+            id="avatar"
+            type="file"
+            class="hidden-input"
+            accept="image/*"
+          />
+          <label for="avatar" class="file-label">
+            <i class="pi pi-cloud-upload mr-2"></i>
+            <span>Choose File</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-content-end gap-3">
+        <button type="button" class="p-button-cancel" (click)="onCancel()">
+          Cancel
+        </button>
+        <button type="submit" class="p-button">Update password</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Update Password -->
+  <div class="UpdatePassword mt-3">
+    <h2 class="font-medium text-4xl mb-4">Update password</h2>
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+      <!-- password Field -->
+      <div class="field mb-4">
+        <label for="password" class="mb-2 font-medium"
+          >Password (min 8 characters)
+        </label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="w-full form__field"
+          aria-describedby="password-help"
+        />
+      </div>
+      <!-- Confirm password Field -->
+      <div class="field mb-4">
+        <label for="ConfirmPassword" class="mb-2 font-medium"
+          >Confirm password
+        </label>
+        <input
+          id="ConfirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          class="w-full form__field"
+          aria-describedby="ConfirmPassword-help"
+        />
+      </div>
+
+      <div class="flex justify-content-end gap-3">
+        <button type="button" class="p-button-cancel" (click)="onCancel()">
+          Cancel
+        </button>
+        <button type="submit" class="p-button">Update password</button>
+      </div>
+    </form>
+  </div>
+</div>

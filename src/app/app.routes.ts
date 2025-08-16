@@ -20,6 +20,8 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
+
+
       import('./core/layouts/dashboard/dashboard-layout/dashboard-layout').then(
         (c) => c.DashboardLayout
       ),
@@ -48,6 +50,13 @@ export const routes: Routes = [
           ).then((c) => c.DashboardCabins),
       },
       {
+        path: 'details/:id',
+        loadComponent: () =>
+          import(
+            './features/pages/dashboard/booking-details/booking-details'
+          ).then((c) => c.BookingDetails),
+      },
+      {
         path: 'settings',
         loadComponent: () =>
           import(
@@ -61,6 +70,14 @@ export const routes: Routes = [
             './features/pages/dashboard/dashboard-users/dashboard-users'
           ).then((c) => c.DashboardUsers),
       },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('./features/pages/dashboard/admin-account/admin-account').then(
+            (c) => c.AdminAccount
+          ),
+      },
     ],
+
   },
 ];
