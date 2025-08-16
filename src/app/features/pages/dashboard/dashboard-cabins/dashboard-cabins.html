@@ -105,6 +105,7 @@
     <button type="submit" label="Show" (click)="showDialog()" class="p-btn">
       Add new cabin
     </button>
-    <app-dialog [(visible)]="visible" (onSave)="handleSave()"> </app-dialog>
+    <app-dialog [(visible)]="visible" (onCreate)="createCabin($event)">
+    </app-dialog>
   </div>
 </div>

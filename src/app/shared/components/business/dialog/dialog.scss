@@ -1,0 +1,15 @@
+@use "../../../../../styles/base/forms" as *;
+@use "../../../../../styles/base/file-input" as *;
+
+.container {
+  padding: 0%;
+  form {
+    background-color: var(--color-grey-50) !important;
+    border: none !important;
+    padding: 0;
+  }
+}
+
+.container[_ngcontent-ng-c2348225660] form[_ngcontent-ng-c2348225660] {
+  padding: 0px 10px 15px;
+}

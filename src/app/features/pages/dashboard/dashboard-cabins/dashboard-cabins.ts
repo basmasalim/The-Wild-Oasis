@@ -111,8 +111,8 @@ export class DashboardCabins implements OnInit {
     this.visible = true;
   }
 
-  handleSave() {
-    console.log('Profile saved!');
-    // Add your save logic here
+  createCabin(cabinData: any) {
+    console.log('New cabin created:', cabinData);
+    // Handle API call here
   }
 }
