@@ -61,15 +61,15 @@ export class DashboardCabins implements OnInit {
   getMenuItems(cabin: Icabins): MenuItem[] {
     return [
       {
-        label: 'See details',
-        icon: 'pi pi-eye m-3 text-xl',
+        label: 'Duplicate',
+        icon: 'pi pi-copy m-3 text-xl',
       },
       {
         label: 'Edit cabin',
         icon: 'pi pi-pencil m-3 text-xl',
       },
       {
-        label: 'Delete booking',
+        label: 'Delete',
         icon: 'pi pi-trash m-3 text-xl',
       },
     ];
