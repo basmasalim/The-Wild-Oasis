@@ -78,7 +78,7 @@ export class DashboardBookings implements OnInit {
     const menuItems: MenuItem[] = [
       {
         label: 'See details',
-        icon: 'pi pi-eye mr-2',
+        icon: 'pi pi-eye m-3 text-xl',
         // command: () => this.viewUserDetails(user.id)
       },
     ];
@@ -90,7 +90,7 @@ export class DashboardBookings implements OnInit {
     ) {
       menuItems.push({
         label: 'Check In',
-        icon: 'pi pi-sign-in mr-2',
+        icon: 'pi pi-sign-in m-3 text-xl',
         // command: () => this.updateStatus(user.id, 'checkedin')
       });
     }
@@ -101,14 +101,14 @@ export class DashboardBookings implements OnInit {
     ) {
       menuItems.push({
         label: 'Check Out',
-        icon: 'pi pi-sign-out mr-2',
+        icon: 'pi pi-sign-out m-3 text-xl',
         // command: () => this.updateStatus(user.id, 'checkedout')
       });
     }
 
     menuItems.push({
       label: 'Delete booking',
-      icon: 'pi pi-trash mr-2',
+      icon: 'pi pi-trash m-3 text-xl',
       // command: () => this.deleteUser(user.id),
     });
 

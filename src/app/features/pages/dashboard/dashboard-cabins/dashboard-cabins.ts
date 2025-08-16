@@ -11,6 +11,7 @@ import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
 import { DISCOUNT_CONSTANTS } from '../../../../core/constants/discount.constants';
 import { Discount } from '../../../../core/enum/discount.emum';
 import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-dashboard-cabins',
@@ -22,6 +23,7 @@ import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter
     CommonModule,
     ButtonModule,
     FilterDiscountPipe,
+    Menu,
   ],
   templateUrl: './dashboard-cabins.html',
   styleUrl: './dashboard-cabins.scss',
@@ -60,15 +62,15 @@ export class DashboardCabins implements OnInit {
     return [
       {
         label: 'See details',
-        icon: 'pi pi-eye mr-2',
+        icon: 'pi pi-eye m-3 text-xl',
       },
       {
         label: 'Edit cabin',
-        icon: 'pi pi-pencil mr-2',
+        icon: 'pi pi-pencil m-3 text-xl',
       },
       {
         label: 'Delete booking',
-        icon: 'pi pi-trash mr-2',
+        icon: 'pi pi-trash m-3 text-xl',
       },
     ];
   }
