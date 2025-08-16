@@ -1,8 +1,9 @@
 export interface Icabins {
-  capin: number;
-  Capacity: string;
-  Price: number;
-  Discount: number;
+  name: string;
+
+  cabin: number;
+  capacity: any;
+  discount: number;
   price: number;
   inventoryStatus: 'nodiscount' | 'indiscount';
 }

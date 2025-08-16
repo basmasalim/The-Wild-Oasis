@@ -10,10 +10,11 @@
       <ul class="flex justify-content-between w-9">
         <!-- todo test1 -->
         <!-- todo test1 -->
+
+        <div class="card flex justify-center"></div>
         <li>
           <div class="flex items-center justify-between">
             <span class="text-6xl font-bold">Capins</span>
-            <p-button icon="pi pi-refresh" rounded raised />
           </div>
         </li>
         <li>
@@ -34,6 +35,18 @@
               NoDiscount
             </button>
           </div>
+        </li>
+        <li>
+          <select class="select" (change)="onSortChange($event)">
+            <option value="name-asc" selected>sort by name (A-Z)</option>
+            <option value="name-desc">sort by name (Z-A)</option>
+            <option value="regularPrice-asc">sort by price (low first)</option>
+            <option value="regularPrice-desc">
+              sort by price (high first)
+            </option>
+            <option value="capacity-asc">sort by capacity (low first)</option>
+            <option value="capacity-desc">sort by capacity (high first)</option>
+          </select>
         </li>
       </ul>
     </ng-template>

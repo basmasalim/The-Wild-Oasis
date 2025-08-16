@@ -33,6 +33,7 @@
     "@angular/ssr": "^20.1.5",
     "@netlify/angular-runtime": "^2.4.0",
     "@primeuix/themes": "^1.2.3",
+    "chart.js": "^4.5.0",
     "express": "^5.1.0",
     "firebase": "^12.1.0",
     "primeflex": "^4.0.0",

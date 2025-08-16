@@ -1,94 +1,94 @@
-<div class="card">
+<div class="card mt-3">
   <p-table
     class="custom-table m-auto"
-    [value]="filtereduserData"
     [paginator]="true"
-    [rows]="10"
     [totalRecords]="totalRecords"
-    [(first)]="first"
     (onPageChange)="onClick($event)"
     [rowsPerPageOptions]="[5, 10]"
+    [value]="userData | filterStatus : filteredStatus"
+    [rows]="10"
+    [first]="first"
+    (onPage)="onClick($event)"
   >
     <ng-template #caption>
-      <!-- todo   test2 -->
-      <ul class="flex justify-content-between w-9">
-        <li>
-          <div class="flex items-center justify-between">
-            <span class="text-6xl font-bold">All Booking</span>
-            <p-button icon="pi pi-refresh" rounded raised />
-          </div>
-        </li>
-        <li>
-          <div class="button-group">
-            <button label="All" (click)="applyFilter('')" class="btn-g">
-              All
-            </button>
+      <div
+        class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
+      >
+        <h2>All bookings</h2>
+
+        <ul class="button-group ml-auto lg:ml-0">
+          <li>
+            @for (status of statusOptions; track $index) {
             <button
-              label="Unconfirmed"
-              (click)="applyFilter('unconfirmed')"
+              (click)="applyFilter(status.value)"
               class="btn-g"
+              [class.active]="filteredStatus === status.value"
             >
-              Unconfirmed
+              {{ status.label }}
             </button>
-            <button
-              label="Checked In"
-              (click)="applyFilter('checkedin')"
-              class="btn-g"
-            >
-              Checked In
-            </button>
-            <button
-              label="Checked Out"
-              (click)="applyFilter('checkedout')"
-              class="btn-g"
-            >
-              Checked Out
-            </button>
-          </div>
-        </li>
-      </ul>
+            }
+          </li>
+        </ul>
+      </div>
     </ng-template>
+
     <ng-template #header>
       <tr>
         <th>Cabin</th>
         <th>Guest</th>
         <th>Dates</th>
-        <!-- <th>Status</th> -->
         <th>Status</th>
         <th>Amount</th>
       </tr>
     </ng-template>
-    <ng-template #body let-user>
+
+    <ng-template pTemplate="body" let-user>
       <tr>
         <td>{{ user.category }}</td>
         <td>
           {{ user.name }}
-          <p>{{ user.userEmail }}</p>
+          <p class="email">{{ user.userEmail }}</p>
         </td>
-        <!-- <td>
-          <img
-            [src]="'' + user.image"
-            [alt]="user.name"
-            class="w-24 rounded"
-          />
-        </td> -->
-
         <td>
           <p>{{ user.userRegTime }}</p>
-          <p>{{ user.date }}</p>
+          <p class="date">{{ user.date }}</p>
         </td>
         <td>
           <p-tag
             [value]="user.inventoryStatus"
             [severity]="getSeverity(user.inventoryStatus)"
-          />
+          ></p-tag>
         </td>
-
         <td>
-          <span class="amount"> {{ user.price | currency : "USD" }}</span>
+          <span class="amount">
+            {{ user.price | currency : "USD" }}
+          </span>
+        </td>
+        <td>
+          <div class="card flex justify-center">
+            <p-menu
+              #menu
+              [model]="getMenuItems(user)"
+              [popup]="true"
+              [style]="{
+                'min-width': '150px',
+                'font-size': '12px',
+                'text-align': 'center',
+              }"
+              [appendTo]="'body'"
+            ></p-menu>
+            <button
+              pButton
+              icon="pi pi-ellipsis-v"
+              class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)"
+              aria-label="Actions"
+            ></button>
+          </div>
         </td>
       </tr>
     </ng-template>
+
     <ng-template #footer>
       <tr class="footer">
         <td colspan="6">
@@ -101,7 +101,7 @@
                 (click)="goToPrev()"
                 [disabled]="isFirstPage()"
               >
-                < Previous
+                <i class="pi pi-chevron-left"></i> Previous
               </button>
             </li>
             <li>
@@ -110,7 +110,7 @@
                 (click)="goToNext()"
                 [disabled]="isLastPage()"
               >
-                Next >
+                Next <i class="pi pi-chevron-right"></i>
               </button>
             </li>
           </ul>

@@ -43,12 +43,17 @@
                 {
                   "type": "initial",
 <<<<<<< HEAD
+<<<<<<< HEAD
                   "maximumWarning": "2MB",
                   "maximumError": "4MB"
 =======
                   "maximumWarning": "4MB",
                   "maximumError": "2MB"
 >>>>>>> tabel-b
+=======
+                  "maximumWarning": "2MB",
+                  "maximumError": "4MB"
+>>>>>>> 270e81971169bc49ecc98cff01254308a1feea1f
                 },
                 {
                   "type": "anyComponentStyle",

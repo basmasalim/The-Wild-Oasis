@@ -1,0 +1,111 @@
+body {
+    background-color: var(--color-grey-50);
+}
+
+
+section .status {
+    background-color: var(--color-blue-100);
+    color: var(--color-blue-700);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-2xl);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+section h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--color-grey-700);
+}
+
+.back-btn {
+    color: var(--color-brand-700);
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.head {
+    color: var(--color-brand-100);
+    background-color: var(--color-brand-500);
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    font-size: 1.9rem;
+    font-weight: 600;
+}
+
+.details {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--border-radius-lg);
+}
+
+.details .body h3 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--color-silver-700);
+}
+
+.details .body span,
+.details .body p {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--color-grey-400);
+}
+
+.details .body .icn {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--color-brand-700);
+    border: 1px solid var(--color-brand-700);
+    border-radius: 50%;
+}
+
+.breakfast-info .answer {
+    font-size: 1.6rem !important;
+    font-weight: 400 !important;
+    color: var(--color-silver-700) !important;
+}
+
+.details .body .money {
+    border-radius: var(--border-radius-lg);
+    background-color: var(--color-green-100);
+}
+
+.details .body .money h4,
+.details .body .money span {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--color-green-700);
+}
+
+.details .body .money span {
+    font-weight: 400 !important;
+}
+
+.details .body .money .dollar {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    color: var(--color-green-700);
+    border: 2px solid var(--color-green-700);
+    border-radius: 50%;
+}
+
+.details .body .date p {
+    color: var(--color-grey-500);
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.del-btn:focus,
+.back-btn:focus {
+    outline: none;
+
+}

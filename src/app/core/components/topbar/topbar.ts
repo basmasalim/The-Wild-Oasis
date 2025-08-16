@@ -5,10 +5,18 @@ import { CommonModule } from '@angular/common';
 import { Menubar } from 'primeng/menubar';
 import { ThemeToggle } from '../../../shared/components/business/theme-toggle/theme-toggle';
 import { Authintication } from '../../../auth/services/authintication/authintication';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
-  imports: [Menubar, BadgeModule, AvatarModule, CommonModule, ThemeToggle],
+  imports: [
+    Menubar,
+    BadgeModule,
+    AvatarModule,
+    CommonModule,
+    ThemeToggle,
+    RouterLink,
+  ],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })
