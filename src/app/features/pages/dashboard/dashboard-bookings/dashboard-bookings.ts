@@ -5,7 +5,7 @@ import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Iguest } from '../../../../core/interfaces/iguest';
-import { FilterStatusPipe } from '../../../../core/pipe/filter-status-pipe';
+import { FilterStatusPipe } from '../../../../core/pipe/filter-statues/filter-status-pipe';
 import { GuestUserData } from '../../../../core/services/guest-data/guest-data';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
@@ -13,7 +13,6 @@ import { ButtonModule } from 'primeng/button';
 import { BookingStatus } from '../../../../core/enum/booking-status.enum';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
 import { SortingOptions } from '../../../../core/enum/sorting.enum';
-import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
 
 @Component({
   selector: 'app-dashboard-bookings',
@@ -38,7 +37,6 @@ export class DashboardBookings implements OnInit {
   filteredStatus: BookingStatus | '' = '';
 
   statusOptions = BOOKING_STATUS_OPTIONS;
-  sortOptions = SORTING_OPTIONS;
   selectedSort: SortingOptions = SortingOptions.DateRecentFirst;
 
   private readonly guestUserData = inject(GuestUserData);
@@ -68,11 +66,6 @@ export class DashboardBookings implements OnInit {
       default:
         return '';
     }
-  }
-
-  onSortChange() {
-    // Implement your sorting logic here
-    console.log('Sorting by:', this.selectedSort);
   }
 
   applyFilter(status: string): void {

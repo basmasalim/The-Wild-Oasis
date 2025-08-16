@@ -1,75 +1,13 @@
-:root {
-  --main-color: #212121;
-}
-tr th,
-.footer td {
-  background-color: var(--color-grey-50);
-  color: var(--color-tabelc);
-  // background-color: var(--color-grey-900);
-}
+@use "../../../../../styles/base/table" as *;
+@use "../../../../../styles/base/btn-filter" as *;
 
-tr td {
-  padding: 10px;
-  // background-color: var(--color-grey-50);
-  background-color: var(--color-grey-100);
-  color: var(--color-tabelc);
-}
+.card {
+  max-width: 120rem;
+  margin: 0px auto;
 
-:host ::ng-deep .p-paginator {
-  display: none;
-}
-
-.btn-p {
-  display: flex;
-  justify-content: space-between;
-  max-width: 20%;
-  margin-left: auto;
-  background-color: var(--main-color);
-  color: var(--color-tabelc);
-}
-
-.tabel-btn {
-  background-color: transparent;
-  border: none;
-  padding: 5px;
-  border-radius: 10px;
-}
-.tabel-btn:hover {
-  background-color: var(--color-indigo-100);
-  color: var(--color-grey-900);
-}
-
-.button-group {
-  border-radius: 10px;
-  display: flex;
-  background-color: var(--color-grey-50);
-  margin-left: auto;
-  background-color: var(--color-grey-100);
-}
-.btn-g {
-  box-shadow: none;
-  min-width: 40px;
-  padding: 5px 5px;
-  border: none;
-  border-radius: 10px;
-  color: var(--color-grey-900);
-  background-color: transparent;
-  font-size: 12px;
-}
-
-.btn-g:hover {
-  border: none;
-  background-color: var(--color-indigo-100);
-  color: var(--color-grey-900);
-}
-.amount {
-  color: #34d399;
-}
-:host ::ng-deep .custom-table table {
-  width: 1000px !important;
-  min-width: 100px !important;
-  margin: auto;
-  margin-top: 10pxs;
-  border: 1px solid rgba($color: #fff, $alpha: 0.2);
-  border-radius: 10px;
+  h2 {
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
 }
