@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Iguest } from '../interfaces/iguest';
+import { Iguest } from '../../interfaces/iguest';
 
 @Pipe({
   name: 'filterStatus',

@@ -1,0 +1,95 @@
+<p-dialog
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '50vw', backgroundColor: backgroundColor, border: 'none' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '95vw' }"
+  (onHide)="closeDialog()"
+>
+  <div class="container flex justify-content-center flex-column gap-4">
+    <form [formGroup]="cabinForm" (ngSubmit)="onSubmit()">
+      <!-- Cabin name Field -->
+      <div class="field mb-4">
+        <label for="cabinName" class="mb-2 font-medium">Cabin name</label>
+        <input
+          id="cabinName"
+          type="text"
+          formControlName="cabinName"
+          class="w-full form__field"
+          aria-describedby="cabinName-help"
+        />
+      </div>
+      <!-- Maximum capacity Field -->
+      <div class="field mb-4">
+        <label for="max" class="mb-2 font-medium">Maximum capacity </label>
+        <input
+          id="max"
+          type="number"
+          formControlName="max"
+          class="w-full form__field"
+          aria-describedby="max-help"
+        />
+      </div>
+      <!-- Regular price Field -->
+      <div class="field mb-4">
+        <label for="price" class="mb-2 font-medium">Regular price </label>
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          class="w-full form__field"
+          aria-describedby="price-help"
+        />
+      </div>
+      <!-- Discount Field -->
+      <div class="field mb-4">
+        <label for="discount" class="mb-2 font-medium">Discount </label>
+        <input
+          id="discount"
+          type="number"
+          formControlName="discount"
+          class="w-full form__field"
+          aria-describedby="discount-help"
+        />
+      </div>
+      <!-- Description for website Field -->
+      <div class="field mb-4">
+        <label for="discount" class="mb-2 font-medium"
+          >Description for website
+        </label>
+
+        <textarea
+          name="desc"
+          id="desc"
+          class="w-full form__field"
+          aria-describedby="discount-help"
+        ></textarea>
+      </div>
+
+      <!-- Avatar Field -->
+      <div class="field mb-4">
+        <label for="avatar" class="mb-2 font-medium">Cabin photo</label>
+        <div class="custom-file-input">
+          <input
+            id="avatar"
+            type="file"
+            class="hidden-input"
+            accept="image/*"
+          />
+          <label for="avatar" class="file-label">
+            <i class="pi pi-cloud-upload mr-2"></i>
+            <span>Choose File</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-content-end gap-3">
+        <button type="button" class="p-button-cancel" (click)="closeDialog()">
+          Cancel
+        </button>
+        <button type="submit" class="p-btn" [disabled]="!cabinForm.valid">
+          Create new cabin
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

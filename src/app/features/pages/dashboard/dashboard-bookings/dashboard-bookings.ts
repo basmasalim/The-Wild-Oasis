@@ -5,7 +5,7 @@ import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Iguest } from '../../../../core/interfaces/iguest';
-import { FilterStatusPipe } from '../../../../core/pipe/filter-status-pipe';
+import { FilterStatusPipe } from '../../../../core/pipe/filter-statues/filter-status-pipe';
 import { GuestUserData } from '../../../../core/services/guest-data/guest-data';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
@@ -13,7 +13,6 @@ import { ButtonModule } from 'primeng/button';
 import { BookingStatus } from '../../../../core/enum/booking-status.enum';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
 import { SortingOptions } from '../../../../core/enum/sorting.enum';
-import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
 
 @Component({
   selector: 'app-dashboard-bookings',
@@ -35,10 +34,10 @@ export class DashboardBookings implements OnInit {
   first = 0;
   rows = 5;
   totalRecords = 0;
+  backgroundColor = 'var(--color-grey-50)';
   filteredStatus: BookingStatus | '' = '';
 
   statusOptions = BOOKING_STATUS_OPTIONS;
-  sortOptions = SORTING_OPTIONS;
   selectedSort: SortingOptions = SortingOptions.DateRecentFirst;
 
   private readonly guestUserData = inject(GuestUserData);
@@ -70,11 +69,6 @@ export class DashboardBookings implements OnInit {
     }
   }
 
-  onSortChange() {
-    // Implement your sorting logic here
-    console.log('Sorting by:', this.selectedSort);
-  }
-
   applyFilter(status: string): void {
     this.filteredStatus = status as BookingStatus | '';
     this.first = 0;
@@ -85,7 +79,7 @@ export class DashboardBookings implements OnInit {
     const menuItems: MenuItem[] = [
       {
         label: 'See details',
-        icon: 'pi pi-eye mr-2',
+        icon: 'pi pi-eye m-3 text-xl',
         // command: () => this.viewUserDetails(user.id)
       },
     ];
@@ -97,7 +91,7 @@ export class DashboardBookings implements OnInit {
     ) {
       menuItems.push({
         label: 'Check In',
-        icon: 'pi pi-sign-in mr-2',
+        icon: 'pi pi-sign-in m-3 text-xl',
         // command: () => this.updateStatus(user.id, 'checkedin')
       });
     }
@@ -108,14 +102,14 @@ export class DashboardBookings implements OnInit {
     ) {
       menuItems.push({
         label: 'Check Out',
-        icon: 'pi pi-sign-out mr-2',
+        icon: 'pi pi-sign-out m-3 text-xl',
         // command: () => this.updateStatus(user.id, 'checkedout')
       });
     }
 
     menuItems.push({
       label: 'Delete booking',
-      icon: 'pi pi-trash mr-2',
+      icon: 'pi pi-trash m-3 text-xl',
       // command: () => this.deleteUser(user.id),
     });
 

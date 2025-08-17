@@ -16,7 +16,7 @@ form {
 }
 
 // Primary button
-.p-button {
+.p-btn {
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
@@ -25,6 +25,7 @@ form {
   font-weight: 500;
   color: var(--color-brand-50);
   background-color: var(--color-brand-600);
+  transition: background-color 0.5s;
 
   &:hover {
     background-color: var(--color-brand-700);

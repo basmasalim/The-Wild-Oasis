@@ -65,7 +65,7 @@
           </span>
         </td>
         <td>
-          <div class="card flex justify-center">
+          <div class="card flex justify-content-end">
             <p-menu
               #menu
               [model]="getMenuItems(user)"
@@ -74,13 +74,16 @@
                 'min-width': '150px',
                 'font-size': '12px',
                 'text-align': 'center',
+                'border': 'none',
+                 backgroundColor: backgroundColor,
+
               }"
               [appendTo]="'body'"
             ></p-menu>
             <button
               pButton
-              icon="pi pi-ellipsis-v"
-              class="p-button-text p-button-rounded p-button-sm action-button"
+              icon="pi pi-ellipsis-v text-2xl"
+              class="p-button-text p-button-rounded p-button-sm action-button font-bold"
               (click)="menu.toggle($event)"
               aria-label="Actions"
             ></button>
