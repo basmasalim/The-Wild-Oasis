@@ -19,10 +19,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   styleUrl: './dashboard-home.scss',
 })
 export class DashboardHome implements OnInit {
- selected: string = '7'; // افتراضي أول زر
+ selected: string = '7'; 
   selectFilter(value: string) {
     this.selected = value;
   }
+   dummyData = [{}]; 
   // start night and sales data
   //  لما الداتا تيجي مكانها تحت
   // لما تيجي تدخل داتا اعمل نسخه كمان من الvar  علشان الي تحت شفالين علي اتنين graph

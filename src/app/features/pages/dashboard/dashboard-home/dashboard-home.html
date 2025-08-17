@@ -1,7 +1,7 @@
 
 <section class="container-fluid">
   <!-- header -->
-  <div id="FristSec" class="flex">
+  <div id="FristSec" class="flex my-5">
     <div>
       <h1>Dashboard</h1>
     </div>
@@ -25,34 +25,8 @@
   </button>
 </div>
     </div>
-  <!-- sec section -->
-  <!-- <div class="boxehold flex my-5">
-    <div class="box border flex">
-
-      <i class= "pi pi-briefcase" style="background-color: var(--color-blue-100); color: var(--color-blue-700)">
-     
-    </i> <div class="text flex">
-      <p>Bookings</p>
-      <p>19</p>
-    </div></div>
-    <div class="box border flex"><i class=" pi pi-money-bill"  style="background-color: var(--color-green-100);color: var(--color-green-700)"></i>
-    <div class="text flex">
-      <p>Sales</p>
-      <p>63,335.00</p>
-    </div>
-    </div>
-    <div class="box border flex"><i class="pi pi-calendar" style="background-color: var(--color-indigo-100);"></i><div class="text flex">
-      <p>Check ins</p>
-      <p>10</p>
-    </div> </div>
-    <div class="box border flex"><i class="pi  pi-chart-line"  style="background-color: var(--color-yellow-100);color: var(--color-yellow-700)"></i>  <div class="text flex">
-      <p>Occupancy rate</p>
-      <p>22%</p>
-    </div> </div>
-  </div> -->
- 
- <div class="container">
-  <div class="flex boxehold">
+ <div class="container my-5">
+  <div class="flex boxehold my-5">
     <div class="box flex">
        <i class= "pi pi-briefcase" style="background-color: var(--color-blue-100); color: var(--color-blue-700)"></i>     
       <div class="text flex">
@@ -83,20 +57,54 @@
  </div>
  
   <!-- third sec -->
-  <div id="sec-section" class="flex ">
+  <div id="sec-section" class="flex my-5">
     <div class="activity-data border">
       <h2>Today</h2>
       <div>
         <p>No activity today ...</p>
         <!-- حط الداتا هنا -->
-       <p-table [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template #header>
-    </ng-template>
-    <ng-template #body>
-      <!-- جوا هنا -->
-        <tr>
-        </tr>
-    </ng-template>
+<p-table [value]="dummyData" [tableStyle]="{ 'min-width': '50rem' }">
+  <!-- الهيدر -->
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Cabin</th>
+      <th>Guest</th>
+      <th>Dates</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+  </ng-template>
+
+  <!-- البودي -->
+  <ng-template pTemplate="body" let-row>
+    @if (selected === '7') {
+      <tr>
+        <td>1</td>
+        <td>John Doe</td>
+        <td>2 nights → Checked in</td>
+        <td>confirmed</td>
+        <td>$800.00</td>
+      </tr>
+    }
+    @else if (selected === '30') {
+      <tr>
+        <td>2</td>
+        <td>Nina Williams</td>
+        <td>In 1 month → 10 night stay</td>
+        <td>unconfirmed</td>
+        <td>$6,050.00</td>
+      </tr>
+    }
+    @else if (selected === '90') {
+      <tr>
+        <td>3</td>
+        <td>Michael Smith</td>
+        <td>In 3 months → 20 night stay</td>
+        <td>confirmed</td>
+        <td>$12,000.00</td>
+      </tr>
+    }
+  </ng-template>
 </p-table>
       </div>
     </div>
