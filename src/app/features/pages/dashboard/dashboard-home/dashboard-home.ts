@@ -26,6 +26,4 @@ export class DashboardHome {
     this.filteredStatus = status;
     this.first = 0;
   }
-
-
 }
