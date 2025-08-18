@@ -7,9 +7,10 @@ import { RecentBox } from '../../../../shared/components/ui/recent-box/recent-bo
 import { Starts_CONSTANTS } from '../../../../core/constants/stats.constants';
 import { CircleChart } from "../../../../shared/components/business/circle-chart/circle-chart";
 import { LineChart } from "../../../../shared/components/business/line-chart/line-chart";
+import { TodayTable } from '../../../../shared/components/ui/today-table/today-table';
 @Component({
   selector: 'app-dashboard-home',
-  imports: [FormsModule, SelectButtonModule, RecentBox, CircleChart, LineChart],
+  imports: [FormsModule, SelectButtonModule, RecentBox, CircleChart, LineChart, TodayTable],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
