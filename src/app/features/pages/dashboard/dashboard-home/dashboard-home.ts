@@ -1,3 +1,5 @@
+import { Mock } from 'node:test';
+import { TableModule } from 'primeng/table';
 import { Component } from '@angular/core';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
@@ -9,22 +11,19 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-dashboard-home',
-  imports: [FormsModule, SelectButtonModule, ChartModule],
+  imports: [TableModule, CommonModule ,FormsModule, SelectButtonModule, ChartModule],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
 export class DashboardHome implements OnInit {
-  stateOptions = [
-    { label: 'Last 7 days', value: 7 },
-    { label: 'Last 30 days', value: 30 },
-    { label: ' Last 90 days', value: 90 },
-  ];
-
-  value = 7;
-  // end
+ selected: string = '7'; 
+  selectFilter(value: string) {
+    this.selected = value;
+  }
+   dummyData = [{}]; 
   // start night and sales data
   //  لما الداتا تيجي مكانها تحت
   // لما تيجي تدخل داتا اعمل نسخه كمان من الvar  علشان الي تحت شفالين علي اتنين graph
