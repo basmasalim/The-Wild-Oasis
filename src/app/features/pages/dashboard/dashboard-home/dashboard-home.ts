@@ -1,75 +1,32 @@
-import { Component } from '@angular/core';
+import { Home } from './../../../../core/enum/home.enum';
+import { Component, signal } from '@angular/core';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
-import {
-  ChangeDetectorRef,
-  effect,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-} from '@angular/core';
 import { ChartModule } from 'primeng/chart';
-import { isPlatformBrowser } from '@angular/common';
+import { DAYSOPTIONS_CONSTANTS } from '../../../../core/constants/daysOptions.constants';
+import { RecentBox } from '../../../../shared/components/ui/recent-box/recent-box';
+import { Starts_CONSTANTS } from '../../../../core/constants/stats.constants';
+import { CircleChart } from "../../../../shared/components/business/circle-chart/circle-chart";
+import { TodayTable } from "../../../../shared/components/ui/today-table/today-table";
+import { LineChart } from "../../../../shared/components/business/line-chart/line-chart";
 @Component({
   selector: 'app-dashboard-home',
-  imports: [FormsModule, SelectButtonModule, ChartModule],
+  imports: [FormsModule, SelectButtonModule, RecentBox, CircleChart, TodayTable, LineChart],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
-export class DashboardHome implements OnInit {
-  stateOptions = [
-    { label: 'Last 7 days', value: 7 },
-    { label: 'Last 30 days', value: 30 },
-    { label: ' Last 90 days', value: 90 },
-  ];
+export class DashboardHome {
+  first = 0;
 
-  value = 7;
-  // end
-  // start night and sales data
-  //  لما الداتا تيجي مكانها تحت
-  // لما تيجي تدخل داتا اعمل نسخه كمان من الvar  علشان الي تحت شفالين علي اتنين graph
-  data: any;
-  options: any;
-  platformId = inject(PLATFORM_ID);
-  constructor(private cd: ChangeDetectorRef) {}
-  ngOnInit() {
-    this.initChart();
+  daysOptions = DAYSOPTIONS_CONSTANTS;
+  stats = signal(Starts_CONSTANTS);
+
+  filteredStatus: Home | '' = this.daysOptions[0].value;
+
+  applyFilter(status: Home | ''): void {
+    this.filteredStatus = status;
+    this.first = 0;
   }
-  initChart() {
-    if (isPlatformBrowser(this.platformId)) {
-      const documentStyle = getComputedStyle(document.documentElement);
-      // color for text
-      const textColor = documentStyle.getPropertyValue('--color-grey-100');
-      this.data = {
-        labels: ['3 nights', '3 nights', '4-5  nights', '8-14 nights'],
-        datasets: [
-          {
-            data: [540, 325, 702, 502],
-            backgroundColor: [
-              documentStyle.getPropertyValue('--p-cyan-500'),
-              documentStyle.getPropertyValue('--p-orange-500'),
-              documentStyle.getPropertyValue('--p-gray-500'),
-            ],
-            hoverBackgroundColor: [
-              documentStyle.getPropertyValue('--p-cyan-400'),
-              documentStyle.getPropertyValue('--p-orange-400'),
-              documentStyle.getPropertyValue('--p-gray-400'),
-            ],
-          },
-        ],
-      };
-      this.options = {
-        plugins: {
-          legend: {
-            labels: {
-              usePointStyle: true,
-              // colors for text
-              color: textColor,
-            },
-          },
-        },
-      };
-      this.cd.markForCheck();
-    }
-  }
+
+
 }

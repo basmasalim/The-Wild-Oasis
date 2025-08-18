@@ -1,95 +1,58 @@
-<section class="container">
-  <!-- header -->
-  <div id="FristSec" class="container flex justify-content-between m-auto">
-    <div class="title">
-      <h1>Dashboard</h1>
+<div class="card mt-3">
+  <div
+    class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
+  >
+    <h1>Dashboard</h1>
+    <ul class="button-group ml-auto lg:ml-0">
+      @for (day of daysOptions; track $index) {
+      <li>
+        <button
+          (click)="applyFilter(day.value)"
+          [class.active]="filteredStatus === day.value"
+          class="btn-g"
+        >
+          {{ day.value }}
+        </button>
+      </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Sec. Section  -->
+  <div class="grid gap-4">
+    @for (stat of stats(); track $index) {
+    <div class="col">
+      <app-recent-box
+        [icon]="stat.icon"
+        [color]="stat.color"
+        [bgColor]="stat.bgColor"
+        [label]="stat.label"
+        [value]="stat.value"
+      >
+      </app-recent-box>
     </div>
-    <div class="flex btns">
-      <button>Last 7 days</button>
-      <button>Last 30 days</button>
-      <button>Last 90 days</button>
+    }
+  </div>
+
+  <!-- The. Section -->
+  <div class="grid mt-4">
+    <div class="col-12 md:col-6">
+      <div class="box">
+        <h3>Today</h3>
+        <app-today-table></app-today-table>
+      </div>
+    </div>
+    <div class="col-12 md:col-6">
+      <div class="box">
+        <h3>Stay duration summary</h3>
+        <app-circle-chart></app-circle-chart>
+      </div>
     </div>
   </div>
 
-  <!-- sec section -->
-  <div class="boxehold flex my-5">
-    <div class="box border flex">
-      <div></div>
-      <i
-        class="pi pi-briefcase"
-        style="
-          background-color: var(--color-blue-100);
-          color: var(--color-blue-700);
-        "
-      >
-      </i>
-      <div class="text flex">
-        <p>Bookings</p>
-        <p>19</p>
-      </div>
-    </div>
-    <div class="box border flex">
-      <i
-        class="pi pi-money-bill"
-        style="
-          background-color: var(--color-green-100);
-          color: var(--color-green-700);
-        "
-      ></i>
-      <div class="text flex">
-        <p>Sales</p>
-        <p>63,335.00</p>
-      </div>
-    </div>
-    <div class="box border flex">
-      <i
-        class="pi pi-calendar"
-        style="background-color: var(--color-indigo-100)"
-      ></i>
-      <div class="text flex">
-        <p>Check ins</p>
-        <p>10</p>
-      </div>
-    </div>
-    <div class="box border flex">
-      <i
-        class="pi pi-chart-line"
-        style="
-          background-color: var(--color-yellow-100);
-          color: var(--color-yellow-700);
-        "
-      ></i>
-      <div class="text flex">
-        <p>Occupancy rate</p>
-        <p>22%</p>
-      </div>
-    </div>
-  </div>
-  <!-- third sec -->
-  <div id="sec-section" class="flex">
-    <div class="activity-data border">
-      <h2>Today</h2>
-      <div>
-        <p>No activity today ...</p>
-        <div>
-          <!-- put data here -->
-        </div>
-      </div>
-    </div>
-    <!-- char cricle -->
-    <div class="border" id="data-today">
-      <p>stay duration summary</p>
-      <p-chart
-        type="pie"
-        [data]="data"
-        [options]="options"
-        class="md:w-[30rem]"
-      />
-    </div>
-  </div>
   <!-- last sec -->
-  <div class="border" style="margin: 2rem 0">
-    <p>sales from <span>08 07 2025</span> - <span>aug 13 2025</span></p>
-    <p-chart type="line" [data]="data" [options]="options" class="h-[30rem]" />
+  <div class="box" style="margin: 2rem 0">
+    <h3 class="capitalize">sales from <span>08 07 2025</span> - <span>aug 13 2025</span></h3>
+     <app-line-chart></app-line-chart>
   </div>
-</section>
+</div>

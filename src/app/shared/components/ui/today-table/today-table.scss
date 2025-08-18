@@ -1,0 +1,52 @@
+.table {
+  border-block: 1px solid var(--color-grey-100);
+  padding-block: 7px;
+  margin-top: 20px;
+
+  .tag {
+    width: fit-content;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    color: var(--color-green-700);
+    background-color: var(--color-green-100);
+  }
+
+  h5 {
+    color: var(--color-grey-700);
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+
+  .day {
+    color: var(--color-grey-700);
+    font-size: 1.4rem;
+  }
+
+  .check {
+    border: none;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
+    font-size: 1.2rem;
+    padding: 0.4rem 1.4rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    color: var(--color-brand-50);
+    background-color: var(--color-brand-600);
+    transition: all 0.3;
+
+    &:hover {
+      background-color: var(--color-brand-700);
+    }
+  }
+
+  .flag {
+    max-width: 2rem;
+    border-radius: var(--border-radius-tiny);
+    display: block;
+    border: 1px solid var(--color-grey-100);
+  }
+}
