@@ -1,6 +1,5 @@
 
-import { doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
-import { Notifications } from './../../../../auth/services/notifications/notifications';
+import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { IBookings } from '../../../../core/interfaces/ibookings';
@@ -14,11 +13,10 @@ import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
-import { BookingStatus } from '../../../../core/enum/booking-status.enum';
-import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
-import { SortingOptions } from '../../../../core/enum/sorting.enum';
+
 import { Bookings } from '../../../../core/services/bookings/bookings';
 import { Router } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-dashboard-bookings',
   imports: [
@@ -28,7 +26,7 @@ import { Router } from '@angular/router';
     RatingModule,
     CommonModule,
     Menu,
-    ButtonModule,
+    ButtonModule, ConfirmDialogModule,
   ],
   templateUrl: './dashboard-bookings.html',
   styleUrls: ['./dashboard-bookings.scss'],
@@ -68,7 +66,6 @@ export class DashboardBookings implements OnInit {
 
         );
 
-        console.log('📌 bookings:', this.bookings());
         this.loading.set(false);
       },
       error: () => {
@@ -82,6 +79,32 @@ export class DashboardBookings implements OnInit {
       next: () => {
         this.bookings.update((prev) => prev.filter((b) => b.id !== id));
       }
+    });
+  }
+
+  confirm2(event: Event | undefined, id: string) {
+    this.confirmationService.confirm({
+      target: event!.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+      accept: () => {
+        this.deleteBooking(id);         // Refresh the list
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+      },
     });
   }
   getStatus(startDate: string, endDate: string): string {
@@ -145,30 +168,7 @@ export class DashboardBookings implements OnInit {
     return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
   }
 
-  confirm2() {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      icon: 'pi pi-info-circle',
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true
-      },
-      acceptButtonProps: {
-        label: 'Delete',
-        severity: 'danger'
-      },
-      accept: () => {
-        if (this.id) {
-          this.deleteBooking(this.id);
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-        }
-      },
-      reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-      }
-    });
-  }
+
 
   getSpecificBooking(id: string) {
     console.log('Go to booking details for:', id);
@@ -190,6 +190,7 @@ export class DashboardBookings implements OnInit {
         label: 'See details',
         icon: 'pi pi-eye mr-2',
         command: () => this.router.navigate(['details/', booking.id])
+
       },
     ];
 
@@ -199,6 +200,7 @@ export class DashboardBookings implements OnInit {
         label: 'Check In',
         icon: 'pi pi-sign-in mr-2',
         command: () => this.updateStatus(booking.id!, 'check in')
+
       });
     }
 
@@ -208,6 +210,7 @@ export class DashboardBookings implements OnInit {
         label: 'Check Out',
         icon: 'pi pi-sign-out mr-2',
         command: () => this.updateStatus(booking.id!, 'check out')
+
       });
     }
 
@@ -215,10 +218,11 @@ export class DashboardBookings implements OnInit {
     menuItems.push({
       label: 'Delete booking',
       icon: 'pi pi-trash mr-2',
-      command: () => {
-        this.id = booking.id;
-        this.deleteBooking(this.id);
-      }
+      //   command: () => {
+      //     this.id = booking.id;
+      //  this.confirm2(event.originalEvent, cabin.id)
+      //   }
+      command: (event) => this.confirm2(event.originalEvent, booking.id)
     });
 
     return menuItems;

@@ -1,12 +1,12 @@
 
-import { signal } from '@angular/core';
+import { ChangeDetectorRef, signal } from '@angular/core';
 import { Notifications } from '../../../../auth/services/notifications/notifications';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { doc, updateDoc } from '@angular/fire/firestore';
+import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 
-import { Component, inject, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
+import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
@@ -20,6 +20,10 @@ import { DISCOUNT_CONSTANTS } from '../../../../core/constants/discount.constant
 import { Discount } from '../../../../core/enum/discount.emum';
 import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
 import { Menu } from 'primeng/menu';
+import { DialogComponent } from "../../../../shared/components/business/dialog/dialog";
+import { Toast } from "primeng/toast";
+
+
 
 @Component({
   selector: 'app-dashboard-cabins',
@@ -32,19 +36,25 @@ import { Menu } from 'primeng/menu';
     ButtonModule,
     FilterDiscountPipe,
     Menu,
+    DialogComponent,
+    Toast,
+    ConfirmDialogModule,
   ],
   templateUrl: './dashboard-cabins.html',
   styleUrl: './dashboard-cabins.scss',
 })
+
 export class DashboardCabins {
   private readonly cabins = inject(Cabins);
   private readonly notifications = inject(Notifications);
   cabinsList = signal<Icabins[]>([]);
-  cabinsForm: FormGroup;
+  selectedCabin: Icabins | null = null;  // cabin اللي هيتم تعديله
   id: string | undefined = undefined;
   first = 0;
   rows = 5;
   totalRecords = 0;
+  visible: boolean = false;
+  backgroundColor = 'var(--color-grey-50)';
   filteredStatus: Discount | 'all' = 'all';
   discountOptions = DISCOUNT_CONSTANTS;
   sortOptions = SORTING_OPTIONS;
@@ -52,111 +62,28 @@ export class DashboardCabins {
   ngOnInit() {
     this.getAllCabins();
   }
-  getToday(): string {
-    const today = new Date();
-    return today.toISOString().split('T')[0]; // صيغة yyyy-MM-dd
-  }
   constructor(
     private confirmationService: ConfirmationService,
-    private fb: FormBuilder,
-    private firestore: Firestore,
-    private messageService: MessageService
-  ) {
-    this.cabinsForm = this.fb.group({
-      name: ['', Validators.required],
-      maxCapacity: [1, [Validators.required, Validators.min(1)]],
-      regularPrice: [0, [Validators.required, Validators.min(0)]],
-      discount: [0, [Validators.required, Validators.min(0)]],
-      description: ['', Validators.required],
-      image: ['', Validators.required], // ⬅️ إضافة حقل الصورة
-      createdAt: this.getToday()
-    });
-  }
-
-
-  async onSubmit() {
-    if (this.cabinsForm.valid) {
-      try {
-        const cabinsCollection = collection(this.firestore, 'cabins');
-        await addDoc(cabinsCollection, this.cabinsForm.value);
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Cabin added successfully!',
-        });
-
-        this.cabinsForm.reset({
-          createdAt: this.getToday(),
-          maxCapacity: 1,
-          regularPrice: 0,
-          discount: 0,
-          image: ''
-        });
-
-      } catch (error) {
-        console.error('Error adding cabins:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to add cabins.',
-        });
-      }
-    } else {
-      console.warn('Form is invalid');
-    }
-  }
-
-
-  async onUpdate(cabinId: string) {
-    if (this.cabinsForm.valid) {
-      try {
-        const cabinRef = doc(this.firestore, 'cabins', cabinId);
-
-        await updateDoc(cabinRef, this.cabinsForm.value);
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Cabin updated successfully!',
-        });
-
-        this.cabinsForm.reset({
-          createdAt: this.getToday(),
-          maxCapacity: 1,
-          regularPrice: 0,
-          discount: 0,
-          image: ''
-        });
-
-      } catch (error) {
-        console.error('Error updating cabin:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update cabin.',
-        });
-      }
-    } else {
-      console.warn('Form is invalid');
-    }
-  }
-
-
+    private firestore: Firestore, private cdr: ChangeDetectorRef,
+    private messageService: MessageService,
+  ) { }
   getAllCabins() {
     this.cabins.getCabins().subscribe({
-      next: (res) => {
-        this.cabinsList.set(res);
-        console.log('All cabins:', this.cabinsList());
+      next: (cabins) => {
+        this.cabinsList.set(cabins);
+        this.totalRecords = cabins.length;
+        console.log('📌 cabins:', this.cabinsList());
       },
       error: (error) => {
+        console.error('❌ Error fetching cabins:', error);
         this.notifications.showError('Error fetching cabins', 'Please try again later.');
-        console.error('Error fetching cabins:', error);
       }
-    })
+    });
+
   }
 
-  deleteBooking(cabinId: string | undefined) {
+
+  deleteCabin(cabinId: string | undefined) {
     if (!cabinId) {
       console.error('Cabin id is missing!');
       return;
@@ -167,8 +94,6 @@ export class DashboardCabins {
       next: () => {
         console.log('Booking deleted successfully');
 
-
-        // this.notifications.showSuccess('Booking deleted successfully', 'The booking has been removed.');
         this.getAllCabins();
       },
       error: (error) => {
@@ -178,31 +103,32 @@ export class DashboardCabins {
     });
   }
 
-
-  confirm2(event: Event) {
+  confirm2(event: Event | undefined, cabinId: string | undefined) {
     this.confirmationService.confirm({
-      target: event.currentTarget as EventTarget,
+      target: event!.target as EventTarget,
       message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
       icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
       rejectButtonProps: {
         label: 'Cancel',
         severity: 'secondary',
-        outlined: true
+        outlined: true,
       },
       acceptButtonProps: {
         label: 'Delete',
-        severity: 'danger'
+        severity: 'danger',
       },
       accept: () => {
-        this.deleteBooking(this.id!);
-        this.getAllCabins();
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+        this.deleteCabin(cabinId);         // Refresh the list
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
       },
       reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-      }
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+      },
     });
   }
+
 
   applyFilter(status: Discount | 'all') {
     this.filteredStatus = status;
@@ -226,6 +152,28 @@ export class DashboardCabins {
 
     return cabins;
   }
+  // ?===================> DialogModule
+  async onEdit(cabinId: string | undefined) {
+
+
+    try {
+      const docRef = doc(this.firestore, `cabins/${cabinId}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        this.selectedCabin = { id: docSnap.id, ...docSnap.data() } as Icabins;
+
+        console.log("Cabin loaded:", this.selectedCabin);
+
+
+      } else {
+        console.error("No such cabin!");
+      }
+    } catch (error) {
+      console.error("Error loading cabin:", error);
+    }
+  }
+
 
 
   getMenuItems(cabin: Icabins): MenuItem[] {
@@ -234,16 +182,24 @@ export class DashboardCabins {
 
       {
         label: 'Edit cabin',
-        icon: 'pi pi-pencil mr-2',
+        icon: 'pi pi-pencil m-3 text-xl',
+        command: () => {
+          this.onEdit(cabin.id);
+          setTimeout(() => {
+            this.showDialog();
+            this.cdr.detectChanges(); // Ensure the dialog is updated
+          }, 100);
+        },
       },
       {
+
         label: 'Delete booking',
         icon: 'pi pi-trash mr-2',
 
-        command: () => this.deleteBooking(cabin.id)   // ✅ هنا تبعت id
-
+        command: (event) => this.confirm2(event.originalEvent, cabin.id)
 
       },
+
     ];
   }
 
@@ -272,6 +228,22 @@ export class DashboardCabins {
     return this.first + this.rows >= this.totalRecords;
   }
 
+
+
+
+
+  onDialogClose() {
+    this.visible = false;
+    this.selectedCabin = null;
+    this.getAllCabins(); // refresh بعد التحديث
+  }
+  showDialog() {
+    this.visible = true;
+  }
+  createCabin() {
+    console.log('New cabin created:');
+    // Handle API call here
+  }
 
 }
 

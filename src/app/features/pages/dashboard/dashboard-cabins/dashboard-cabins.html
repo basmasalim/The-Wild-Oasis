@@ -1,4 +1,5 @@
 <div class="card">
+  <p-confirmDialog />
   <p-table class="custom-table m-auto" [paginator]="true" [rowsPerPageOptions]="[10]" [rows]="10" [first]="0"
     [totalRecords]="(cabinsList() | filterDiscount : filteredStatus).length"
     [value]="cabinsList() | filterDiscount : filteredStatus">
@@ -20,6 +21,7 @@
 
     <ng-template #header>
       <tr>
+        <th></th>
         <th>Cabin</th>
         <th>Capacity</th>
         <th>Price</th>
@@ -31,18 +33,25 @@
     <ng-template #body let-cabin>
 
       <tr>
+        <td style="width: 70px; height: 70px">
+          <img src="images/logo-dark.png" class="w-full mb-1" alt="" />
+        </td>
         <td>
           <p>{{ cabin.name }}</p>
+          <p class="font-semibold text-2xl">{{ cabin.cabinNumber }}</p>
         </td>
         <td>
           <p>{{ cabin.maxCapacity }}</p>
         </td>
         <td>
           <p>{{ cabin.regularPrice | currency : "USD" : "symbol" : "1.2-2" }}</p>
+          <p class="font-semibold amount">
+            {{ cabin.price | currency : "USD" : "symbol" : "1.2-2" }}
+          </p>
         </td>
         <td>
           @if (cabin.discount) {
-          <span class="amount">
+          <span class="dicount">
             {{ cabin.discount | currency : "USD" : "symbol" : "1.2-2" }}
           </span>
           } @else { - }
@@ -54,7 +63,17 @@
             <i (click)="menu.toggle($event)" class="pi pi-ellipsis-v cursor-pointer"></i>
           </div>
 
+          <div class="card flex justify-content-end">
+            <p-menu #menu [model]="getMenuItems(cabin)" [popup]="true" [style]="{
+                'min-width': '150px',
+                'font-size': '12px',
+                'text-align': 'center',
+                'border': 'none',
+                backgroundColor: backgroundColor,
+              }" [appendTo]="'body'">
+            </p-menu>
 
+          </div>
         </td>
       </tr>
 
@@ -62,11 +81,22 @@
 
     <ng-template #footer>
       <tr>
-        <td colspan="5">
+
+
+        <td colspan="10">
           Showing {{ (cabinsList() | filterDiscount : filteredStatus).length }} of
-          {{ totalRecords }} cabins
+          {{ totalRecords }} Cabins
         </td>
       </tr>
     </ng-template>
   </p-table>
+  <!--  Add new cabin Button -->
+  <div class="flex justify-content-st mt-5">
+    <button type="submit" label="Show" (click)="showDialog()" class="p-btn">
+      Add new cabin
+    </button>
+    <app-dialog [(visible)]="visible" [cabin]="selectedCabin" (onSave)="onDialogClose()"
+      (visibleChange)="visible = $event">
+    </app-dialog>
+  </div>
 </div>

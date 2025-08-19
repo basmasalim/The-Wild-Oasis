@@ -72,6 +72,11 @@ tr td {
   font-weight: 500;
 }
 
+.dicount {
+  color: var(--color-green-700);
+  font-size: 1.3rem;
+}
+
 // ? =======================================> Tags
 .p-tag-danger,
 .p-tag-success,
@@ -102,6 +107,10 @@ tr td {
 .p-menu-overlay {
   z-index: 1000 !important;
   position: absolute !important;
+}
+
+:host ::ng-deep .p-menu-list {
+  background-color: red !important;
 }
 
 .action-button {

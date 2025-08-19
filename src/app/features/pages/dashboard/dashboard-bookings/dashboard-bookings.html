@@ -1,4 +1,5 @@
 <div class="card mt-3">
+  <p-confirmDialog />
   <p-table class="custom-table m-auto" [paginator]="true" [totalRecords]="totalRecords" (onPageChange)="onClick($event)"
     [rowsPerPageOptions]="[5, 10]" [value]="filteredBookings()" [rows]="10" [first]="first">
 
@@ -9,6 +10,9 @@
 
         <ul class="button-group ml-auto lg:ml-0">
           <li>
+            <button (click)="applyFilter('')" class="btn-g" [class.active]="filteredStatus === ''">
+              All
+            </button>
             <button (click)="applyFilter('unconfirmed')" class="btn-g"
               [class.active]="filteredStatus === 'unconfirmed'">
               Unconfirmed
@@ -55,7 +59,7 @@
         </td>
         <td>
           <span class="amount">
-            {{ booking.price | currency : "USD" }}
+            {{ booking.pr | currency : "USD" }}
           </span>
         </td>
         <td>
