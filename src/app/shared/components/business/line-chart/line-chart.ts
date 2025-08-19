@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
-import { ChangeDetectorRef, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 
@@ -9,10 +14,9 @@ import { ChartModule } from 'primeng/chart';
   templateUrl: './line-chart.html',
   styleUrl: './line-chart.scss',
 })
-export class LineChart {
+export class LineChart implements OnInit {
   value = 7;
   data: any;
-
   options: any;
 
   private readonly platformId = inject(PLATFORM_ID);
@@ -34,52 +38,86 @@ export class LineChart {
       );
 
       this.data = {
-        labels: ['08 12', '08 13', '08 14', '08 15', '08 16', '08 17', '08 19'],
+        labels: ['08 13', '08 14', '08 15', '08 16', '08 17', '08 18', '08 19'],
         datasets: [
           {
-            label: 'First Dataset',
-            data: [5, 9, 0, 1, 6, 5, 0],
-            fill: false,
+            label: 'Sales',
+            data: [2000, 5000, 2000, 8000, 2000, 11000, 12000],
+            fill: true,
             tension: 0.4,
-            borderColor: documentStyle.getPropertyValue('--p-green-400'),
+            borderColor: '#4338CA',
+            backgroundColor: 'rgba(67, 56, 202, 0.2)',
+            pointBackgroundColor: '#4338CA',
+            pointBorderColor: '#ffffff',
+            pointHoverBackgroundColor: '#ffffff',
+            pointHoverBorderColor: '#4338CA',
+            pointRadius: 4,
+            pointHoverRadius: 6,
           },
           {
-            label: 'Third Dataset',
-            data: [6, 21, 12, 13, 11, 32, 25],
+            label: 'Dataset',
+            data: [0, 200, 500, 500, 200, 500, 0],
             fill: true,
-            borderColor: documentStyle.getPropertyValue('--p-gray-500'),
             tension: 0.4,
-            backgroundColor: 'rgba(78, 70, 229, 0.35)',
+            backgroundColor: '#07dd0745',
+
+            borderColor: documentStyle.getPropertyValue('--p-green-400'),
           },
         ],
       };
 
       this.options = {
         maintainAspectRatio: false,
-        aspectRatio: 0.6,
+        aspectRatio: 0.8,
         plugins: {
           legend: {
-            labels: {
-              color: textColor,
-            },
+            display: false,
+          },
+          tooltip: {
+            enabled: true,
+            mode: 'index',
+            intersect: false,
+            backgroundColor: '#4338CA',
+            titleColor: '#ffffff',
+            bodyColor: '#ffffff',
+            borderColor: '#4338CA',
+            borderWidth: 1,
           },
         },
         scales: {
           x: {
             ticks: {
               color: textColorSecondary,
+              font: {
+                size: 11,
+              },
             },
             grid: {
-              color: surfaceBorder,
+              display: false,
             },
           },
           y: {
+            min: 0,
+            max: 12000,
             ticks: {
+              stepSize: 3000,
               color: textColorSecondary,
+              callback: function (value: any) {
+                return '$' + value.toLocaleString();
+              },
+              font: {
+                size: 11,
+              },
             },
             grid: {
               color: surfaceBorder,
+              drawBorder: false,
             },
+          },
+        },
+        elements: {
+          line: {
+            borderWidth: 2,
           },
         },
       };

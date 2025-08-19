@@ -28,7 +28,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     Menu,
     ButtonModule, ConfirmDialogModule,
   ],
-  templateUrl: './dashboard-bookings.html',
+  templateUrl:'./dashboard-bookings.html',
   styleUrls: ['./dashboard-bookings.scss'],
 })
 export class DashboardBookings implements OnInit {

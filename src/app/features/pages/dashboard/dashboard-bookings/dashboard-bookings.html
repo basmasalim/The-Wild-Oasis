@@ -80,7 +80,7 @@
     <ng-template #footer>
       <tr class="footer">
         <td colspan="6">
-          In total there are {{ bookings()?.length || 0 }} bookings.
+          In total there are {{ bookings()!.length || 0 }} bookings.
 
           <ul class="btn-p">
             <li>

@@ -21,7 +21,6 @@ import { Discount } from '../../../../core/enum/discount.emum';
 import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
 import { Menu } from 'primeng/menu';
 import { DialogComponent } from "../../../../shared/components/business/dialog/dialog";
-import { Toast } from "primeng/toast";
 
 
 
@@ -37,7 +36,6 @@ import { Toast } from "primeng/toast";
     FilterDiscountPipe,
     Menu,
     DialogComponent,
-    Toast,
     ConfirmDialogModule,
   ],
   templateUrl: './dashboard-cabins.html',
