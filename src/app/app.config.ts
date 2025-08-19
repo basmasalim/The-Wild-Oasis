@@ -4,7 +4,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router';
+import { provideRouter, withHashLocation, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),           // من غير getApp()
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes, withHashLocation(), withInMemoryScrolling({scrollPositionRestoration:'top'})),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     providePrimeNG({
