@@ -1,6 +1,8 @@
 export interface IBookings {
+    id: string;
     cabinId: number;
     createdAt: string;      // تاريخ (string في شكل yyyy-MM-dd)
+    startDate: string;      // تاريخ بداية
     endDate: string;        // تاريخ نهاية
     guestEmail: string;     // ايميل النزيل
     guestId: number;        // ID النزيل
@@ -8,6 +10,5 @@ export interface IBookings {
     hasBreakfast: boolean;  // هل معاه فطار؟
     isPaid: boolean;        // مدفوع ولا لا؟
     numGuests: number;      // عدد الضيوف
-    observations: string;   // ملاحظات
-    startDate: string;      // تاريخ بداية
+    observations: string;
 }

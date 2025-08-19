@@ -1,16 +1,24 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-
-import { CABINS_MOCK } from '../../mock/cabins.mock';
-import { Icabins } from '../../interfaces/icabins';
+import { inject, Injectable } from '@angular/core';
+import { collection, collectionData, deleteDoc, doc, docData, Firestore } from '@angular/fire/firestore';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root'
 })
 export class Cabins {
-  private readonly cabinsData = CABINS_MOCK;
+    private firestore = inject(Firestore);
 
-  getCabinsData(): Observable<Icabins[]> {
-    return of(this.cabinsData);
-  }
+
+    getCabins(): Observable<any[]> {
+        const cabinsRef = collection(this.firestore, 'cabins');
+        return collectionData(cabinsRef, { idField: 'id' }) as Observable<any[]>;
+    }
+
+
+    deleteCabin(cabinId: string | undefined): Observable<void> {
+        if (!cabinId) throw new Error("Cabin id is missing");
+        const cabinRef = doc(this.firestore, `cabins/${cabinId}`);
+        return from(deleteDoc(cabinRef));
+    }
+
 }

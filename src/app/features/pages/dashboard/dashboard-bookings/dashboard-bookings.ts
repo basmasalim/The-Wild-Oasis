@@ -1,19 +1,22 @@
+
+import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
+
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { IBookings } from '../../../../core/interfaces/ibookings';
+import { signal } from '@angular/core';
 import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Iguest } from '../../../../core/interfaces/iguest';
-import { FilterStatusPipe } from '../../../../core/pipe/filter-statues/filter-status-pipe';
-import { GuestUserData } from '../../../../core/services/guest-data/guest-data';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
-import { BookingStatus } from '../../../../core/enum/booking-status.enum';
-import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
-import { SortingOptions } from '../../../../core/enum/sorting.enum';
 
+import { Bookings } from '../../../../core/services/bookings/bookings';
+import { Router } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-dashboard-bookings',
   imports: [
@@ -22,101 +25,211 @@ import { SortingOptions } from '../../../../core/enum/sorting.enum';
     TagModule,
     RatingModule,
     CommonModule,
-    FilterStatusPipe,
     Menu,
-    ButtonModule,
+    ButtonModule, ConfirmDialogModule,
   ],
   templateUrl: './dashboard-bookings.html',
   styleUrls: ['./dashboard-bookings.scss'],
 })
 export class DashboardBookings implements OnInit {
-  userData: Iguest[] = [];
+  bookings = signal<IBookings[]>([]);
+  booking = signal<IBookings>({} as IBookings);
+  loading = signal<boolean>(true);
+  id: string | undefined = undefined;
+  filteredStatus: 'unconfirmed' | 'check in' | 'check out' | '' = '';
   first = 0;
   rows = 5;
   totalRecords = 0;
-  backgroundColor = 'var(--color-grey-50)';
-  filteredStatus: BookingStatus | '' = '';
-
-  statusOptions = BOOKING_STATUS_OPTIONS;
-  selectedSort: SortingOptions = SortingOptions.DateRecentFirst;
-
-  private readonly guestUserData = inject(GuestUserData);
+  constructor(
+    private bookingsService: Bookings,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private firestore: Firestore,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
-    this.loadGuestData();
+    this.getAllBookings();
   }
 
-  private loadGuestData(): void {
-    this.guestUserData.getGuestDataMini().subscribe({
-      next: (res: Iguest[]) => {
-        this.userData = res;
+  getAllBookings() {
+    this.loading.set(true);
+    this.bookingsService.getBookings().subscribe({
+      next: (res) => {
         this.totalRecords = res.length;
+        this.bookings.set(
+          res.map((booking) => ({
+            ...booking,
+            inventoryStatus: this.getStatus(booking.startDate, booking.endDate),
+
+          }))
+
+        );
+
+        this.loading.set(false);
       },
-      error: (err) => console.error('Failed to load guest data', err),
+      error: () => {
+        this.loading.set(false);
+      }
     });
   }
 
-  getSeverity(status: Iguest['inventoryStatus']): string {
-    switch (status) {
-      case 'checkedin':
+  deleteBooking(id: string) {
+    this.bookingsService.deleteBooking(id).subscribe({
+      next: () => {
+        this.bookings.update((prev) => prev.filter((b) => b.id !== id));
+      }
+    });
+  }
+
+  confirm2(event: Event | undefined, id: string) {
+    this.confirmationService.confirm({
+      target: event!.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+      accept: () => {
+        this.deleteBooking(id);         // Refresh the list
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+      },
+    });
+  }
+  getStatus(startDate: string, endDate: string): string {
+    const today = new Date().toISOString().split('T')[0];
+
+    if (!startDate && !endDate) return 'unconfirmed';
+    if (startDate === today && !endDate) return 'check in';
+    if (endDate === today) return 'check out';
+
+    // ممكن تزود conditions أكتر لو عاوز
+    if (new Date(endDate) < new Date(today)) return 'check out';
+    if (new Date(startDate) > new Date(today)) return 'unconfirmed';
+
+    return 'check in';
+  }
+
+
+  getSeverity(inventoryStatus: string): 'success' | 'info' | 'warning' | 'danger' {
+    const cleanStatus = inventoryStatus.trim().toLowerCase();
+    switch (cleanStatus) {
+
+      case 'Unconfirmed':
+        return 'warning';
+      case 'check in':
         return 'success';
-      case 'unconfirmed':
-        return 'warn';
-      case 'checkedout':
+      case 'check out':
         return 'danger';
       default:
-        return '';
+        return 'info';
     }
   }
 
-  applyFilter(status: string): void {
-    this.filteredStatus = status as BookingStatus | '';
-    this.first = 0;
+  async updateStatus(bookingId: string, action: 'check in' | 'check out') {
+    try {
+      const bookingRef = doc(this.firestore, `bookings/${bookingId}`);
+      const today = new Date().toISOString().split('T')[0]; // yyyy-MM-dd
+
+      if (action === 'check in') {
+        await updateDoc(bookingRef, { startDate: today });
+      }
+
+      if (action === 'check out') {
+        await updateDoc(bookingRef, { endDate: today });
+      }
+
+      // لازم تستنى هنا علشان Firestore يرجع القيم الجديدة
+      this.getAllBookings();
+
+      console.log(`✅ Booking ${bookingId} ${action} updated successfully`);
+    } catch (error) {
+      console.error('❌ Error updating booking:', error);
+    }
   }
 
-  // ? =============================> Context Menu
-  getMenuItems(user: any): MenuItem[] {
+  applyFilter(inventoryStatus: 'unconfirmed' | 'check in' | 'check out' | '') {
+    this.filteredStatus = inventoryStatus;
+  }
+
+  filteredBookings() {
+    if (!this.filteredStatus) return this.bookings();
+    return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
+  }
+
+
+
+  getSpecificBooking(id: string) {
+    console.log('Go to booking details for:', id);
+    this.bookingsService.getBookingById(id).subscribe({
+      next: (res) => {
+        this.booking.set(res);
+        console.log('Booking details:', this.booking());
+      },
+      error: (error) => {
+        console.error('Error fetching booking details:', error);
+      }
+    });
+  }
+
+  getMenuItems(booking: IBookings): MenuItem[] {
+    const inventoryStatus = this.getStatus(booking.startDate, booking.endDate);
     const menuItems: MenuItem[] = [
       {
         label: 'See details',
-        icon: 'pi pi-eye m-3 text-xl',
-        // command: () => this.viewUserDetails(user.id)
+        icon: 'pi pi-eye mr-2',
+        command: () => this.router.navigate(['details/', booking.id])
+
       },
     ];
 
-    // Add status change actions directly (no nested menu)
-    if (
-      user.inventoryStatus !== 'checkedin' &&
-      user.inventoryStatus !== 'checkedout'
-    ) {
+    // لو لسه Unconfirmed ولسه معملش Check In
+    if (inventoryStatus.toLocaleLowerCase() === 'unconfirmed') {
       menuItems.push({
         label: 'Check In',
-        icon: 'pi pi-sign-in m-3 text-xl',
-        // command: () => this.updateStatus(user.id, 'checkedin')
+        icon: 'pi pi-sign-in mr-2',
+        command: () => this.updateStatus(booking.id!, 'check in')
+
       });
     }
 
-    if (
-      user.inventoryStatus !== 'unconfirmed' &&
-      user.inventoryStatus !== 'checkedout'
-    ) {
+    // لو عمل Check In ولسه معملش Check Out
+    if (inventoryStatus === 'check in') {
       menuItems.push({
         label: 'Check Out',
-        icon: 'pi pi-sign-out m-3 text-xl',
-        // command: () => this.updateStatus(user.id, 'checkedout')
+        icon: 'pi pi-sign-out mr-2',
+        command: () => this.updateStatus(booking.id!, 'check out')
+
       });
     }
 
+    // حذف الحجز متاح في أي حالة
     menuItems.push({
       label: 'Delete booking',
-      icon: 'pi pi-trash m-3 text-xl',
-      // command: () => this.deleteUser(user.id),
+      icon: 'pi pi-trash mr-2',
+      //   command: () => {
+      //     this.id = booking.id;
+      //  this.confirm2(event.originalEvent, cabin.id)
+      //   }
+      command: (event) => this.confirm2(event.originalEvent, booking.id)
     });
 
     return menuItems;
   }
 
-  //? =============================> Pagination methods
+
+  // Pagination methods
   onClick(event: any) {
     this.first = event.first;
   }
@@ -140,4 +253,8 @@ export class DashboardBookings implements OnInit {
   isLastPage(): boolean {
     return this.first + this.rows >= this.totalRecords;
   }
+
 }
+
+
+

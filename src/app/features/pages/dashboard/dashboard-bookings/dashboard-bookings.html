@@ -1,37 +1,34 @@
 <div class="card mt-3">
-  <p-table
-    class="custom-table m-auto"
-    [paginator]="true"
-    [totalRecords]="totalRecords"
-    (onPageChange)="onClick($event)"
-    [rowsPerPageOptions]="[5, 10]"
-    [value]="userData | filterStatus : filteredStatus"
-    [rows]="10"
-    [first]="first"
-    (onPage)="onClick($event)"
-  >
+  <p-confirmDialog />
+  <p-table class="custom-table m-auto" [paginator]="true" [totalRecords]="totalRecords" (onPageChange)="onClick($event)"
+    [rowsPerPageOptions]="[5, 10]" [value]="filteredBookings()" [rows]="10" [first]="first">
+
+    <!-- Caption -->
     <ng-template #caption>
-      <div
-        class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
-      >
+      <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
         <h2>All bookings</h2>
 
         <ul class="button-group ml-auto lg:ml-0">
           <li>
-            @for (status of statusOptions; track $index) {
-            <button
-              (click)="applyFilter(status.value)"
-              class="btn-g"
-              [class.active]="filteredStatus === status.value"
-            >
-              {{ status.label }}
+            <button (click)="applyFilter('')" class="btn-g" [class.active]="filteredStatus === ''">
+              All
             </button>
-            }
+            <button (click)="applyFilter('unconfirmed')" class="btn-g"
+              [class.active]="filteredStatus === 'unconfirmed'">
+              Unconfirmed
+            </button>
+            <button (click)="applyFilter('check in')" class="btn-g" [class.active]="filteredStatus === 'check in'">
+              Check-in
+            </button>
+            <button (click)="applyFilter('check out')" class="btn-g" [class.active]="filteredStatus === 'check out'">
+              Check-out
+            </button>
           </li>
         </ul>
       </div>
     </ng-template>
 
+    <!-- Header -->
     <ng-template #header>
       <tr>
         <th>Cabin</th>
@@ -39,80 +36,60 @@
         <th>Dates</th>
         <th>Status</th>
         <th>Amount</th>
+        <th>Actions</th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-user>
+    <!-- Body -->
+    <ng-template pTemplate="body" let-booking>
       <tr>
-        <td>{{ user.category }}</td>
+        <td>{{ booking.cabinId }}</td>
         <td>
-          {{ user.name }}
-          <p class="email">{{ user.userEmail }}</p>
+          {{ booking.guestName }}
+          <p class="email">{{ booking.guestEmail }}</p>
         </td>
         <td>
-          <p>{{ user.userRegTime }}</p>
-          <p class="date">{{ user.date }}</p>
+          <p>{{ booking.startDate }} → {{ booking.endDate }}</p>
         </td>
         <td>
-          <p-tag
-            [value]="user.inventoryStatus"
-            [severity]="getSeverity(user.inventoryStatus)"
-          ></p-tag>
+
+          <p-tag [value]="getStatus(booking.startDate, booking.endDate)"
+            [severity]="getSeverity(getStatus(booking.startDate, booking.endDate))">
+          </p-tag>
         </td>
         <td>
           <span class="amount">
-            {{ user.price | currency : "USD" }}
+            {{ booking.pr | currency : "USD" }}
           </span>
         </td>
         <td>
-          <div class="card flex justify-content-end">
-            <p-menu
-              #menu
-              [model]="getMenuItems(user)"
-              [popup]="true"
-              [style]="{
+          <div class="card flex justify-center">
+            <p-menu #menu [model]="getMenuItems(booking)" [popup]="true" [style]="{
                 'min-width': '150px',
                 'font-size': '12px',
-                'text-align': 'center',
-                'border': 'none',
-                 backgroundColor: backgroundColor,
-
-              }"
-              [appendTo]="'body'"
-            ></p-menu>
-            <button
-              pButton
-              icon="pi pi-ellipsis-v text-2xl"
-              class="p-button-text p-button-rounded p-button-sm action-button font-bold"
-              (click)="menu.toggle($event)"
-              aria-label="Actions"
-            ></button>
+                'text-align': 'center'
+              }" [appendTo]="'body'"></p-menu>
+            <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)" aria-label="Actions"></button>
           </div>
         </td>
       </tr>
     </ng-template>
 
+    <!-- Footer -->
     <ng-template #footer>
       <tr class="footer">
         <td colspan="6">
-          In total there are {{ userData ? userData.length : 0 }} userData.
+          In total there are {{ bookings()?.length || 0 }} bookings.
 
           <ul class="btn-p">
             <li>
-              <button
-                class="tabel-btn"
-                (click)="goToPrev()"
-                [disabled]="isFirstPage()"
-              >
+              <button class="tabel-btn" (click)="goToPrev()" [disabled]="isFirstPage()">
                 <i class="pi pi-chevron-left"></i> Previous
               </button>
             </li>
             <li>
-              <button
-                class="tabel-btn"
-                (click)="goToNext()"
-                [disabled]="isLastPage()"
-              >
+              <button class="tabel-btn" (click)="goToNext()" [disabled]="isLastPage()">
                 Next <i class="pi pi-chevron-right"></i>
               </button>
             </li>

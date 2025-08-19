@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { FirebaseApp } from '@angular/fire/app';
 import { collection, collectionData, deleteDoc, doc, docData, Firestore } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 
@@ -21,8 +20,12 @@ export class Bookings {
     return docData(bookingRef, { idField: 'id' }) as Observable<any>;
   }
 
-  deleteBooking(bookingId: string): Observable<void> {
+
+
+  deleteBooking(bookingId: string | undefined): Observable<void> {
+    if (!bookingId) throw new Error("booking id is missing");
     const bookingRef = doc(this.firestore, `bookings/${bookingId}`);
     return from(deleteDoc(bookingRef));
   }
+
 }

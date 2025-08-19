@@ -1,27 +1,16 @@
 <div class="card">
-  <p-table
-    class="custom-table m-auto"
-    [paginator]="true"
-    [totalRecords]="totalRecords"
-    (onPageChange)="onClick($event)"
-    [rowsPerPageOptions]="[5, 10]"
-    [value]="cabins | filterDiscount : filteredStatus"
-    [rows]="rows"
-    [first]="first"
-  >
+  <p-confirmDialog />
+  <p-table class="custom-table m-auto" [paginator]="true" [rowsPerPageOptions]="[10]" [rows]="10" [first]="0"
+    [totalRecords]="(cabinsList() | filterDiscount : filteredStatus).length"
+    [value]="cabinsList() | filterDiscount : filteredStatus">
+
     <ng-template #caption>
-      <div
-        class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
-      >
+      <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
         <h2>All cabins</h2>
         <ul class="button-group ml-auto lg:ml-0">
           <li>
             @for (option of discountOptions; track $index) {
-            <button
-              (click)="applyFilter(option.value)"
-              class="btn-g"
-              [class.active]="filteredStatus === option.value"
-            >
+            <button (click)="applyFilter(option.value)" class="btn-g" [class.active]="filteredStatus === option.value">
               {{ option.label }}
             </button>
             }
@@ -37,21 +26,25 @@
         <th>Capacity</th>
         <th>Price</th>
         <th>Discount</th>
+        <th></th>
       </tr>
     </ng-template>
 
     <ng-template #body let-cabin>
+
       <tr>
         <td style="width: 70px; height: 70px">
           <img src="images/logo-dark.png" class="w-full mb-1" alt="" />
         </td>
         <td>
+          <p>{{ cabin.name }}</p>
           <p class="font-semibold text-2xl">{{ cabin.cabinNumber }}</p>
         </td>
         <td>
-          <p>{{ cabin.capacity }}</p>
+          <p>{{ cabin.maxCapacity }}</p>
         </td>
         <td>
+          <p>{{ cabin.regularPrice | currency : "USD" : "symbol" : "1.2-2" }}</p>
           <p class="font-semibold amount">
             {{ cabin.price | currency : "USD" : "symbol" : "1.2-2" }}
           </p>
@@ -64,48 +57,46 @@
           } @else { - }
         </td>
         <td>
+
+          <div class="card flex justify-center">
+            <p-menu #menu [model]="getMenuItems(cabin)" [popup]="true" [appendTo]="'body'"></p-menu>
+            <i (click)="menu.toggle($event)" class="pi pi-ellipsis-v cursor-pointer"></i>
+          </div>
+
           <div class="card flex justify-content-end">
-            <p-menu
-              #menu
-              [model]="getMenuItems(cabin)"
-              [popup]="true"
-              [style]="{
+            <p-menu #menu [model]="getMenuItems(cabin)" [popup]="true" [style]="{
                 'min-width': '150px',
                 'font-size': '12px',
                 'text-align': 'center',
                 'border': 'none',
                 backgroundColor: backgroundColor,
-              }"
-              [appendTo]="'body'"
-            ></p-menu>
-            <button
-              pButton
-              icon="pi pi-ellipsis-v text-2xl"
-              class="p-button-text p-button-rounded p-button-sm action-button"
-              (click)="menu.toggle($event)"
-              aria-label="Actions"
-            ></button>
+              }" [appendTo]="'body'">
+            </p-menu>
+
           </div>
         </td>
       </tr>
+
     </ng-template>
 
     <ng-template #footer>
       <tr>
+
+
         <td colspan="10">
-          Showing {{ (cabins | filterDiscount : filteredStatus).length }} of
-          {{ totalRecords }} cabins
+          Showing {{ (cabinsList() | filterDiscount : filteredStatus).length }} of
+          {{ totalRecords }} Cabins
         </td>
       </tr>
     </ng-template>
   </p-table>
-
   <!--  Add new cabin Button -->
   <div class="flex justify-content-st mt-5">
     <button type="submit" label="Show" (click)="showDialog()" class="p-btn">
       Add new cabin
     </button>
-    <app-dialog [(visible)]="visible" (onCreate)="createCabin($event)">
+    <app-dialog [(visible)]="visible" [cabin]="selectedCabin" (onSave)="onDialogClose()"
+      (visibleChange)="visible = $event">
     </app-dialog>
   </div>
 </div>
