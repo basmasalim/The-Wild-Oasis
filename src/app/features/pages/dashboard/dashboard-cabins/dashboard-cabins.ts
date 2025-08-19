@@ -1,24 +1,54 @@
-import { Cabins } from './../../../../core/services/cabins/cabins';
-import { Component, inject, signal } from '@angular/core';
+
+import { signal } from '@angular/core';
 import { Notifications } from '../../../../auth/services/notifications/notifications';
-import { Icabins } from '../../../../core/interfaces/icabins';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { doc, updateDoc } from '@angular/fire/firestore';
 
+import { Component, inject, OnInit } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { RatingModule } from 'primeng/rating';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { Cabins } from '../../../../core/services/cabins/cabins';
+import { Icabins } from '../../../../core/interfaces/icabins';
+import { MenuItem } from 'primeng/api';
+import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
+import { DISCOUNT_CONSTANTS } from '../../../../core/constants/discount.constants';
+import { Discount } from '../../../../core/enum/discount.emum';
+import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
+import { Menu } from 'primeng/menu';
+
 @Component({
   selector: 'app-dashboard-cabins',
-  imports: [],
+  standalone: true,
+  imports: [
+    TableModule,
+    TagModule,
+    RatingModule,
+    CommonModule,
+    ButtonModule,
+    FilterDiscountPipe,
+    Menu,
+  ],
   templateUrl: './dashboard-cabins.html',
-  styleUrl: './dashboard-cabins.scss'
+  styleUrl: './dashboard-cabins.scss',
 })
 export class DashboardCabins {
   private readonly cabins = inject(Cabins);
   private readonly notifications = inject(Notifications);
   cabinsList = signal<Icabins[]>([]);
   cabinsForm: FormGroup;
-  id: string | null = null;
+  id: string | undefined = undefined;
+  first = 0;
+  rows = 5;
+  totalRecords = 0;
+  filteredStatus: Discount | 'all' = 'all';
+  discountOptions = DISCOUNT_CONSTANTS;
+  sortOptions = SORTING_OPTIONS;
+  items: MenuItem[] | undefined;
   ngOnInit() {
     this.getAllCabins();
   }
@@ -126,11 +156,17 @@ export class DashboardCabins {
     })
   }
 
-  deleteBooking(cabinId: string) {
+  deleteBooking(cabinId: string | undefined) {
+    if (!cabinId) {
+      console.error('Cabin id is missing!');
+      return;
+    }
     this.id = cabinId;
     this.cabins.deleteCabin(cabinId).subscribe({
 
       next: () => {
+        console.log('Booking deleted successfully');
+
 
         // this.notifications.showSuccess('Booking deleted successfully', 'The booking has been removed.');
         this.getAllCabins();
@@ -168,7 +204,74 @@ export class DashboardCabins {
     });
   }
 
+  applyFilter(status: Discount | 'all') {
+    this.filteredStatus = status;
+    this.first = 0; // Reset pagination when filter changes
+  }
 
+  transform(cabins: Icabins[], status: Discount | 'all'): Icabins[] {
+    if (!cabins) return [];
+
+    if (status === 'all') {
+      return cabins;
+    }
+
+    if (status === Discount.WithDiscount) {
+      return cabins.filter(cabin => cabin.discount > 0);
+    }
+
+    if (status === Discount.NoDiscount) {
+      return cabins.filter(cabin => !cabin.discount || cabin.discount === 0);
+    }
+
+    return cabins;
+  }
+
+
+  getMenuItems(cabin: Icabins): MenuItem[] {
+
+    return [
+
+      {
+        label: 'Edit cabin',
+        icon: 'pi pi-pencil mr-2',
+      },
+      {
+        label: 'Delete booking',
+        icon: 'pi pi-trash mr-2',
+
+        command: () => this.deleteBooking(cabin.id)   // ✅ هنا تبعت id
+
+
+      },
+    ];
+  }
+
+  // Pagination methods
+  onClick(event: any) {
+    this.first = event.first;
+  }
+
+  goToNext() {
+    if (!this.isLastPage()) {
+      this.first += this.rows;
+    }
+  }
+
+  goToPrev() {
+    if (!this.isFirstPage()) {
+      this.first -= this.rows;
+    }
+  }
+
+  isFirstPage(): boolean {
+    return this.first === 0;
+  }
+
+  isLastPage(): boolean {
+    return this.first + this.rows >= this.totalRecords;
+  }
 
 
 }
+

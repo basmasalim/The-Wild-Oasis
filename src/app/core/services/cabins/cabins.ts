@@ -3,22 +3,22 @@ import { collection, collectionData, deleteDoc, doc, docData, Firestore } from '
 import { from, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class Cabins {
-  private firestore = inject(Firestore);
+    private firestore = inject(Firestore);
 
 
-  getCabins(): Observable<any[]> {
-    const cabinsRef = collection(this.firestore, 'cabins');
-    return collectionData(cabinsRef, { idField: 'id' }) as Observable<any[]>;
-  }
+    getCabins(): Observable<any[]> {
+        const cabinsRef = collection(this.firestore, 'cabins');
+        return collectionData(cabinsRef, { idField: 'id' }) as Observable<any[]>;
+    }
 
 
-  deleteCabin(cabinId: string): Observable<void> {
-    const cabinRef = doc(this.firestore, `cabins/${cabinId}`);
-    return from(deleteDoc(cabinRef));
-  }
-
+    deleteCabin(cabinId: string | undefined): Observable<void> {
+        if (!cabinId) throw new Error("Cabin id is missing");
+        const cabinRef = doc(this.firestore, `cabins/${cabinId}`);
+        return from(deleteDoc(cabinRef));
+    }
 
 }

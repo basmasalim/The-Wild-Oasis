@@ -20,8 +20,12 @@ export class Bookings {
     return docData(bookingRef, { idField: 'id' }) as Observable<any>;
   }
 
-  deleteBooking(bookingId: string): Observable<void> {
+
+
+  deleteBooking(bookingId: string | undefined): Observable<void> {
+    if (!bookingId) throw new Error("booking id is missing");
     const bookingRef = doc(this.firestore, `bookings/${bookingId}`);
     return from(deleteDoc(bookingRef));
   }
+
 }

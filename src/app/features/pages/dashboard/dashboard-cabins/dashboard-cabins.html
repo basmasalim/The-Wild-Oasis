@@ -1,1 +1,72 @@
-<p>dashboard-cabins works!</p>
+<div class="card">
+  <p-table class="custom-table m-auto" [paginator]="true" [rowsPerPageOptions]="[10]" [rows]="10" [first]="0"
+    [totalRecords]="(cabinsList() | filterDiscount : filteredStatus).length"
+    [value]="cabinsList() | filterDiscount : filteredStatus">
+
+    <ng-template #caption>
+      <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
+        <h2>All cabins</h2>
+        <ul class="button-group ml-auto lg:ml-0">
+          <li>
+            @for (option of discountOptions; track $index) {
+            <button (click)="applyFilter(option.value)" class="btn-g" [class.active]="filteredStatus === option.value">
+              {{ option.label }}
+            </button>
+            }
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th>Cabin</th>
+        <th>Capacity</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-cabin>
+
+      <tr>
+        <td>
+          <p>{{ cabin.name }}</p>
+        </td>
+        <td>
+          <p>{{ cabin.maxCapacity }}</p>
+        </td>
+        <td>
+          <p>{{ cabin.regularPrice | currency : "USD" : "symbol" : "1.2-2" }}</p>
+        </td>
+        <td>
+          @if (cabin.discount) {
+          <span class="amount">
+            {{ cabin.discount | currency : "USD" : "symbol" : "1.2-2" }}
+          </span>
+          } @else { - }
+        </td>
+        <td>
+
+          <div class="card flex justify-center">
+            <p-menu #menu [model]="getMenuItems(cabin)" [popup]="true" [appendTo]="'body'"></p-menu>
+            <i (click)="menu.toggle($event)" class="pi pi-ellipsis-v cursor-pointer"></i>
+          </div>
+
+
+        </td>
+      </tr>
+
+    </ng-template>
+
+    <ng-template #footer>
+      <tr>
+        <td colspan="5">
+          Showing {{ (cabinsList() | filterDiscount : filteredStatus).length }} of
+          {{ totalRecords }} cabins
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
