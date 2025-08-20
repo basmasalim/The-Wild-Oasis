@@ -68,10 +68,11 @@ export class DashboardBookings implements OnInit {
     });
   }
 
-  applyFilter(status: string): void {
-    this.filteredStatus = '';
-    this.first = 0;
-  }
+applyFilter(status: string): void {
+  this.filteredStatus = status as 'unconfirmed' | 'check in' | 'check out' | '';
+  this.first = 0; // reset paginator
+}
+
 
   deleteBooking(id: string) {
     this.loadingService.show();

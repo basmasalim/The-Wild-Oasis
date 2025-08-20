@@ -43,7 +43,7 @@ export class DashboardCabins {
   private readonly cabins = inject(Cabins);
   private readonly notifications = inject(Notifications);
   cabinsList = signal<Icabins[]>([]);
-  selectedCabin: Icabins | null = null; // cabin اللي هيتم تعديله
+  selectedCabin: Icabins | null = null;
   id: string | undefined = undefined;
   first = 0;
   rows = 5;
