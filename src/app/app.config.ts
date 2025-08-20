@@ -1,4 +1,3 @@
-
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -18,9 +17,12 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideAnalytics, getAnalytics } from '@angular/fire/analytics';
-import { getApp } from 'firebase/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment.prod';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { errorsInterceptor } from './core/interceptors/errors/errors-interceptor';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -32,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withHashLocation(), withInMemoryScrolling({scrollPositionRestoration:'top'})),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([errorsInterceptor])),
     providePrimeNG({
       theme: {
         preset: Aura,

@@ -1,4 +1,3 @@
-
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -26,9 +25,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RatingModule,
     CommonModule,
     Menu,
-    ButtonModule, ConfirmDialogModule,
+    ButtonModule,
+    ConfirmDialogModule,
   ],
-  templateUrl:'./dashboard-bookings.html',
+  templateUrl: './dashboard-bookings.html',
   styleUrls: ['./dashboard-bookings.scss'],
 })
 export class DashboardBookings implements OnInit {
@@ -45,12 +45,13 @@ export class DashboardBookings implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private firestore: Firestore,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getAllBookings();
   }
+
 
   getAllBookings() {
     this.loading.set(true);
@@ -61,16 +62,14 @@ export class DashboardBookings implements OnInit {
           res.map((booking) => ({
             ...booking,
             inventoryStatus: this.getStatus(booking.startDate, booking.endDate),
-
           }))
-
         );
 
         this.loading.set(false);
       },
       error: () => {
         this.loading.set(false);
-      }
+      },
     });
   }
 
@@ -78,7 +77,7 @@ export class DashboardBookings implements OnInit {
     this.bookingsService.deleteBooking(id).subscribe({
       next: () => {
         this.bookings.update((prev) => prev.filter((b) => b.id !== id));
-      }
+      },
     });
   }
 
@@ -99,11 +98,19 @@ export class DashboardBookings implements OnInit {
         severity: 'danger',
       },
       accept: () => {
-        this.deleteBooking(id);         // Refresh the list
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        this.deleteBooking(id); // Refresh the list
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
       },
       reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
       },
     });
   }
@@ -114,18 +121,17 @@ export class DashboardBookings implements OnInit {
     if (startDate === today && !endDate) return 'check in';
     if (endDate === today) return 'check out';
 
-    // ممكن تزود conditions أكتر لو عاوز
     if (new Date(endDate) < new Date(today)) return 'check out';
     if (new Date(startDate) > new Date(today)) return 'unconfirmed';
 
     return 'check in';
   }
 
-
-  getSeverity(inventoryStatus: string): 'success' | 'info' | 'warning' | 'danger' {
+  getSeverity(
+    inventoryStatus: string
+  ): 'success' | 'info' | 'warning' | 'danger' {
     const cleanStatus = inventoryStatus.trim().toLowerCase();
     switch (cleanStatus) {
-
       case 'Unconfirmed':
         return 'warning';
       case 'check in':
@@ -150,7 +156,6 @@ export class DashboardBookings implements OnInit {
         await updateDoc(bookingRef, { endDate: today });
       }
 
-      // لازم تستنى هنا علشان Firestore يرجع القيم الجديدة
       this.getAllBookings();
 
       console.log(`✅ Booking ${bookingId} ${action} updated successfully`);
@@ -165,10 +170,10 @@ export class DashboardBookings implements OnInit {
 
   filteredBookings() {
     if (!this.filteredStatus) return this.bookings();
-    return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
+    return this.bookings().filter(
+      (b) => this.getStatus(b.startDate, b.endDate) === this.filteredStatus
+    );
   }
-
-
 
   getSpecificBooking(id: string) {
     console.log('Go to booking details for:', id);
@@ -179,7 +184,7 @@ export class DashboardBookings implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching booking details:', error);
-      }
+      },
     });
   }
 
@@ -189,8 +194,7 @@ export class DashboardBookings implements OnInit {
       {
         label: 'See details',
         icon: 'pi pi-eye mr-2',
-        command: () => this.router.navigate(['details/', booking.id])
-
+        command: () => this.router.navigate(['details/', booking.id]),
       },
     ];
 
@@ -199,8 +203,7 @@ export class DashboardBookings implements OnInit {
       menuItems.push({
         label: 'Check In',
         icon: 'pi pi-sign-in mr-2',
-        command: () => this.updateStatus(booking.id!, 'check in')
-
+        command: () => this.updateStatus(booking.id!, 'check in'),
       });
     }
 
@@ -209,8 +212,7 @@ export class DashboardBookings implements OnInit {
       menuItems.push({
         label: 'Check Out',
         icon: 'pi pi-sign-out mr-2',
-        command: () => this.updateStatus(booking.id!, 'check out')
-
+        command: () => this.updateStatus(booking.id!, 'check out'),
       });
     }
 
@@ -222,12 +224,11 @@ export class DashboardBookings implements OnInit {
       //     this.id = booking.id;
       //  this.confirm2(event.originalEvent, cabin.id)
       //   }
-      command: (event) => this.confirm2(event.originalEvent, booking.id)
+      command: (event) => this.confirm2(event.originalEvent, booking.id),
     });
 
     return menuItems;
   }
-
 
   // Pagination methods
   onClick(event: any) {
@@ -253,8 +254,4 @@ export class DashboardBookings implements OnInit {
   isLastPage(): boolean {
     return this.first + this.rows >= this.totalRecords;
   }
-
 }
-
-
-
