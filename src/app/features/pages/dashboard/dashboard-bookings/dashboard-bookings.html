@@ -10,15 +10,14 @@
         <ul class="button-group ml-auto lg:ml-0">
           @for (status of statusFilters; track $index) {
           <li>
-            <<<<<<< HEAD <button (click)="applyFilter(status.value)" class="btn-g"
-              [class.active]="filteredStatus === status.value">
-              =======
+            <button (click)="applyFilter(status.value)" class="btn-g" [class.active]="filteredStatus === status.value">
+
               <button (click)="applyFilter(status.value)" class="btn-g"
                 [class.active]="filteredStatus === status.value">
-                >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
+
                 {{ status.label }}
               </button>
-              </button>
+            </button>
           </li>}
         </ul>
       </div>
@@ -48,33 +47,34 @@
           <p>{{ booking.startDate }} → {{ booking.endDate }}</p>
         </td>
         <td>
-          <<<<<<< HEAD <p-tag [value]="getStatus(booking.startDate, booking.endDate)"
+          <p-tag [value]="getStatus(booking.startDate, booking.endDate)"
             [severity]="getSeverity(getStatus(booking.startDate, booking.endDate))">
-            =======
+
             <p-tag [value]="getStatus(booking.startDate, booking.endDate)" [severity]="
               getSeverity(getStatus(booking.startDate, booking.endDate))
             " styleClass="p-tag-custam">
-              >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
+
             </p-tag>
+          </p-tag>
         </td>
         <td>
           <span class="amount">{{ booking.pr | currency : "USD" }}</span>
         </td>
         <td>
           <div class="card flex justify-center">
-            <<<<<<< HEAD <p-menu #menu [model]="getMenuItems(booking)" [popup]="true"
+            <p-menu #menu [model]="getMenuItems(booking)" [popup]="true"
               [style]="{'min-width': '150px','font-size': '12px','text-align': 'center'}" [appendTo]="'body'"></p-menu>
-              <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
-                (click)="menu.toggle($event)" aria-label="Actions"></button>
-              =======
-              <p-menu #menu [model]="getMenuItems(booking)" [popup]="true" [style]="{
+            <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)" aria-label="Actions"></button>
+
+            <p-menu #menu [model]="getMenuItems(booking)" [popup]="true" [style]="{
                 'min-width': '150px',
                 'font-size': '12px',
                 'text-align': 'center'
               }" [appendTo]="'body'"></p-menu>
-              <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
-                (click)="menu.toggle($event)" aria-label="Actions"></button>
-              >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
+            <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
+              (click)="menu.toggle($event)" aria-label="Actions"></button>
+
           </div>
         </td>
       </tr>
