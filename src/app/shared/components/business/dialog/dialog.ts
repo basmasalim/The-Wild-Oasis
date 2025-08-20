@@ -86,8 +86,6 @@ export class DialogComponent {
       try {
         if (this.cabin?.id) {
           // ✅ Update
-
-
           const cabinRef = doc(this.firestore, 'cabins', this.cabin.id);
           await updateDoc(cabinRef, this.cabinForm.value);
           this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Cabin updated successfully!' });

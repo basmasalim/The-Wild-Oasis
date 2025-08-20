@@ -72,10 +72,10 @@ export class DashboardBookings implements OnInit {
     return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
   }
 
-applyFilter(status: string): void {
-  this.filteredStatus = status as 'unconfirmed' | 'check in' | 'check out' | '';
-  this.first = 0; // reset paginator
-}
+  applyFilter(status: string): void {
+    this.filteredStatus = status as 'unconfirmed' | 'check in' | 'check out' | '';
+    this.first = 0; // reset paginator
+  }
 
 
   deleteBooking(id: string) {
@@ -122,17 +122,32 @@ applyFilter(status: string): void {
     const end = new Date(endDate);
     const now = new Date(today);
 
-    if (!startDate && !endDate) return 'unconfirmed';
-    if (start <= now && end >= now) return 'check in';
-    if (end < now) return 'check out';
-    if (start > now) return 'unconfirmed';
+    if (!startDate && !endDate) {
+      this.booking().inventoryStatus = 'unconfirmed';
+      this.booking().severity = 'warning';
+      return 'unconfirmed';
+    };
+    if (start <= now && end >= now) {
+      this.booking().inventoryStatus = 'check in';
+      this.booking().severity = 'success';
+      return 'check in';
+    }
+    if (end < now) {
+      this.booking().inventoryStatus = 'check out';
+      this.booking().severity = 'danger';
+      return 'check out';
+    }
+    if (start > now) {
+      this.booking().inventoryStatus = 'unconfirmed';
+      this.booking().severity = 'warning';
+    }
 
     return 'unconfirmed';
   }
 
   getSeverity(status: string): 'success' | 'info' | 'warning' | 'danger' {
     switch (status.toLowerCase()) {
-      case 'unconfirmed':
+      case 'Unconfirmed':
         return 'warning';
       case 'check in':
         return 'success';
@@ -166,7 +181,7 @@ applyFilter(status: string): void {
       {
         label: 'See details',
         icon: 'pi pi-eye mr-2',
-        command: () => this.router.navigate(['details/', booking.id]),
+        command: () => this.router.navigate(['details/', booking.id, this.getStatus(booking.startDate, booking.endDate)]),
       },
     ];
 

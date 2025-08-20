@@ -16,7 +16,7 @@ export class App {
   protected readonly title = signal('The-Wild-Oasis');
 
 
-  constructor(private loadingService: Loading) {}
+  constructor(private loadingService: Loading) { }
 
   get loading$() {
     return this.loadingService.loading$;

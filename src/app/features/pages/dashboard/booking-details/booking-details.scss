@@ -4,8 +4,8 @@ body {
 
 
 section .status {
-    background-color: var(--color-blue-100);
-    color: var(--color-blue-700);
+    background-color: var(--bg);
+    color: var(--fg);
     padding: 0.5rem 1rem;
     border-radius: var(--border-radius-2xl);
     font-size: 1.2rem;
@@ -72,14 +72,15 @@ section h1 {
 
 .details .body .money {
     border-radius: var(--border-radius-lg);
-    background-color: var(--color-green-100);
+    background-color: var(--bg);
 }
 
 .details .body .money h4,
 .details .body .money span {
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--color-green-700);
+    background-color: var(--bg);
+    color: var(--fg);
 }
 
 .details .body .money span {
@@ -93,8 +94,8 @@ section h1 {
     justify-content: center;
     align-items: center;
     font-weight: 700;
-    color: var(--color-green-700);
-    border: 2px solid var(--color-green-700);
+    color: var(--fg);
+    border: 2px solid var(--fg);
     border-radius: 50%;
 }
 
