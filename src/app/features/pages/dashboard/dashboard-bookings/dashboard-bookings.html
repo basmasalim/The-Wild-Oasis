@@ -1,9 +1,8 @@
 <div class="card mt-3">
   <p-confirmDialog></p-confirmDialog>
 
-  <p-table class="custom-table m-auto" [value]="bookings() | bookingstatusFilter: filteredStatus" [paginator]="true"
-    [rows]="rows" [totalRecords]="totalRecords" [first]="first" (onPageChange)="first">
-
+  <p-table class="custom-table m-auto" [paginator]="true" [totalRecords]="totalRecords" (onPageChange)="onClick($event)"
+    [rowsPerPageOptions]="[5, 10]" [value]="filteredBookings()" [rows]="10" [first]="first">
     <!-- Caption -->
     <ng-template #caption>
       <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
@@ -11,13 +10,16 @@
         <ul class="button-group ml-auto lg:ml-0">
           @for (status of statusFilters; track $index) {
           <li>
-
-            <button (click)="applyFilter(status.value)" class="btn-g" [class.active]="filteredStatus === status.value">
-              {{ status.label }}
-            </button>
-
-          </li>
-          }
+            <<<<<<< HEAD <button (click)="applyFilter(status.value)" class="btn-g"
+              [class.active]="filteredStatus === status.value">
+              =======
+              <button (click)="applyFilter(status.value)" class="btn-g"
+                [class.active]="filteredStatus === status.value">
+                >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
+                {{ status.label }}
+              </button>
+              </button>
+          </li>}
         </ul>
       </div>
     </ng-template>
@@ -46,19 +48,33 @@
           <p>{{ booking.startDate }} → {{ booking.endDate }}</p>
         </td>
         <td>
-          <p-tag [value]="getStatus(booking.startDate, booking.endDate)"
+          <<<<<<< HEAD <p-tag [value]="getStatus(booking.startDate, booking.endDate)"
             [severity]="getSeverity(getStatus(booking.startDate, booking.endDate))">
-          </p-tag>
+            =======
+            <p-tag [value]="getStatus(booking.startDate, booking.endDate)" [severity]="
+              getSeverity(getStatus(booking.startDate, booking.endDate))
+            " styleClass="p-tag-custam">
+              >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
+            </p-tag>
         </td>
         <td>
           <span class="amount">{{ booking.pr | currency : "USD" }}</span>
         </td>
         <td>
           <div class="card flex justify-center">
-            <p-menu #menu [model]="getMenuItems(booking)" [popup]="true"
+            <<<<<<< HEAD <p-menu #menu [model]="getMenuItems(booking)" [popup]="true"
               [style]="{'min-width': '150px','font-size': '12px','text-align': 'center'}" [appendTo]="'body'"></p-menu>
-            <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
-              (click)="menu.toggle($event)" aria-label="Actions"></button>
+              <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
+                (click)="menu.toggle($event)" aria-label="Actions"></button>
+              =======
+              <p-menu #menu [model]="getMenuItems(booking)" [popup]="true" [style]="{
+                'min-width': '150px',
+                'font-size': '12px',
+                'text-align': 'center'
+              }" [appendTo]="'body'"></p-menu>
+              <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm action-button"
+                (click)="menu.toggle($event)" aria-label="Actions"></button>
+              >>>>>>> b118544191161c43b0d98285c8f2c86c52a6fdb7
           </div>
         </td>
       </tr>
@@ -68,7 +84,11 @@
     <ng-template #footer>
       <tr class="footer">
         <td colspan="6">
-          In total there are {{ (bookings() | bookingstatusFilter: filteredStatus).length }} bookings.
+          In total there are
+          {{
+          (bookings()).length
+          }}
+          bookings.
         </td>
       </tr>
     </ng-template>

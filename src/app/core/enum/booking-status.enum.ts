@@ -1,6 +1,6 @@
 export enum BookingStatus {
   All = '',
-  CheckedOut = 'checkedout',
+  CheckedOut = 'check out',
   CheckedIn = 'check in',
   Unconfirmed = 'unconfirmed',
 }

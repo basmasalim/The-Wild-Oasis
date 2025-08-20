@@ -12,7 +12,6 @@ import { Bookings } from '../../../../core/services/bookings/bookings';
 import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Loading } from '../../../../core/services/loading/loading';
-import { BookingstatusFilterPipe } from '../../../../core/pipe/booking-status-filter/bookingstatus-filter-pipe';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
 
 @Component({
@@ -26,7 +25,6 @@ import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.const
     Menu,
     ButtonModule,
     ConfirmDialogModule,
-    BookingstatusFilterPipe,
   ],
   templateUrl: './dashboard-bookings.html',
   styleUrls: ['./dashboard-bookings.scss'],
@@ -66,6 +64,12 @@ export class DashboardBookings implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+
+  filteredBookings() {
+    if (!this.filteredStatus) return this.bookings();
+    return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
   }
 
   applyFilter(status: string): void {
@@ -206,4 +210,9 @@ export class DashboardBookings implements OnInit {
 
     return items;
   }
+
+  onClick(event: any) {
+    this.first = event.first;
+  }
+
 }
