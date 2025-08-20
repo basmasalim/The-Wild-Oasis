@@ -18,6 +18,7 @@ import { Subject } from 'rxjs';
 import { Notifications } from '../../services/notifications/notifications';
 import { ToastModule } from 'primeng/toast';
 import { Authintication } from '../../services/authintication/authintication';
+import { FirebaseErrorHandlerService } from '../../../core/services/firebase-errors/firebase-error';
 
 @Component({
   selector: 'app-login',
@@ -30,10 +31,12 @@ export class Login implements OnInit, OnDestroy {
   loading = false;
   errorMessage = '';
   loggedIn: Signal<boolean> = computed(() => this.auth.isLogged());
+
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(Authintication);
   private readonly router = inject(Router);
   private readonly notifications = inject(Notifications);
+  private readonly firebaseErrorHandler  = inject(FirebaseErrorHandlerService);
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -77,6 +80,7 @@ export class Login implements OnInit, OnDestroy {
           this.auth.isLogged.set(false);
 
           this.loading = false;
+          this.firebaseErrorHandler.handle(err);
           this.notifications.showError(
             'Login Failed',
             'Invalid email or password'

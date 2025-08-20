@@ -7,9 +7,11 @@ import { Bookings } from '../../../../core/services/bookings/bookings';
 import { get } from 'http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { stat } from 'fs';
+import { ConfirmDialog } from "primeng/confirmdialog";
 @Component({
   selector: 'app-booking-details',
-  imports: [RouterLink, CurrencyPipe, DatePipe],
+  imports: [RouterLink, CurrencyPipe, DatePipe, ConfirmDialog],
   templateUrl: './booking-details.html',
   styleUrl: './booking-details.scss'
 })
@@ -23,12 +25,15 @@ export class BookingDetails implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
   bookId: WritableSignal<string> = signal('');
+  status: WritableSignal<string> = signal('');
+  check: boolean = false;
   booking = signal<IBookings>({} as IBookings);
+
   numOfNights: WritableSignal<number> = signal(0);
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.bookId.set(params['id']);
-      this.getSpecificBooking(this.bookId());
+      this.bookId.set(params['id'] || ['status']);
+      this.getSpecificBooking(this.bookId(), params['status']);
     });
   }
   calculateNumOfNights() {
@@ -55,13 +60,26 @@ export class BookingDetails implements OnInit {
 
     this.numOfNights.set(nights);
   }
+  get statusColors() {
+    switch (this.status()) {
+      case 'check in':
+        return { bg: 'var(--color-green-100)', fg: 'var(--color-green-700)' };
+      case 'check out':
+        return { bg: 'var(--color-silver-100)', fg: 'var(--color-silver-700)' };
+      default:
+        return { bg: 'var(--color-blue-100)', fg: 'var(--color-blue-700)' };
+    }
+  }
 
 
-  getSpecificBooking(id: string) {
+  getSpecificBooking(id: string, status?: string) {
     console.log('Go to booking details for:', id);
     this.bookingsService.getBookingById(id).subscribe({
       next: (res) => {
         this.booking.set(res);
+        console.log(status);
+
+        this.status.set(status || '');
         console.log('Booking details:', this.booking());
         this.calculateNumOfNights();
       },
@@ -76,34 +94,39 @@ export class BookingDetails implements OnInit {
   deleteBooking(id: string) {
     this.bookingsService.deleteBooking(id).subscribe({
       next: () => {
-
-        this.router.navigate(['/dashboard/bookings']);
+        this.router.navigate(['/bookings']);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Booking deleted successfully' });
+      },
+      error: (error) => {
+        console.error('Error deleting booking:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete booking' });
       }
     });
   }
 
-  confirm2(event: Event | undefined, id: string) {
+  confirmDelete(event: Event, id: string) {
     this.confirmationService.confirm({
-      target: event!.target as EventTarget,
+      target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
       header: 'Danger Zone',
       icon: 'pi pi-info-circle',
       rejectLabel: 'Cancel',
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Delete',
-        severity: 'danger',
-      },
+      rejectButtonProps: { severity: 'secondary', outlined: true },
+      acceptButtonProps: { severity: 'danger', label: 'Delete' },
       accept: () => {
-        this.deleteBooking(id);         // Refresh the list
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        this.deleteBooking(id);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
       },
       reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
       },
     });
   }
