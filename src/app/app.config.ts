@@ -21,6 +21,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment.prod';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorsInterceptor } from './core/interceptors/errors/errors-interceptor';
+import { loadingInterceptor } from './core/interceptors/loading/loading-interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -34,7 +35,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withHashLocation(), withInMemoryScrolling({scrollPositionRestoration:'top'})),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([errorsInterceptor])),
+    provideHttpClient(withInterceptors([errorsInterceptor, loadingInterceptor])),
     providePrimeNG({
       theme: {
         preset: Aura,
