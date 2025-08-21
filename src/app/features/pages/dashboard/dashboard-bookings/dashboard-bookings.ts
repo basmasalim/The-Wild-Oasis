@@ -33,6 +33,8 @@ export class DashboardBookings implements OnInit {
   bookings = signal<IBookings[]>([]);
   booking = signal<IBookings>({} as IBookings);
   loading = signal<boolean>(true);
+  menuItems: { [key: string]: MenuItem[] } = {};
+
   filteredStatus: 'unconfirmed' | 'check in' | 'check out' | '' = '';
   statusFilters = BOOKING_STATUS_OPTIONS;
   totalRecords = 0;
@@ -48,6 +50,7 @@ export class DashboardBookings implements OnInit {
 
   ngOnInit(): void {
     this.getAllBookings();
+    this.preparingTheMenu();
   }
 
   getAllBookings() {
@@ -66,17 +69,21 @@ export class DashboardBookings implements OnInit {
     });
   }
 
-
   filteredBookings() {
     if (!this.filteredStatus) return this.bookings();
-    return this.bookings().filter(b => this.getStatus(b.startDate, b.endDate) === this.filteredStatus);
+    return this.bookings().filter(
+      (b) => this.getStatus(b.startDate, b.endDate) === this.filteredStatus
+    );
   }
 
   applyFilter(status: string): void {
-    this.filteredStatus = status as 'unconfirmed' | 'check in' | 'check out' | '';
+    this.filteredStatus = status as
+      | 'unconfirmed'
+      | 'check in'
+      | 'check out'
+      | '';
     this.first = 0; // reset paginator
   }
-
 
   deleteBooking(id: string) {
     this.loadingService.show();
@@ -126,7 +133,7 @@ export class DashboardBookings implements OnInit {
       this.booking().inventoryStatus = 'unconfirmed';
       this.booking().severity = 'warning';
       return 'unconfirmed';
-    };
+    }
     if (start <= now && end >= now) {
       this.booking().inventoryStatus = 'check in';
       this.booking().severity = 'success';
@@ -175,44 +182,64 @@ export class DashboardBookings implements OnInit {
     }
   }
 
+  preparingTheMenu() {
+    this.bookingsService.getBookings().subscribe({
+      next: (res) => {
+        this.totalRecords = res.length;
+        this.bookings.set(res);
+
+        res.forEach((b) => {
+          this.menuItems[b.id!] = this.getMenuItems(b);
+        });
+
+        this.loadingService.hide();
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      },
+    });
+  }
+
   getMenuItems(booking: IBookings): MenuItem[] {
     const status = this.getStatus(booking.startDate, booking.endDate);
-    const items: MenuItem[] = [
+
+    return [
       {
         label: 'See details',
         icon: 'pi pi-eye mr-2',
-        command: () => this.router.navigate(['details/', booking.id, this.getStatus(booking.startDate, booking.endDate)]),
+        command: () => {
+          this.router.navigate(['details', booking.id, status]);
+        },
+      },
+      ...(status === 'unconfirmed'
+        ? [
+            {
+              label: 'Check In',
+              icon: 'pi pi-sign-in mr-2',
+              command: () => this.updateStatus(booking.id!, 'check in'),
+            },
+          ]
+        : []),
+      ...(status === 'check in'
+        ? [
+            {
+              label: 'Check Out',
+              icon: 'pi pi-sign-out mr-2',
+              command: () => this.updateStatus(booking.id!, 'check out'),
+            },
+          ]
+        : []),
+      {
+        label: 'Delete booking',
+        icon: 'pi pi-trash mr-2',
+        command: (event) =>
+          this.confirmDelete(event.originalEvent as Event, booking.id),
       },
     ];
-
-    if (status === 'unconfirmed') {
-      items.push({
-        label: 'Check In',
-        icon: 'pi pi-sign-in mr-2',
-        command: () => this.updateStatus(booking.id!, 'check in'),
-      });
-    }
-
-    if (status === 'check in') {
-      items.push({
-        label: 'Check Out',
-        icon: 'pi pi-sign-out mr-2',
-        command: () => this.updateStatus(booking.id!, 'check out'),
-      });
-    }
-
-    items.push({
-      label: 'Delete booking',
-      icon: 'pi pi-trash mr-2',
-      command: (event) =>
-        this.confirmDelete(event.originalEvent as Event, booking.id),
-    });
-
-    return items;
   }
 
   onClick(event: any) {
     this.first = event.first;
   }
-
 }

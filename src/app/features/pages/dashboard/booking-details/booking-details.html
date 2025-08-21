@@ -2,7 +2,7 @@
   <p-confirmDialog></p-confirmDialog>
   <div class="flex justify-content-between align-items-center">
     <div class="flex align-items-center gap-5">
-      <h1>Booking #{{booking().id?.slice(0,5)}}</h1>
+      <h1>Booking #{{booking().id!.slice(0,5)}}</h1>
       <span [style.background-color]="statusColors.bg" [style.color]="statusColors.fg"
         class="status">{{status()}}</span>
     </div>
