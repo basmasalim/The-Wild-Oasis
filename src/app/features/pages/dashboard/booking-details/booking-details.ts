@@ -1,17 +1,16 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, inject, signal, OnInit, WritableSignal } from '@angular/core';
+import { Component, inject, signal, OnInit, WritableSignal, computed } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IBookings } from '../../../../core/interfaces/ibookings';
 import { Bookings } from '../../../../core/services/bookings/bookings';
-
-import { get } from 'http';
+import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { stat } from 'fs';
 import { ConfirmDialog } from "primeng/confirmdialog";
 @Component({
   selector: 'app-booking-details',
-  imports: [RouterLink, CurrencyPipe, DatePipe, ConfirmDialog],
+  imports: [RouterLink, CurrencyPipe, DatePipe, ConfirmDialog, FormsModule],
   templateUrl: './booking-details.html',
   styleUrl: './booking-details.scss'
 })
@@ -25,16 +24,65 @@ export class BookingDetails implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
   bookId: WritableSignal<string> = signal('');
-  status: WritableSignal<string> = signal('');
+  statusColor: WritableSignal<string> = signal('');
+  status = computed(() => {
+    const booking = this.booking();
+    if (!booking) {
+      return {
+        text: 'Unconfirmed', bg: 'var(--color-green-100)',
+        fg: 'var(--color-green-700)', paid: false
+      };
+    }
+
+    const today = new Date().setHours(0, 0, 0, 0);
+    const start = new Date(booking.startDate).setHours(0, 0, 0, 0);
+    const end = new Date(booking.endDate).setHours(0, 0, 0, 0);
+
+    if (today < start)
+      return {
+        text: 'Unconfirmed', bg: 'var(--color-blue-100)',
+        fg: 'var(--color-blue-700)', paid: false
+      };
+
+    if (today >= start && today <= end)
+      return {
+        text: 'Check in',
+        bg: 'var(--color-green-100)',
+        fg: 'var(--color-green-700)',
+        paid: true
+      };
+
+    if (today > end)
+      return {
+        text: 'Check out',
+        bg: 'var(--color-silver-100)',
+        fg: 'var(--color-silver-700)',
+        paid: true
+      };
+
+    return {
+      text: 'Unconfirmed',
+      bg: 'var(--color-blue-100)',
+      fg: 'var(--color-blue-700)',
+      paid: false
+    };
+  });
+
+
   check: boolean = false;
   booking = signal<IBookings>({} as IBookings);
-
+  isPaidChecked: WritableSignal<boolean> = signal(false);
+  isBreakfastChecked: WritableSignal<boolean> = signal(false);
+  locked: WritableSignal<boolean> = signal(false);
+  numOfPeople: WritableSignal<number> = signal(0);
   numOfNights: WritableSignal<number> = signal(0);
   ngOnInit(): void {
+
     this.activatedRoute.params.subscribe(params => {
       this.bookId.set(params['id'] || ['status']);
-      this.getSpecificBooking(this.bookId(), params['status']);
+      this.getSpecificBooking(this.bookId());
     });
+
   }
   calculateNumOfNights() {
     const booking = this.booking();
@@ -55,31 +103,66 @@ export class BookingDetails implements OnInit {
     }
 
     const timeDiff = endDate.getTime() - startDate.getTime();
-    const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const nights = Math.ceil(Math.abs(timeDiff) / (1000 * 3600 * 24));
 
 
     this.numOfNights.set(nights);
   }
-  get statusColors() {
-    switch (this.status()) {
-      case 'check in':
-        return { bg: 'var(--color-green-100)', fg: 'var(--color-green-700)' };
-      case 'check out':
-        return { bg: 'var(--color-silver-100)', fg: 'var(--color-silver-700)' };
-      default:
-        return { bg: 'var(--color-blue-100)', fg: 'var(--color-blue-700)' };
+
+
+
+
+  resetForm() {
+    this.check = false;
+    this.isBreakfastChecked.set(false);
+    this.isPaidChecked.set(false);
+    this.locked.set(false);
+  }
+
+  togglePaid(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
+      this.locked.set(false);
+    } else {
+
+      this.locked.set(true);
+    }
+  }
+
+  toggleBreakfast(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
+      this.locked.set(true);
+      this.isPaidChecked.set(false);
+      this.isBreakfastChecked.set(true);
+      this.booking().breakFastPrice = 2 * this.numOfPeople(); // Assuming breakfast is $2 per person
+
+    } else {
+      this.booking().hasBreakfast = false;
+      this.isPaidChecked.set(true);
+      this.isBreakfastChecked.set(false);
+
     }
   }
 
 
-  getSpecificBooking(id: string, status?: string) {
+  getSpecificBooking(id: string) {
+    console.log(this.statusColor());
+
     console.log('Go to booking details for:', id);
     this.bookingsService.getBookingById(id).subscribe({
       next: (res) => {
+        this.isPaidChecked.set(res.isPaid);
+        this.isBreakfastChecked.set(res.hasBreakfast);
+        this.numOfPeople.set(res.numGuests + 1); // +1 for the guest
+        if (this.status().text === 'Check in' || this.status().text === 'Check out') {
+          res.isPaid = true;
+
+        }
         this.booking.set(res);
         console.log(status);
 
-        this.status.set(status || '');
+        this.bookingsService.status.set(this.statusColor() || '');
         console.log('Booking details:', this.booking());
         this.calculateNumOfNights();
       },
@@ -131,15 +214,54 @@ export class BookingDetails implements OnInit {
     });
   }
 
-  async updateStatus(bookingId: string, action: 'check in') {
+  async updateStatus(bookingId: string, action: 'check in' | 'check out') {
+    if (!this.locked()) {
+      try {
+        const bookingRef = doc(this.firestore, `bookings/${bookingId}`);
+        const today = new Date().toISOString().split('T')[0]; // yyyy-MM-dd
 
-    const bookingRef = doc(this.firestore, `bookings/${bookingId}`);
-    const today = new Date().toISOString().split('T')[0]; // yyyy-MM-dd
+        const updateData: any = {};
 
-    if (action === 'check in') {
-      await updateDoc(bookingRef, { startDate: today });
+        if (action === 'check in') {
+          updateData.startDate = today;
 
+          if (this.isBreakfastChecked()) {
+            updateData.hasBreakfast = true;
+            updateData.breakFastPrice = this.booking()?.breakFastPrice ?? 2 * this.numOfPeople();
+          }
+
+          if (!this.booking()?.isPaid) {
+            updateData.isPaid = true;
+          }
+        }
+
+        if (action === 'check out') {
+          updateData.endDate = today;
+        }
+
+        await updateDoc(bookingRef, updateData);
+
+        this.booking.update(prev => ({
+          ...prev!,
+          ...updateData
+        }));
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Booking ${action} successfully`
+        });
+
+        this.router.navigate(['/bookings']);
+      } catch (error) {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Failed to update booking status`
+        });
+      }
     }
-
   }
+
 }

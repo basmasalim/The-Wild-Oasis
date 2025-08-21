@@ -34,7 +34,6 @@ export class DashboardBookings implements OnInit {
   booking = signal<IBookings>({} as IBookings);
   loading = signal<boolean>(true);
   menuItems: { [key: string]: MenuItem[] } = {};
-
   filteredStatus: 'unconfirmed' | 'check in' | 'check out' | '' = '';
   statusFilters = BOOKING_STATUS_OPTIONS;
   totalRecords = 0;
@@ -51,6 +50,7 @@ export class DashboardBookings implements OnInit {
   ngOnInit(): void {
     this.getAllBookings();
     this.preparingTheMenu();
+
   }
 
   getAllBookings() {
@@ -136,6 +136,7 @@ export class DashboardBookings implements OnInit {
     }
     if (start <= now && end >= now) {
       this.booking().inventoryStatus = 'check in';
+      this.booking().isPaid = true;
       this.booking().severity = 'success';
       return 'check in';
     }
@@ -209,26 +210,27 @@ export class DashboardBookings implements OnInit {
         label: 'See details',
         icon: 'pi pi-eye mr-2',
         command: () => {
-          this.router.navigate(['details', booking.id, status]);
+          this.router.navigate(['details', booking.id]);
         },
       },
       ...(status === 'unconfirmed'
         ? [
-            {
-              label: 'Check In',
-              icon: 'pi pi-sign-in mr-2',
-              command: () => this.updateStatus(booking.id!, 'check in'),
-            },
-          ]
+          {
+            label: 'Check In',
+            icon: 'pi pi-sign-in mr-2',
+            command: () => this.updateStatus(booking.id!, 'check in'),
+          },
+        ]
         : []),
       ...(status === 'check in'
-        ? [
-            {
-              label: 'Check Out',
-              icon: 'pi pi-sign-out mr-2',
-              command: () => this.updateStatus(booking.id!, 'check out'),
-            },
-          ]
+        ?
+        [
+          {
+            label: 'Check Out',
+            icon: 'pi pi-sign-out mr-2',
+            command: () => this.updateStatus(booking.id!, 'check out'),
+          },
+        ]
         : []),
       {
         label: 'Delete booking',
