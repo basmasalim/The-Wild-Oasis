@@ -17,10 +17,10 @@ import { MenuItem } from 'primeng/api';
 import { SORTING_OPTIONS } from '../../../../core/constants/sorting.constants';
 import { DISCOUNT_CONSTANTS } from '../../../../core/constants/discount.constants';
 import { Discount } from '../../../../core/enum/discount.emum';
-import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
 import { Menu } from 'primeng/menu';
 import { DialogComponent } from '../../../../shared/components/business/dialog/dialog';
 import { Loading } from '../../../../core/services/loading/loading';
+import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter-discount-pipe';
 
 @Component({
   selector: 'app-dashboard-cabins',

@@ -2,9 +2,12 @@
   <p-confirmDialog></p-confirmDialog>
   <div class="flex justify-content-between align-items-center">
     <div class="flex align-items-center gap-5">
-      <h1>Booking #{{booking().id!.slice(0,5)}}</h1>
-      <span [style.background-color]="statusColors.bg" [style.color]="statusColors.fg"
-        class="status">{{status()}}</span>
+      <h1>Booking #{{booking().id?.slice(0,5)}}</h1>
+      <span [style.background-color]="status().bg" [style.color]="status().fg"
+        class="status px-2 py-1 rounded-lg font-semibold">
+        {{ status().text }}
+      </span>
+
     </div>
     <div class="back-btn">
       <a routerLink="/bookings" class=""><i class="pi pi-arrow-left mr-2"></i>Back</a>
@@ -41,20 +44,32 @@
         <p class="answer">{{booking().hasBreakfast ? 'Yes' : 'No' }}</p>
       </div>
       <div class="money md:flex align-items-center justify-content-between gap-5 p-6 mr-8"
-        [style.--bg]="booking().isPaid ? 'var(--color-green-100)' : 'var(--color-yellow-100)'"
-        [style.--fg]="booking().isPaid ? 'var(--color-green-700)' : 'var(--color-yellow-700)'">
+        [style.--bg]="booking().isPaid || status().paid ? 'var(--color-green-100)' : 'var(--color-yellow-100)'"
+        [style.--fg]="booking().isPaid || status().paid ? 'var(--color-green-700)' : 'var(--color-yellow-700)'">
         <div class="flex align-items-center gap-5">
           <h4 class="flex align-items-center gap-2">
             <span class="dollar"><i class="pi pi-dollar" style="font-size: 1rem"></i></span>
             Total price
           </h4>
           <span>
-            {{ 6050.0 | currency }}( {{ 5000.0 | currency }} cabin +
-            {{ 1050.0 | currency }} breakfast)</span>
+            {{ booking().bookingPrice + booking().breakFastPrice | currency }}
+            @if (booking().hasBreakfast) {
+            <span>
+              ( {{ booking().bookingPrice | currency }} cabin +
+              {{ booking().breakFastPrice | currency }} breakfast )
+            </span>
+            }
+          </span>
         </div>
-        <h4 class="uppercase">{{
-          booking().isPaid ? 'Paid' : 'Will pay at property' }}</h4>
+
+        <h4 class="uppercase">
+          {{ booking().isPaid || status().text === 'Check in' || status().text === 'Check out'
+          ? 'Paid'
+          : 'Will pay at property' }}
+        </h4>
+
       </div>
+
       <div class="date py-6">
         <p class="flex justify-content-end pr-8">
           Booked {{ booking().createdAt| date:'EEE, MMM dd yyyy' }}
@@ -63,7 +78,13 @@
     </div>
   </div>
   <div class="btns flex justify-content-end gap-3">
+    @if (status().text === 'Unconfirmed') {
     <button (click)="check=true" class="p-btn">Check in</button>
+    }
+    @if (status().text === 'Check in') {
+    <button (click)="updateStatus(booking().id,'check out')" class="p-btn">Check out</button>
+    }
+
     <button (click)="confirmDelete($event, booking().id)" class="p-btn bg-red-600 hover:bg-red-700 del-btn">
       Delete booking
     </button>
@@ -76,19 +97,31 @@
   <div>
     @if (!booking().hasBreakfast) {
     <div class="my-5 shadow-2 py-5 px-8 border-round-xl">
-      <p class="flex align-items-center gap-4"><input type="checkbox"> Want to add breakfast for $21.00?</p>
+      <p class="flex align-items-center gap-4"><input type="checkbox" (change)="toggleBreakfast($event)" /> Want to add
+        breakfast for {{2 | currency}} per person?</p>
     </div>
     }
 
     <div class="my-5 shadow-2 py-5 px-8 border-round-xl">
-      <p class="flex align-items-center gap-4"><input type="checkbox"> I confirm that Ahmed Hassan has paid the total
+      <p class="flex align-items-center gap-4"><input type="checkbox" [checked]="isPaidChecked()"
+          [disabled]="booking().isPaid && booking().hasBreakfast || isPaidChecked()" (change)="togglePaid($event)" /> I
+        confirm
+        that
+        {{booking().guestName}} has
+        checked in
+        and
+        has paid the total
         amount of
-        $2,975.00</p>
+        {{ booking().bookingPrice + booking().breakFastPrice| currency }}
+        @if(isBreakfastChecked()){
+        <span>( {{ booking().bookingPrice }} + {{ booking().breakFastPrice| currency }}) </span>
+        }
+      </p>
     </div>
-    <div class="flex justify-content-end gap-3">
-      <button (click)="updateStatus(booking().id,'check in')" class="p-btn">Check in Booking
+    <div class=" flex justify-content-end gap-3">
+      <button [disabled]="locked()" (click)="updateStatus(booking().id,'check in')" class="p-btn">Check in Booking
         {{booking().guestId}}</button>
-      <button (click)="check=false" class="p-btn bg-white text-gray-500 back-btn">
+      <button (click)="resetForm()" class="p-btn bg-white text-gray-500 back-btn">
         Back
       </button>
     </div>

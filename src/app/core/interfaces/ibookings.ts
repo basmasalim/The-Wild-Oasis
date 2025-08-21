@@ -11,7 +11,8 @@ export interface IBookings {
   isPaid: boolean;
   numGuests: number;
   observations: string;
-
+  bookingPrice: number;
+  breakFastPrice: number;
   inventoryStatus?: 'unconfirmed' | 'check in' | 'check out';
   severity?: 'success' | 'info' | 'warning' | 'danger';
 }

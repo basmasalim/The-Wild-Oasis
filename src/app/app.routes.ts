@@ -50,7 +50,7 @@ export const routes: Routes = [
           ).then((c) => c.DashboardCabins),
       },
       {
-        path: 'details/:id/:status',
+        path: 'details/:id',
         loadComponent: () =>
           import(
             './features/pages/dashboard/booking-details/booking-details'

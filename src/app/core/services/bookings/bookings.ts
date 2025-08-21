@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { collection, collectionData, deleteDoc, doc, docData, Firestore } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 
@@ -7,6 +7,7 @@ import { from, Observable } from 'rxjs';
 })
 export class Bookings {
   private firestore = inject(Firestore);
+  status: WritableSignal<string> = signal('Unconfirmed');
 
   // تجيب كل الـ bookings
   getBookings(): Observable<any[]> {
