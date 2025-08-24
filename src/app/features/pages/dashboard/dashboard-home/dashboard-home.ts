@@ -7,9 +7,17 @@ import { RecentBox } from '../../../../shared/components/ui/recent-box/recent-bo
 import { STATS_BY_DAYS_CONSTANTS } from '../../../../core/constants/stats.constants';
 import { CircleChart } from '../../../../shared/components/business/circle-chart/circle-chart';
 import { LineChart } from '../../../../shared/components/business/line-chart/line-chart';
+import { TodayTable } from '../../../../shared/components/ui/today-table/today-table';
 @Component({
   selector: 'app-dashboard-home',
-  imports: [FormsModule, SelectButtonModule, RecentBox, CircleChart, LineChart],
+  imports: [
+    FormsModule,
+    SelectButtonModule,
+    RecentBox,
+    CircleChart,
+    LineChart,
+    TodayTable,
+  ],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
@@ -26,4 +34,16 @@ export class DashboardHome {
   applyFilter(status: Home): void {
     this.filteredStatus.set(status);
   }
+
+  // today section
+  todayData = computed(() => {
+    switch (this.filteredStatus()) {
+      case Home.LAST7:
+        return { type: 'text', value: 'No activity today...' };
+      case Home.LAST30:
+        return { type: 'component' };
+      default:
+        return { type: 'text', value: 'No activity today...' };
+    }
+  });
 }

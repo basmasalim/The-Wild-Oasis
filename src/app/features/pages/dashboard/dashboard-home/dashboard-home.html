@@ -35,14 +35,18 @@
   </div>
 
   <!-- The. Section -->
+
   <div class="grid mt-4">
     <div class="col-12 md:col-6">
       <div class="box h-full">
         <h3>Today</h3>
+        @if(todayData().type === 'text'){
         <p class="text-center text-3xl font-medium mt-6">
-          No activity today...
+          {{ todayData().value }}
         </p>
-        <!-- <app-today-table></app-today-table> -->
+        }@else if (todayData().type === 'component') {
+        <app-today-table></app-today-table>
+        }
       </div>
     </div>
     <div class="col-12 md:col-6">

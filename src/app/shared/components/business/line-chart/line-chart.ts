@@ -41,7 +41,7 @@ export class LineChart implements OnInit {
         labels: ['08 13', '08 14', '08 15', '08 16', '08 17', '08 18', '08 19'],
         datasets: [
           {
-            label: 'Sales',
+            label: 'Total Salers',
             data: [2000, 5000, 2000, 8000, 2000, 11000, 12000],
             fill: true,
             tension: 0.4,
@@ -55,7 +55,7 @@ export class LineChart implements OnInit {
             pointHoverRadius: 6,
           },
           {
-            label: 'Dataset',
+            label: 'Extras Salers',
             data: [0, 200, 500, 500, 200, 500, 0],
             fill: true,
             tension: 0.4,
