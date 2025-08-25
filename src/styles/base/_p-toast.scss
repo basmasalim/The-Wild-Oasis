@@ -1,0 +1,29 @@
+::ng-deep .p-toast {
+  width: 300px !important;
+}
+
+::ng-deep .p-toast-message {
+  font-size: 1.6rem;
+  padding: 1.5rem;
+  color: var(--color-grey-700);
+  background-color: var(--color-grey-50);
+  border-color: var(--color-grey-50);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+}
+
+::ng-deep .p-toast-message .p-toast-summary {
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+::ng-deep .p-toast-message .p-toast-detail {
+  font-size: 1.4rem;
+}
+
+::ng-deep .p-toast-message svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-red-700);
+  margin: 7px;
+}

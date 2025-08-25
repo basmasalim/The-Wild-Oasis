@@ -1,5 +1,5 @@
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { ConfirmationService, MessageService, MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { IBookings } from '../../../../core/interfaces/ibookings';
 import { signal, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Loading } from '../../../../core/services/loading/loading';
 import { BOOKING_STATUS_OPTIONS } from '../../../../core/constants/booking.constants';
+import { Notifications } from '../../../../core/services/notifications/notifications';
 
 @Component({
   selector: 'app-dashboard-bookings',
@@ -42,16 +43,16 @@ export class DashboardBookings implements OnInit {
 
   private readonly bookingsService = inject(Bookings);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly messageService = inject(MessageService);
   private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
   private readonly loadingService = inject(Loading);
+  private readonly notifications = inject(Notifications);
 
   ngOnInit(): void {
     this.getAllBookings();
     this.preparingTheMenu();
-
   }
+
   getAllBookings() {
     this.loading.set(true);
     this.loadingService.show();
@@ -60,7 +61,7 @@ export class DashboardBookings implements OnInit {
         const today = new Date().toISOString().split('T')[0];
         const now = new Date(today);
 
-        res.forEach(b => {
+        res.forEach((b) => {
           const start = new Date(b.startDate);
           const end = new Date(b.endDate);
 
@@ -129,21 +130,14 @@ export class DashboardBookings implements OnInit {
       acceptButtonProps: { severity: 'danger', label: 'Delete' },
       accept: () => {
         this.deleteBooking(id);
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
-        });
+        this.notifications.deletedError('Confirmed', 'Record deleted');
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
+        this.notifications.showError('Rejected', 'You have rejected');
       },
     });
   }
+
   getStatus(startDate: string, endDate: string): string {
     const today = new Date().toISOString().split('T')[0];
     const start = new Date(startDate);
@@ -228,22 +222,21 @@ export class DashboardBookings implements OnInit {
       },
       ...(status === 'unconfirmed'
         ? [
-          {
-            label: 'Check In',
-            icon: 'pi pi-sign-in mr-2',
-            command: () => this.updateStatus(booking.id!, 'check in'),
-          },
-        ]
+            {
+              label: 'Check In',
+              icon: 'pi pi-sign-in mr-2',
+              command: () => this.updateStatus(booking.id!, 'check in'),
+            },
+          ]
         : []),
       ...(status === 'check in'
-        ?
-        [
-          {
-            label: 'Check Out',
-            icon: 'pi pi-sign-out mr-2',
-            command: () => this.updateStatus(booking.id!, 'check out'),
-          },
-        ]
+        ? [
+            {
+              label: 'Check Out',
+              icon: 'pi pi-sign-out mr-2',
+              command: () => this.updateStatus(booking.id!, 'check out'),
+            },
+          ]
         : []),
       {
         label: 'Delete booking',

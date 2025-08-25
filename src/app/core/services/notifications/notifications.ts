@@ -15,4 +15,12 @@ export class Notifications {
       life: 3000,
     });
   }
+
+  deletedError(summary: string, detail: string) {
+    this.messageService.add({
+      severity: 'info',
+      summary: summary,
+      detail: detail,
+    });
+  }
 }

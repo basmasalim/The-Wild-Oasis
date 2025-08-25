@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Notifications } from '../../services/notifications/notifications';
+import { Notifications } from '../../../core/services/notifications/notifications';
 import { ToastModule } from 'primeng/toast';
 import { Authintication } from '../../services/authintication/authintication';
 import { FirebaseErrorHandlerService } from '../../../core/services/firebase-errors/firebase-error';
@@ -36,7 +36,7 @@ export class Login implements OnInit, OnDestroy {
   private readonly auth = inject(Authintication);
   private readonly router = inject(Router);
   private readonly notifications = inject(Notifications);
-  private readonly firebaseErrorHandler  = inject(FirebaseErrorHandlerService);
+  private readonly firebaseErrorHandler = inject(FirebaseErrorHandlerService);
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {

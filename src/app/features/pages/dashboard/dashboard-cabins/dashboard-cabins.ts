@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, signal } from '@angular/core';
-import { Notifications } from '../../../../auth/services/notifications/notifications';
+import { Notifications } from '../../../../core/services/notifications/notifications';
 import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -56,7 +56,6 @@ export class DashboardCabins {
   private readonly loadingService = inject(Loading);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly firestore = inject(Firestore);
-  private readonly messageService = inject(MessageService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly cabins = inject(Cabins);
   private readonly notifications = inject(Notifications);
@@ -75,7 +74,7 @@ export class DashboardCabins {
         this.loadingService.hide();
       },
       error: (error) => {
-        this.notifications.showError(
+        this.notifications.deletedError(
           'Error fetching cabins',
           'Please try again later.'
         );
@@ -97,8 +96,8 @@ export class DashboardCabins {
         this.getAllCabins();
       },
       error: (error) => {
-        this.notifications.showError(
-          'Error deleting booking',
+        this.notifications.deletedError(
+          'Error fetching cabins',
           'Please try again later.'
         );
       },
@@ -123,18 +122,10 @@ export class DashboardCabins {
       },
       accept: () => {
         this.deleteCabin(cabinId); // Refresh the list
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
-        });
+        this.notifications.deletedError('Confirmed', 'Record deleted');
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
+        this.notifications.showError('Rejected', 'You have rejected');
       },
     });
   }

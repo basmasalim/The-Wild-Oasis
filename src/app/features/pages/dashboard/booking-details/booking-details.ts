@@ -11,11 +11,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IBookings } from '../../../../core/interfaces/ibookings';
 import { Bookings } from '../../../../core/services/bookings/bookings';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { stat } from 'fs';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Loading } from '../../../../core/services/loading/loading';
+import { Notifications } from '../../../../core/services/notifications/notifications';
 @Component({
   selector: 'app-booking-details',
   imports: [RouterLink, CurrencyPipe, DatePipe, ConfirmDialog, FormsModule],
@@ -36,10 +36,10 @@ export class BookingDetails implements OnInit {
   private readonly loadingService = inject(Loading);
   private readonly bookingsService = inject(Bookings);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly messageService = inject(MessageService);
   private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly notifications = inject(Notifications);
 
   status = computed(() => {
     const booking = this.booking();
@@ -149,8 +149,8 @@ export class BookingDetails implements OnInit {
 
   getSpecificBooking(id: string) {
     // console.log(this.statusColor());
-
     // console.log('Go to booking details for:', id);
+
     this.loadingService.show();
 
     this.bookingsService.getBookingById(id).subscribe({
@@ -184,20 +184,12 @@ export class BookingDetails implements OnInit {
     this.bookingsService.deleteBooking(id).subscribe({
       next: () => {
         this.router.navigate(['/bookings']);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Booking deleted successfully',
-        });
+        this.notifications.showError('Success', 'Booking deleted successfully');
         this.loadingService.hide();
       },
       error: (error) => {
         console.error('Error deleting booking:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to delete booking',
-        });
+        this.notifications.showError('Error', 'Failed to delete booking');
       },
     });
   }
@@ -213,18 +205,10 @@ export class BookingDetails implements OnInit {
       acceptButtonProps: { severity: 'danger', label: 'Delete' },
       accept: () => {
         this.deleteBooking(id);
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
-        });
+        this.notifications.showError('Confirmed', 'Record deleted');
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
-        });
+        this.notifications.showError('Rejected', 'You have rejected');
       },
     });
   }
@@ -261,21 +245,17 @@ export class BookingDetails implements OnInit {
           ...prev!,
           ...updateData,
         }));
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Booking ${action} successfully`,
-        });
-
+        this.notifications.showError(
+          'Success',
+          `Booking ${action} successfully`
+        );
         this.router.navigate(['/bookings']);
       } catch (error) {
         console.error(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: `Failed to update booking status`,
-        });
+        this.notifications.showError(
+          'Error',
+          `Failed to update booking status`
+        );
       }
     }
   }
