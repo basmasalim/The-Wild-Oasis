@@ -32,9 +32,9 @@
 
     <ng-template #body let-cabin>
 
-      <tr>
-        <td style="width: 70px; height: 70px">
-          <img [src]="cabin.image" class="w-full mb-1" alt="" />
+      <tr class="p-0">
+        <td style="width: 100px; height: 100%; padding:0; ">
+          <img [src]="cabin.image" class="w-full " alt="cabin image" />
         </td>
         <td>
           <p>{{ cabin.name }}</p>
