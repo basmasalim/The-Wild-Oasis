@@ -2,9 +2,9 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  inject,
+
   Input,
-  OnInit,
+
   Output,
   signal,
   SimpleChanges,
@@ -22,6 +22,7 @@ import {
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { addDoc, collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { Icabins } from '../../../../core/interfaces/icabins';
+import { Cabins } from '../../../../core/services/cabins/cabins';
 
 @Component({
   selector: 'app-dialog',
@@ -37,29 +38,32 @@ export class DialogComponent {
   backgroundColor = 'var(--color-grey-50)';
   cabinForm!: FormGroup;
   updateBtn: WritableSignal<boolean> = signal(false);
+  selectedFile: File | null = null;
   constructor(
     private fb: FormBuilder,
     private firestore: Firestore,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef,
+    private cabinService: Cabins,
   ) {
 
   }
   ngOnInit(): void {
     // ✅ بناء الفورم هنا
     this.cabinForm = this.fb.group({
-
       name: ['', Validators.required],
       maxCapacity: [1, [Validators.required, Validators.min(1)]],
       regularPrice: [0, [Validators.required, Validators.min(0)]],
       discount: [0, [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-
+      image: [null, Validators.required],   // 🆕 حقل الصورة
       createdAt: [this.getToday()],
     });
 
 
   }
+
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['cabin'] && this.cabin && this.cabinForm) {
       this.cabinForm.patchValue({
@@ -80,29 +84,60 @@ export class DialogComponent {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
-
-  async onSubmit() {
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+  onSubmit() {
     if (this.cabinForm.valid) {
-      try {
-        if (this.cabin?.id) {
-          // ✅ Update
-          const cabinRef = doc(this.firestore, 'cabins', this.cabin.id);
-          await updateDoc(cabinRef, this.cabinForm.value);
-          this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Cabin updated successfully!' });
-        } else {
-          // ✅ Add
-          const cabinsCollection = collection(this.firestore, 'cabins');
-          await addDoc(cabinsCollection, this.cabinForm.value);
-          this.messageService.add({ severity: 'success', summary: 'Added', detail: 'Cabin added successfully!' });
-        }
+      let imageUrl = this.cabin?.image || null;
 
-        this.onSave.emit();
-        this.closeDialog();
-      } catch (error) {
-        console.error('Error saving cabin:', error);
+      if (this.selectedFile) {
+        // 🆕 ارفع الصورة
+        this.cabinService.uploadImage(this.selectedFile).subscribe({
+          next: (res: any) => {
+            imageUrl = res.secure_url;
+
+            // 🆕 بعد ما الصورة تترفع، كمل حفظ الكابينة
+            this.saveCabin(imageUrl);
+          },
+          error: (err) => {
+            console.error('Image upload failed:', err);
+          }
+        });
+      } else {
+        // 🆕 مفيش صورة جديدة → كمل على طول
+        this.saveCabin(imageUrl);
       }
     }
   }
+
+  private async saveCabin(imageUrl: string | null) {
+    try {
+      const cabinData = {
+        ...this.cabinForm.value,
+        image: imageUrl
+      };
+
+      if (this.cabin?.id) {
+        const cabinRef = doc(this.firestore, 'cabins', this.cabin.id);
+        await updateDoc(cabinRef, cabinData);
+        this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Cabin updated successfully!' });
+      } else {
+        const cabinsCollection = collection(this.firestore, 'cabins');
+        await addDoc(cabinsCollection, cabinData);
+        this.messageService.add({ severity: 'success', summary: 'Added', detail: 'Cabin added successfully!' });
+      }
+
+      this.onSave.emit();
+      this.closeDialog();
+    } catch (error) {
+      console.error('Error saving cabin:', error);
+    }
+  }
+
 
   closeDialog() {
     this.visible = false;

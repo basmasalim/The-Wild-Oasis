@@ -52,12 +52,34 @@ export class DashboardBookings implements OnInit {
     this.preparingTheMenu();
 
   }
-
   getAllBookings() {
     this.loading.set(true);
     this.loadingService.show();
     this.bookingsService.getBookings().subscribe({
       next: (res) => {
+        const today = new Date().toISOString().split('T')[0];
+        const now = new Date(today);
+
+        res.forEach(b => {
+          const start = new Date(b.startDate);
+          const end = new Date(b.endDate);
+
+          if (!b.startDate && !b.endDate) {
+            b.inventoryStatus = 'unconfirmed';
+            b.severity = 'warning';
+          } else if (start <= now && end >= now) {
+            b.inventoryStatus = 'check in';
+            b.isPaid = true;
+            b.severity = 'success';
+          } else if (end < now) {
+            b.inventoryStatus = 'check out';
+            b.severity = 'danger';
+          } else if (start > now) {
+            b.inventoryStatus = 'unconfirmed';
+            b.severity = 'warning';
+          }
+        });
+
         this.totalRecords = res.length;
         this.bookings.set(res);
         this.loadingService.hide();
@@ -122,7 +144,6 @@ export class DashboardBookings implements OnInit {
       },
     });
   }
-
   getStatus(startDate: string, endDate: string): string {
     const today = new Date().toISOString().split('T')[0];
     const start = new Date(startDate);
@@ -130,25 +151,16 @@ export class DashboardBookings implements OnInit {
     const now = new Date(today);
 
     if (!startDate && !endDate) {
-      this.booking().inventoryStatus = 'unconfirmed';
-      this.booking().severity = 'warning';
       return 'unconfirmed';
     }
     if (start <= now && end >= now) {
-      this.booking().inventoryStatus = 'check in';
-      this.booking().isPaid = true;
-      this.booking().severity = 'success';
-      this.bookingsService.checkIn.set(this.bookingsService.checkIn() + 1);
       return 'check in';
     }
     if (end < now) {
-      this.booking().inventoryStatus = 'check out';
-      this.booking().severity = 'danger';
       return 'check out';
     }
     if (start > now) {
-      this.booking().inventoryStatus = 'unconfirmed';
-      this.booking().severity = 'warning';
+      return 'unconfirmed';
     }
 
     return 'unconfirmed';
