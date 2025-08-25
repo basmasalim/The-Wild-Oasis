@@ -40,8 +40,6 @@ import { FilterDiscountPipe } from '../../../../core/pipe/filter-discount/filter
   styleUrl: './dashboard-cabins.scss',
 })
 export class DashboardCabins {
-  private readonly cabins = inject(Cabins);
-  private readonly notifications = inject(Notifications);
   cabinsList = signal<Icabins[]>([]);
   selectedCabin: Icabins | null = null;
   id: string | undefined = undefined;
@@ -60,6 +58,8 @@ export class DashboardCabins {
   private readonly firestore = inject(Firestore);
   private readonly messageService = inject(MessageService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly cabins = inject(Cabins);
+  private readonly notifications = inject(Notifications);
 
   ngOnInit() {
     this.getAllCabins();
