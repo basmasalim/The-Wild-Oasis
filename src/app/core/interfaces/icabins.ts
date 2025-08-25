@@ -6,7 +6,7 @@ export interface Icabins {
   maxCapacity: number;      // السعة القصوى
   name: string;             // اسم الكبينة (مثلاً "008")
   regularPrice: number;     // السعر العادي
-
+  image?: string;
   inventoryStatus: 'discount' | 'nodiscount';
 
 }

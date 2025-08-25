@@ -4,11 +4,12 @@ import { Toast } from 'primeng/toast';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Loading } from './core/services/loading/loading';
 import { AsyncPipe } from '@angular/common';
+import { ConfirmDialog } from "primeng/confirmdialog";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Toast, ProgressSpinner, AsyncPipe],
+  imports: [RouterOutlet, Toast, ProgressSpinner, AsyncPipe, ConfirmDialog],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

@@ -8,6 +8,7 @@ import { from, Observable } from 'rxjs';
 export class Bookings {
   private firestore = inject(Firestore);
   status: WritableSignal<string> = signal('Unconfirmed');
+  checkIn: WritableSignal<number> = signal(0);
 
   // تجيب كل الـ bookings
   getBookings(): Observable<any[]> {

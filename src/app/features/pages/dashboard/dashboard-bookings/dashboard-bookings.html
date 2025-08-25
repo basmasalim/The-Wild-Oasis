@@ -1,6 +1,4 @@
 <div class="card mt-3">
-  <p-confirmDialog></p-confirmDialog>
-
   <p-table class="custom-table m-auto" [paginator]="true" [totalRecords]="totalRecords" (onPageChange)="onClick($event)"
     [rowsPerPageOptions]="[5, 10]" [value]="filteredBookings()" [rows]="10" [first]="first">
     <!-- Caption -->

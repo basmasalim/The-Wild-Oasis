@@ -1,5 +1,8 @@
 import { Home } from './../../../../core/enum/home.enum';
-import { Component, computed, signal } from '@angular/core';
+
+import { Component, signal, OnInit, inject } from '@angular/core';
+
+import { computed } from '@angular/core';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { DAYSOPTIONS_CONSTANTS } from '../../../../core/constants/daysOptions.constants';
@@ -8,6 +11,7 @@ import { STATS_BY_DAYS_CONSTANTS } from '../../../../core/constants/stats.consta
 import { CircleChart } from '../../../../shared/components/business/circle-chart/circle-chart';
 import { LineChart } from '../../../../shared/components/business/line-chart/line-chart';
 import { TodayTable } from '../../../../shared/components/ui/today-table/today-table';
+import { Bookings } from '../../../../core/services/bookings/bookings';
 @Component({
   selector: 'app-dashboard-home',
   imports: [

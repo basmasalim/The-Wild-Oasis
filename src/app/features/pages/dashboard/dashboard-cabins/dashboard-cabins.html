@@ -1,5 +1,5 @@
 <div class="card">
-  <p-confirmDialog />
+
   <p-table class="custom-table m-auto" [paginator]="true" [rowsPerPageOptions]="[10]" [rows]="10" [first]="0"
     [totalRecords]="(cabinsList() | filterDiscount : filteredStatus).length"
     [value]="cabinsList() | filterDiscount : filteredStatus">
@@ -34,7 +34,7 @@
 
       <tr>
         <td style="width: 70px; height: 70px">
-          <img src="images/logo-dark.png" class="w-full mb-1" alt="" />
+          <img [src]="cabin.image" class="w-full mb-1" alt="" />
         </td>
         <td>
           <p>{{ cabin.name }}</p>

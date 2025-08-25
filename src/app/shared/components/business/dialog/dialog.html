@@ -37,13 +37,13 @@
       </div>
 
       <!-- Avatar Field -->
-      <!-- <div class="field mb-4">
+      <div class="field mb-4">
         <label for="avatar" class="mb-2 font-medium">Cabin photo</label>
         <div class="custom-file-input">
-          <input id="avatar" type="file" class="hidden-input" accept="image/*" />
+          <input formControlName="image" id="avatar" type="file" (change)="onFileSelected($event)" />
 
         </div>
-      </div> -->
+      </div>
 
       <div class="flex justify-content-end gap-3">
         <button type="button" class="p-button-cancel" (click)="closeDialog()">
