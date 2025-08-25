@@ -1,16 +1,10 @@
 <div class="card mt-3">
-  <div
-    class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5"
-  >
+  <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
     <h1>Dashboard</h1>
     <ul class="button-group ml-auto lg:ml-0">
       @for (day of daysOptions; track $index) {
       <li>
-        <button
-          (click)="applyFilter(day.value)"
-          [class.active]="filteredStatus() === day.value"
-          class="btn-g"
-        >
+        <button (click)="applyFilter(day.value)" [class.active]="filteredStatus() === day.value" class="btn-g">
           {{ day.value }}
         </button>
       </li>
@@ -22,13 +16,8 @@
   <div class="grid gap-4">
     @for (stat of filteredStats(); track $index) {
     <div class="col">
-      <app-recent-box
-        [icon]="stat.icon"
-        [color]="stat.color"
-        [bgColor]="stat.bgColor"
-        [label]="stat.label"
-        [value]="stat.value"
-      >
+      <app-recent-box [icon]="stat.icon" [color]="stat.color" [bgColor]="stat.bgColor" [label]="stat.label"
+        [value]="stat.value">
       </app-recent-box>
     </div>
     }

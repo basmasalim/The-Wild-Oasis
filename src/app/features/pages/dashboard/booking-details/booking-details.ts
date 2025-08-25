@@ -11,7 +11,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IBookings } from '../../../../core/interfaces/ibookings';
 import { Bookings } from '../../../../core/services/bookings/bookings';
 import { FormsModule } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Loading } from '../../../../core/services/loading/loading';
@@ -39,7 +39,7 @@ export class BookingDetails implements OnInit {
   private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly notifications = inject(Notifications);
+  private readonly messageService = inject(MessageService);
 
   status = computed(() => {
     const booking = this.booking();
@@ -90,7 +90,8 @@ export class BookingDetails implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      this.bookId.set(params['id'] || ['status']);
+      this.bookId.set(params['id'] ?? 'status');
+
       this.getSpecificBooking(this.bookId());
     });
   }
@@ -155,7 +156,7 @@ export class BookingDetails implements OnInit {
 
     this.bookingsService.getBookingById(id).subscribe({
       next: (res) => {
-        this.isPaidChecked.set(res.isPaid);
+        this.isPaidChecked.set(res?.isPaid);
         this.isBreakfastChecked.set(res.hasBreakfast);
         this.numOfPeople.set(res.numGuests + 1); // +1 for the guest
         if (
@@ -184,12 +185,13 @@ export class BookingDetails implements OnInit {
     this.bookingsService.deleteBooking(id).subscribe({
       next: () => {
         this.router.navigate(['/bookings']);
-        this.notifications.showError('Success', 'Booking deleted successfully');
+
+        // this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Booking deleted successfully!' });
         this.loadingService.hide();
       },
       error: (error) => {
         console.error('Error deleting booking:', error);
-        this.notifications.showError('Error', 'Failed to delete booking');
+        this.messageService.add({ severity: 'Error', summary: 'Not delete', detail: 'Somthing Wrong When delete!' });
       },
     });
   }
@@ -204,14 +206,27 @@ export class BookingDetails implements OnInit {
       rejectButtonProps: { severity: 'secondary', outlined: true },
       acceptButtonProps: { severity: 'danger', label: 'Delete' },
       accept: () => {
-        this.deleteBooking(id);
-        this.notifications.showError('Confirmed', 'Record deleted');
+        this.deleteBooking(this.bookId());
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: 'Booking deleted successfully!',
+        });
+
+        this.confirmationService.close(); // 👈 دي اللي بتخفي الـ dialog
       },
       reject: () => {
-        this.notifications.showError('Rejected', 'You have rejected');
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Cancelled',
+          detail: 'You have rejected',
+        });
+
+        this.confirmationService.close(); // لو عاوز برضه تختفي لما يضغط Cancel
       },
     });
   }
+
 
   async updateStatus(bookingId: string, action: 'check in' | 'check out') {
     if (!this.locked()) {
@@ -245,17 +260,13 @@ export class BookingDetails implements OnInit {
           ...prev!,
           ...updateData,
         }));
-        this.notifications.showError(
-          'Success',
-          `Booking ${action} successfully`
-        );
+        this.messageService.add({ severity: 'Confirmed', summary: 'Updated', detail: 'Booking Updated successfully!' });
+
         this.router.navigate(['/bookings']);
       } catch (error) {
         console.error(error);
-        this.notifications.showError(
-          'Error',
-          `Failed to update booking status`
-        );
+        this.messageService.add({ severity: 'Error', summary: 'Updated', detail: 'Failed to update booking status' });
+
       }
     }
   }

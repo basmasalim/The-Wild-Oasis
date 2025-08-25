@@ -2,40 +2,25 @@
   <p-confirmDialog></p-confirmDialog>
   <div class="flex justify-content-between align-items-center">
     <div class="flex align-items-center gap-5">
-      <h1>Booking #{{ booking().id!.slice(0, 5) }}</h1>
-      <span
-        [style.background-color]="status().bg"
-        [style.color]="status().fg"
-        class="status px-2 py-1 rounded-lg font-semibold"
-      >
+      <h1>Booking #{{ booking().id?.slice(0, 5) }}</h1>
+      <span [style.background-color]="status().bg" [style.color]="status().fg"
+        class="status px-2 py-1 rounded-lg font-semibold">
         {{ status().text }}
       </span>
     </div>
     <div class="back-btn">
-      <a routerLink="/bookings" class=""
-        ><i class="pi pi-arrow-left mr-2"></i>Back</a
-      >
+      <a routerLink="/bookings" class=""><i class="pi pi-arrow-left mr-2"></i>Back</a>
     </div>
   </div>
 
   <div class="my-8 details">
     <div class="head md:flex md:justify-content-between p-5">
       <div class="flex align-items-center gap-3">
-        <svg
-          stroke="currentColor"
-          fill="none"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          height="1.5em"
-          width="1.5em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"
-          ></path>
+        <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="1.5em"
+          width="1.5em" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819">
+          </path>
         </svg>
         <p>{{ numOfNights() }} nights in Cabin {{ booking().cabinId }}</p>
       </div>
@@ -48,9 +33,7 @@
     </div>
     <div class="body pl-8">
       <div class="guest-info md:flex align-items-center gap-5 py-5">
-        <span class="icn"
-          ><i class="pi pi-user" style="font-size: 1rem"></i
-        ></span>
+        <span class="icn"><i class="pi pi-user" style="font-size: 1rem"></i></span>
         <h3>{{ booking().guestName }} + {{ booking().numGuests }} guests</h3>
         <span>.</span>
         <p>{{ booking().guestEmail }}</p>
@@ -58,30 +41,22 @@
         <p>ID {{ booking().guestId }}</p>
       </div>
       <div class="breakfast-info flex align-items-center gap-5 py-5">
-        <span class="icn"
-          ><i class="pi pi-check" style="font-size: 1rem"></i
-        ></span>
+        <span class="icn"><i class="pi pi-check" style="font-size: 1rem"></i></span>
         <h3>Breakfast included?</h3>
         <p class="answer">{{ booking().hasBreakfast ? "Yes" : "No" }}</p>
       </div>
-      <div
-        class="money md:flex align-items-center justify-content-between gap-5 p-6 mr-8"
-        [style.--bg]="
+      <div class="money md:flex align-items-center justify-content-between gap-5 p-6 mr-8" [style.--bg]="
           booking().isPaid || status().paid
             ? 'var(--color-green-100)'
             : 'var(--color-yellow-100)'
-        "
-        [style.--fg]="
+        " [style.--fg]="
           booking().isPaid || status().paid
             ? 'var(--color-green-700)'
             : 'var(--color-yellow-700)'
-        "
-      >
+        ">
         <div class="flex align-items-center gap-5">
           <h4 class="flex align-items-center gap-2">
-            <span class="dollar"
-              ><i class="pi pi-dollar" style="font-size: 1rem"></i
-            ></span>
+            <span class="dollar"><i class="pi pi-dollar" style="font-size: 1rem"></i></span>
             Total price
           </h4>
           <span>
@@ -97,11 +72,11 @@
 
         <h4 class="uppercase">
           {{
-            booking().isPaid ||
-            status().text === "Check in" ||
-            status().text === "Check out"
-              ? "Paid"
-              : "Will pay at property"
+          booking().isPaid ||
+          status().text === "Check in" ||
+          status().text === "Check out"
+          ? "Paid"
+          : "Will pay at property"
           }}
         </h4>
       </div>
@@ -122,16 +97,10 @@
     </button>
     }
 
-    <button
-      (click)="confirmDelete($event, booking().id)"
-      class="p-btn bg-red-600 hover:bg-red-700 del-btn"
-    >
+    <button (click)="confirmDelete($event, booking().id)" class="p-btn bg-red-600 hover:bg-red-700 del-btn">
       Delete booking
     </button>
-    <button
-      routerLink="/bookings"
-      class="p-btn bg-white text-gray-500 back-btn"
-    >
+    <button routerLink="/bookings" class="p-btn bg-white text-gray-500 back-btn">
       Back
     </button>
   </div>
@@ -149,37 +118,24 @@
 
     <div class="my-5 shadow-2 py-5 px-8 border-round-xl">
       <p class="flex align-items-center gap-4">
-        <input
-          type="checkbox"
-          [checked]="isPaidChecked()"
-          [disabled]="
+        <input type="checkbox" [checked]="isPaidChecked()" [disabled]="
             (booking().isPaid && booking().hasBreakfast) || isPaidChecked()
-          "
-          (change)="togglePaid($event)"
-        />
+          " (change)="togglePaid($event)" />
         I confirm that {{ booking().guestName }} has checked in and has paid the
         total amount of
         {{ booking().bookingPrice + booking().breakFastPrice | currency }}
         @if(isBreakfastChecked()){
-        <span
-          >( {{ booking().bookingPrice }} +
+        <span>( {{ booking().bookingPrice }} +
           {{ booking().breakFastPrice | currency }})
         </span>
         }
       </p>
     </div>
     <div class="flex justify-content-end gap-3">
-      <button
-        [disabled]="locked()"
-        (click)="updateStatus(booking().id, 'check in')"
-        class="p-btn"
-      >
+      <button [disabled]="locked()" (click)="updateStatus(booking().id, 'check in')" class="p-btn">
         Check in Booking {{ booking().guestId }}
       </button>
-      <button
-        (click)="resetForm()"
-        class="p-btn bg-white text-gray-500 back-btn"
-      >
+      <button (click)="resetForm()" class="p-btn bg-white text-gray-500 back-btn">
         Back
       </button>
     </div>
