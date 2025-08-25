@@ -138,6 +138,7 @@ export class DashboardBookings implements OnInit {
       this.booking().inventoryStatus = 'check in';
       this.booking().isPaid = true;
       this.booking().severity = 'success';
+      this.bookingsService.checkIn.set(this.bookingsService.checkIn() + 1);
       return 'check in';
     }
     if (end < now) {
