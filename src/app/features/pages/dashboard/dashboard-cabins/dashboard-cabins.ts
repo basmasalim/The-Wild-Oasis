@@ -50,9 +50,9 @@ export class DashboardCabins {
   backgroundColor = 'var(--color-grey-50)';
   filteredStatus: Discount | 'all' = 'all';
   discountOptions = DISCOUNT_CONSTANTS;
-  sortOptions = SORTING_OPTIONS;
-  items: MenuItem[] | undefined;
+  sortOption: string = 'name-asc';
 
+  items: MenuItem[] | undefined;
   private readonly loadingService = inject(Loading);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly firestore = inject(Firestore);
@@ -133,6 +133,10 @@ export class DashboardCabins {
   applyFilter(status: Discount | 'all') {
     this.filteredStatus = status;
     this.first = 0; // Reset pagination when filter changes
+  }
+  onSortChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.sortOption = selectElement.value;
   }
 
   transform(cabins: Icabins[], status: Discount | 'all'): Icabins[] {

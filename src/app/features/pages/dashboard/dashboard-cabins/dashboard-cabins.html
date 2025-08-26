@@ -2,18 +2,30 @@
 
   <p-table class="custom-table m-auto" [paginator]="true" [rowsPerPageOptions]="[10]" [rows]="10" [first]="0"
     [totalRecords]="(cabinsList() | filterDiscount : filteredStatus).length"
-    [value]="cabinsList() | filterDiscount : filteredStatus">
+    [value]="cabinsList() | filterDiscount : filteredStatus : sortOption">
 
     <ng-template #caption>
       <div class="flex justify-content-between align-items-center mx-auto mb-6 lg:flex-row flex-column gap-5">
         <h2>All cabins</h2>
         <ul class="button-group ml-auto lg:ml-0">
-          <li>
+          <li class="shadow-2 mr-2 p-2  border-round">
             @for (option of discountOptions; track $index) {
             <button (click)="applyFilter(option.value)" class="btn-g" [class.active]="filteredStatus === option.value">
               {{ option.label }}
             </button>
             }
+          </li>
+          <li class="shadow-2 flex align-items-center border-round filter ">
+            <select class="select border-0 border-round" (change)="onSortChange($event)">
+              <option value="name-asc" selected>sort by name (A-Z)</option>
+              <option value="name-desc">sort by name (Z-A)</option>
+              <option value="regularPrice-asc">sort by price (low first)</option>
+              <option value="regularPrice-desc">
+                sort by price (high first)
+              </option>
+              <option value="capacity-asc">sort by capacity (low first)</option>
+              <option value="capacity-desc">sort by capacity (high first)</option>
+            </select>
           </li>
         </ul>
       </div>

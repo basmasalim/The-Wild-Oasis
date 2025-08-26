@@ -140,25 +140,32 @@ export class DashboardBookings implements OnInit {
 
   getStatus(startDate: string, endDate: string): string {
     const today = new Date().toISOString().split('T')[0];
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
     const now = new Date(today);
 
-    if (!startDate && !endDate) {
+    if (!start && !end) {
       return 'unconfirmed';
     }
-    if (start <= now && end >= now) {
-      return 'check in';
-    }
-    if (end < now) {
+
+
+    if (end && end <= now) {
       return 'check out';
     }
-    if (start > now) {
+
+
+    if (start && start <= now && (!end || end >= now)) {
+      return 'check in';
+    }
+
+
+    if (start && start > now) {
       return 'unconfirmed';
     }
 
     return 'unconfirmed';
   }
+
 
   getSeverity(status: string): 'success' | 'info' | 'warning' | 'danger' {
     switch (status.toLowerCase()) {
@@ -182,6 +189,7 @@ export class DashboardBookings implements OnInit {
         await updateDoc(bookingRef, { startDate: today });
       } else if (action === 'check out') {
         await updateDoc(bookingRef, { endDate: today });
+
       }
 
       this.getAllBookings();
@@ -222,21 +230,21 @@ export class DashboardBookings implements OnInit {
       },
       ...(status === 'unconfirmed'
         ? [
-            {
-              label: 'Check In',
-              icon: 'pi pi-sign-in mr-2',
-              command: () => this.updateStatus(booking.id!, 'check in'),
-            },
-          ]
+          {
+            label: 'Check In',
+            icon: 'pi pi-sign-in mr-2',
+            command: () => this.updateStatus(booking.id!, 'check in'),
+          },
+        ]
         : []),
       ...(status === 'check in'
         ? [
-            {
-              label: 'Check Out',
-              icon: 'pi pi-sign-out mr-2',
-              command: () => this.updateStatus(booking.id!, 'check out'),
-            },
-          ]
+          {
+            label: 'Check Out',
+            icon: 'pi pi-sign-out mr-2',
+            command: () => this.updateStatus(booking.id!, 'check out'),
+          },
+        ]
         : []),
       {
         label: 'Delete booking',
