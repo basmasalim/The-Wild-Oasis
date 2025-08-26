@@ -1,18 +1,11 @@
-<div class="sidebar">
-  <div class="sidebar-header">
+<div class="sidebar" [class.open]="sidebar.isOpen()">
+  <button (click)="sidebar.close()" class="close p-2 text-xl ml-auto block p-btn" [class.open]="sidebar.isOpen()">
+    ✖
+  </button>
+  <div class=" sidebar-header">
     <div class="logo text-center mb-6">
-      <img
-        src="images/logo-light.png"
-        class="logo light"
-        width="120"
-        alt="Logo Light"
-      />
-      <img
-        src="images/logo-dark.png"
-        class="logo dark"
-        width="120"
-        alt="Logo Dark"
-      />
+      <img src="images/logo-light.png" class="logo light" width="120" alt="Logo Light" />
+      <img src="images/logo-dark.png" class="logo dark" width="120" alt="Logo Dark" />
     </div>
   </div>
 

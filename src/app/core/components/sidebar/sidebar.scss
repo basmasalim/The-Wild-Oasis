@@ -45,6 +45,7 @@
           color: var(--color-grey-800);
           background-color: var(--color-grey-50);
           border-radius: var(--border-radius-sm);
+
           i {
             color: var(--color-brand-600);
           }
@@ -54,6 +55,7 @@
           color: var(--color-grey-800);
           background-color: var(--color-grey-50);
           border-radius: var(--border-radius-sm);
+
           i {
             color: var(--color-brand-600);
           }
@@ -105,11 +107,21 @@
   }
 }
 
+.close {
+  visibility: hidden;
+}
+
 @media (max-width: 992px) {
   .sidebar {
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
+
     &.open {
       transform: translateX(0);
     }
+  }
+
+  .close {
+    visibility: visible;
   }
 }

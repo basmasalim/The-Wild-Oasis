@@ -1,19 +1,16 @@
 <div class="card">
   <p-menubar>
+
     <ng-template #end>
-      <div class="container">
+      <div class="container flex align-items-center justify-content-between">
+        <i (click)="toggleMenu()" class="pi pi-align-justify menu-icon"></i>
         <ul class="flex items-center gap-2 p-2">
           <li class="img">
-            <p-avatar
-              image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png"
-              shape="circle"
-              size="xlarge"
-            />
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="circle"
+              size="xlarge" />
           </li>
           <li>
-            <span class="inline-block mt-3 ml-1 mr-5 capitalize font-medium"
-              >admin</span
-            >
+            <span class="inline-block mt-3 ml-1 mr-5 capitalize font-medium">admin</span>
           </li>
           <li routerLink="/account">
             <i class="pi pi-user"></i>
