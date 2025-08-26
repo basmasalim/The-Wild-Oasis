@@ -252,6 +252,7 @@ export class BookingDetails implements OnInit {
 
         if (action === 'check out') {
           updateData.endDate = today;
+
         }
 
         await updateDoc(bookingRef, updateData);
