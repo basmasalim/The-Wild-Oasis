@@ -36,3 +36,13 @@
     color: var(--color-brand-600);
   }
 }
+
+.menu-icon {
+  visibility: hidden;
+}
+
+@media (max-width: 992px) {
+  .menu-icon {
+    visibility: visible;
+  }
+}

@@ -6,6 +6,7 @@ import { Menubar } from 'primeng/menubar';
 import { ThemeToggle } from '../../../shared/components/business/theme-toggle/theme-toggle';
 import { Authintication } from '../../../auth/services/authintication/authintication';
 import { RouterLink } from '@angular/router';
+import { SidebarService } from '../../services/SidebarService/sidebar-service';
 
 @Component({
   selector: 'app-topbar',
@@ -26,6 +27,11 @@ export class Topbar {
   toggleDarkMode() {
     const el = document.querySelector('html');
     el?.classList.toggle('app-dark');
+  }
+  constructor(public sidebar: SidebarService) { }
+
+  toggleMenu(): void {
+    this.sidebar.toggle()
   }
 
   signOut() {
