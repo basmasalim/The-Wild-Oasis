@@ -5,11 +5,19 @@ import { MessageService } from 'primeng/api';
   providedIn: 'root',
 })
 export class Notifications {
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   showError(summary: string, detail: string) {
     this.messageService.add({
       severity: 'error',
+      summary: summary,
+      detail: detail,
+      life: 3000,
+    });
+  }
+  showSuccess(summary: string, detail: string) {
+    this.messageService.add({
+      severity: 'success',
       summary: summary,
       detail: detail,
       life: 3000,
