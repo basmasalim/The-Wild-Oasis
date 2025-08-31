@@ -8,16 +8,18 @@ import { Admin } from '../../../../core/services/Admin/admin';
 import { Loading } from '../../../../core/services/loading/loading';
 import { Authintication } from '../../../../auth/services/authintication/authintication';
 import { Notifications } from '../../../../core/services/notifications/notifications';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-admin-account',
-  imports: [ReactiveFormsModule, FileUploadModule],
+  imports: [ReactiveFormsModule, FileUploadModule, ProgressSpinnerModule],
   templateUrl: './admin-account.html',
   styleUrl: './admin-account.scss',
 })
 export class AdminAccount implements OnInit {
   private readonly fb = inject(FormBuilder);
   private accountService = inject(Admin);
+  private readonly loadingService = inject(Loading);
   private readonly notifications = inject(Notifications);
   private auth = inject(Authintication);
   accountForm!: FormGroup;
@@ -25,7 +27,7 @@ export class AdminAccount implements OnInit {
   loading = signal<boolean>(false);
 
   selectedFile!: File;
-  private readonly loadingService = inject(Loading);
+
   previewUrl = signal<string | ArrayBuffer | null>(this.accountService.userImage());
   private cloudName = 'djnnfcfoe';
   private uploadPreset = 'unsigned_preset';
@@ -92,11 +94,12 @@ export class AdminAccount implements OnInit {
   }
 
   async onSubmitAccount() {
-    this.loadingService.show(); // ✅ أول ما يضغط يبدأ اللودينج
 
     try {
+      this.loadingService.show();
       if (!this.accountForm.valid) {
-        console.log('❌ Form not valid');
+        this.notifications.showError('Error', ' Form not valid');
+        this.loadingService.hide();
         return;
       }
 
@@ -115,10 +118,11 @@ export class AdminAccount implements OnInit {
 
       localStorage.setItem('userAccount', JSON.stringify(accountData));
       this.accountService.loadUserFromStorage();
-      console.log('✅ Account updated:', accountData);
+      this.notifications.showSuccess('Success', 'Account updated successfully')
 
     } catch (error) {
-      console.error('❌ Error updating account:', error);
+      this.notifications.showError('Error', 'Somthing Wrong');
+      this.loadingService.hide();
 
     } finally {
       // ✅ يقفل بعد ما يخلص سواء نجح أو فشل
@@ -127,6 +131,7 @@ export class AdminAccount implements OnInit {
   }
 
   async onSubmitPassword() {
+    this.loadingService.show();
     if (this.passswordForm.invalid) return;
 
 
@@ -139,11 +144,14 @@ export class AdminAccount implements OnInit {
       if (res.status === 'success') {
         this.notifications.showSuccess('Success', res.message);
         this.passswordForm.reset();
+        this.loadingService.hide();
       } else {
         this.notifications.showError('Error', res.message);
+        this.loadingService.hide();
       }
     } catch (err) {
       this.notifications.showError('Error', 'Something went wrong');
+      this.loadingService.hide();
     }
   }
 
