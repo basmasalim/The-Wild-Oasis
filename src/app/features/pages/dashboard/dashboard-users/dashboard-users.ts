@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Notifications } from '../../../../core/services/notifications/notifications';
 
 @Component({
   selector: 'app-dashboard-users',
@@ -10,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class DashboardUsers implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly notification = inject(Notifications);
   userForm!: FormGroup;
 
   ngOnInit(): void {
@@ -27,13 +29,14 @@ export class DashboardUsers implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form submitted:', this.userForm.value);
-      // Add your form submission logic here
+      this.notification.showSuccess('Success', 'User created successfully')
+      this.userForm.reset()
     }
+
   }
 
   onCancel() {
+
     this.userForm.reset();
-    // Add cancel logic here
   }
 }
