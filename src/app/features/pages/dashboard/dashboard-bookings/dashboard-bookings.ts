@@ -85,6 +85,8 @@ export class DashboardBookings implements OnInit {
         this.bookings.set(res);
         this.loadingService.hide();
         this.loading.set(false);
+        console.log(res);
+
       },
       error: () => {
         this.loading.set(false);

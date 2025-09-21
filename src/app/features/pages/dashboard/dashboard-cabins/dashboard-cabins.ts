@@ -68,9 +68,9 @@ export class DashboardCabins {
     this.loadingService.show();
 
     this.cabins.getCabins().subscribe({
-      next: (cabins) => {
-        this.cabinsList.set(cabins);
-        this.totalRecords = cabins.length;
+      next: (res) => {
+        this.cabinsList.set(res);
+        this.totalRecords = res.length;
         this.loadingService.hide();
       },
       error: (error) => {

@@ -24,20 +24,24 @@ export class FilterDiscountPipe implements PipeTransform {
         }
 
         // ✅ الفرز
+        // ✅ الفرز
         filtered.sort((a, b) => {
+            const nameA = a?.name ?? '';
+            const nameB = b?.name ?? '';
+
             switch (sortOption) {
                 case 'name-asc':
-                    return a.name.localeCompare(b.name);
+                    return nameA.localeCompare(nameB);
                 case 'name-desc':
-                    return b.name.localeCompare(a.name);
+                    return nameB.localeCompare(nameA);
                 case 'regularPrice-asc':
-                    return a.regularPrice - b.regularPrice;
+                    return (a?.regularPrice ?? 0) - (b?.regularPrice ?? 0);
                 case 'regularPrice-desc':
-                    return b.regularPrice - a.regularPrice;
+                    return (b?.regularPrice ?? 0) - (a?.regularPrice ?? 0);
                 case 'capacity-asc':
-                    return a.maxCapacity - b.maxCapacity;
+                    return (a?.maxCapacity ?? 0) - (b?.maxCapacity ?? 0);
                 case 'capacity-desc':
-                    return b.maxCapacity - a.maxCapacity;
+                    return (b?.maxCapacity ?? 0) - (a?.maxCapacity ?? 0);
                 default:
                     return 0;
             }
