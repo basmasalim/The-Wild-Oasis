@@ -40,46 +40,49 @@ export class BookingDetails implements OnInit {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
-
   status = computed(() => {
     const booking = this.booking();
     if (!booking) {
-      return {
-        text: 'Unconfirmed',
-        bg: 'var(--color-green-100)',
-        fg: 'var(--color-green-700)',
-        paid: false,
-      };
-    }
-
-    const today = new Date().setHours(0, 0, 0, 0);
-    const start = new Date(booking.startDate).setHours(0, 0, 0, 0);
-    const end = new Date(booking.endDate).setHours(0, 0, 0, 0);
-
-    if (today < start)
       return {
         text: 'Unconfirmed',
         bg: 'var(--color-blue-100)',
         fg: 'var(--color-blue-700)',
         paid: false,
       };
+    }
 
-    if (today >= start && today <= end)
+    // ⏰ اليوم (بدون وقت)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // 🗓️ تحويل startDate و endDate من string -> Date
+    const startDate = booking.startDate ? new Date(booking.startDate) : null;
+    const endDate = booking.endDate ? new Date(booking.endDate) : null;
+
+    if (startDate) startDate.setHours(0, 0, 0, 0);
+    if (endDate) endDate.setHours(0, 0, 0, 0);
+
+    // ✅ Check in: لو بدأ ولسه مخلصش
+    if (startDate && startDate <= today && (!endDate || endDate > today)) {
       return {
         text: 'Check in',
         bg: 'var(--color-green-100)',
         fg: 'var(--color-green-700)',
         paid: true,
       };
+    }
 
-    if (today > end)
+    // ✅ Check out: لو خلص
+    if (endDate && endDate <= today) {
       return {
         text: 'Check out',
         bg: 'var(--color-silver-100)',
         fg: 'var(--color-silver-700)',
         paid: true,
       };
+    }
 
+    // ✅ غير كده: Unconfirmed
     return {
       text: 'Unconfirmed',
       bg: 'var(--color-blue-100)',
@@ -87,6 +90,9 @@ export class BookingDetails implements OnInit {
       paid: false,
     };
   });
+
+
+
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -238,9 +244,10 @@ export class BookingDetails implements OnInit {
 
         if (action === 'check in') {
           updateData.startDate = today;
+          updateData.status = 'Check in'; // ✅ إضافة حالة check in
 
           if (this.isBreakfastChecked()) {
-            updateData.hasBreakfast = true;
+            updateData.hasBreakFast = true; // ✅ صح
             updateData.breakFastPrice =
               this.booking()?.breakFastPrice ?? 2 * this.numOfPeople();
           }
@@ -252,7 +259,7 @@ export class BookingDetails implements OnInit {
 
         if (action === 'check out') {
           updateData.endDate = today;
-
+          updateData.status = 'Check out'; // ✅ إضافة حالة check out
         }
 
         await updateDoc(bookingRef, updateData);
@@ -261,14 +268,23 @@ export class BookingDetails implements OnInit {
           ...prev!,
           ...updateData,
         }));
-        this.messageService.add({ severity: 'Confirmed', summary: 'Updated', detail: 'Booking Updated successfully!' });
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          detail: 'Booking Updated successfully!',
+        });
 
         this.router.navigate(['/bookings']);
       } catch (error) {
         console.error(error);
-        this.messageService.add({ severity: 'Error', summary: 'Updated', detail: 'Failed to update booking status' });
-
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Update Failed',
+          detail: 'Failed to update booking status',
+        });
       }
     }
   }
+
 }
