@@ -6,9 +6,9 @@
     <h2 class="font-medium text-4xl mb-4">Update user data</h2>
     <form [formGroup]="accountForm" (ngSubmit)="onSubmitAccount()">
       <!-- email Field -->
-      <div class="field mb-4">
-        <label for="email" class="mb-2 font-medium">Email address </label>
-        <input id="email" type="email" formControlName="email" class="w-full form__field"
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="email" class="mb-2 md:mb-0 font-medium md:w-2">Email address </label>
+        <input id="email" type="email" formControlName="email" class="w-full md:w-6 form__field"
           aria-describedby="email-help" />
 
         @if(accountForm.get('email')?.hasError('required') && accountForm.get('email')?.touched) {
@@ -20,9 +20,9 @@
       </div>
 
       <!-- fullName Field -->
-      <div class="field mb-4">
-        <label for="fullName" class="mb-2 font-medium">Full name </label>
-        <input id="fullName" type="text" formControlName="fullName" class="w-full form__field"
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="fullName" class="mb-2 md:mb-0 font-medium md:w-2">Full name </label>
+        <input id="fullName" type="text" formControlName="fullName" class="w-full md:w-6 form__field"
           aria-describedby="fullName-help" />
 
         @if(accountForm.get('fullName')?.hasError('required') && accountForm.get('fullName')?.touched) {
@@ -31,9 +31,9 @@
       </div>
 
       <!-- Avatar Field -->
-      <div class="field mb-4">
-        <label for="avatar" class="mb-2 font-medium">Avatar image</label>
-        <div class="custom-file-input">
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="avatar" class="mb-2 md:mb-0 font-medium md:w-2">Avatar image</label>
+        <div class="custom-file-input md:w-6">
           <input (change)="onFileSelected($event)" id="avatar" type="file" class="hidden-input" accept="image/*" />
           <label for="avatar" class="file-label">
             <i class="pi pi-cloud-upload mr-2"></i>
@@ -58,9 +58,9 @@
     <h2 class="font-medium text-4xl mb-4">Update password</h2>
     <form [formGroup]="passswordForm" (ngSubmit)="onSubmitPassword()">
       <!-- Old password Field -->
-      <div class="field mb-4">
-        <label for="old-password" class="mb-2 font-medium">Old Password</label>
-        <input id="old-password" type="password" formControlName="oldPassword" class="w-full form__field"
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="old-password" class="mb-2 md:mb-0 font-medium md:w-2">Old Password</label>
+        <input id="old-password" type="password" formControlName="oldPassword" class="w-full md:w-6 form__field"
           aria-describedby="old-password-help" />
 
         @if(passswordForm.get('oldPassword')?.hasError('required') && passswordForm.get('oldPassword')?.touched) {
@@ -69,9 +69,9 @@
       </div>
 
       <!-- password Field -->
-      <div class="field mb-4">
-        <label for="newPassword" class="mb-2 font-medium">New Password (min 6 characters)</label>
-        <input id="newPassword" type="password" formControlName="newPassword" class="w-full form__field"
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="newPassword" class="mb-2 md:mb-0 font-medium md:w-2">New Password (min 6 characters)</label>
+        <input id="newPassword" type="password" formControlName="newPassword" class="w-full md:w-6 form__field"
           aria-describedby="password-help" />
 
         @if(passswordForm.get('password')?.hasError('required') && passswordForm.get('password')?.touched) {
@@ -83,9 +83,9 @@
       </div>
 
       <!-- Confirm password Field -->
-      <div class="field mb-4">
-        <label for="ConfirmPassword" class="mb-2 font-medium">Confirm password</label>
-        <input id="ConfirmPassword" type="password" formControlName="confirmPassword" class="w-full form__field"
+      <div class="field mb-4 flex flex-column md:flex-row md:align-items-center gap-2">
+        <label for="ConfirmPassword" class="mb-2 md:mb-0 font-medium md:w-2">Confirm password</label>
+        <input id="ConfirmPassword" type="password" formControlName="confirmPassword" class="w-full md:w-6 form__field"
           aria-describedby="ConfirmPassword-help" />
 
         @if(passswordForm.hasError('mismatch') && passswordForm.get('confirmPassword')?.touched) {

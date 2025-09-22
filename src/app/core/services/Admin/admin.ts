@@ -25,7 +25,13 @@ export class Admin {
     const saved = localStorage.getItem('userAccount');
     if (saved) {
       this.userAccount.set(JSON.parse(saved));
-
+    } else {
+      // ✅ fallback لو مفيش تخزين
+      this.userAccount.set({
+        fullName: 'Admin',
+        email: 'admin@example.com',
+        image: '/images/WhatsApp Image 2025-06-18 at 14.11.06_a5cd79d5.jpg'
+      } as IUser);
     }
   }
 }
