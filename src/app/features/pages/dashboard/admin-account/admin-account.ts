@@ -43,7 +43,7 @@ export class AdminAccount implements OnInit {
     const current = this.accountService.userAccount();
 
     this.accountForm = this.fb.group({
-      email: [{ value: current?.email || 'admin@gmail.com', disabled: true }, [Validators.required, Validators.email]],
+      email: [{ value: current?.email || 'admin@example.com', disabled: true }, [Validators.required, Validators.email]],
       fullName: [current?.fullName || 'Admin', Validators.required],
       image: [current?.image || '', Validators.required]
     });
