@@ -1,10 +1,12 @@
 .card {
   position: fixed;
+
   top: 0;
   left: 0;
   right: 0;
   z-index: 999;
   height: 6rem;
+
 }
 
 .p-menubar {
@@ -27,14 +29,15 @@
     color: var(--color-grey-600);
   }
 
-  i {
-    font-size: 1.8rem;
-    display: inline-block;
-    margin-top: 10px;
-    margin-inline: 5px;
-    cursor: pointer;
-    color: var(--color-brand-600);
-  }
+}
+
+i {
+  font-size: 1.8rem;
+  display: inline-block;
+  margin-top: 10px;
+  margin-inline: 10px;
+  cursor: pointer;
+  color: var(--color-brand-600);
 }
 
 .menu-icon {
@@ -42,6 +45,7 @@
 }
 
 @media (max-width: 992px) {
+
   .menu-icon {
     visibility: visible;
   }

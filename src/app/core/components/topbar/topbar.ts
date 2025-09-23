@@ -30,6 +30,7 @@ export class Topbar {
   userName = this.accountService.userName;
   userAccount: WritableSignal<IUser> = signal({} as IUser);
   ngOnInit(): void {
+
     this.accountService.loadUserFromStorage();
   }
 

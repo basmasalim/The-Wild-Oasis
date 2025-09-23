@@ -35,7 +35,6 @@ export class AdminAccount implements OnInit {
 
     this.accountinit();
     this.passwordinit();
-
   }
 
 
@@ -47,6 +46,8 @@ export class AdminAccount implements OnInit {
       fullName: [current?.fullName || 'Admin', Validators.required],
       image: [current?.image || '', Validators.required]
     });
+    console.log(current);
+
   }
   passwordinit(): void {
     this.passswordForm = this.fb.group(
@@ -81,7 +82,6 @@ export class AdminAccount implements OnInit {
       reader.readAsDataURL(this.selectedFile);
     }
   }
-
   async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
