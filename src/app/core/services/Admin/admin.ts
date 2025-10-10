@@ -2,7 +2,7 @@ import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { IUser } from '../../interfaces/iuser';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Admin {
   // الـ signal الأساسي
@@ -30,7 +30,7 @@ export class Admin {
       this.userAccount.set({
         fullName: 'Admin',
         email: 'admin@example.com',
-        image: '/images/WhatsApp Image 2025-06-18 at 14.11.06_a5cd79d5.jpg'
+        image: '/images/admin.jpeg',
       } as IUser);
     }
   }
